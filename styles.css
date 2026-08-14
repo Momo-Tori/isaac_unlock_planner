@@ -74,7 +74,6 @@ h2 { margin: 4px 0 0; font-size: 23px; }
 .page-tab { border: 0; border-bottom: 2px solid transparent; background: transparent; padding: 13px 18px 12px; color: var(--muted); cursor: pointer; font-weight: 800; }
 .page-tab:hover { color: var(--ink); }
 .page-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-.future-slot { margin-left: auto; color: #716a64; font-size: 12px; }
 .selector-section, .results-section { margin-top: 30px; }
 .section-heading { display: flex; justify-content: space-between; gap: 18px; align-items: end; }
 .results-heading { display: flex; justify-content: flex-end; gap: 18px; align-items: center; }
@@ -171,7 +170,6 @@ code { background: rgba(255,255,255,.05); padding: 2px 5px; border-radius: 5px; 
   .section-heading { align-items: flex-start; flex-direction: column; }
   .results-heading { justify-content: flex-start; }
   .controls { width: 100%; justify-content: space-between; }
-  .future-slot { display: none; }
   .entity-icon-row { overflow-x: auto; padding-bottom: 5px; scrollbar-width: thin; }
   .entity-group { grid-template-columns: 48px minmax(0,1fr); }
   .entity-icon-card { width: 48px; height: 48px; flex-basis: 48px; }
@@ -186,3 +184,10 @@ code { background: rgba(255,255,255,.05); padding: 2px 5px; border-radius: 5px; 
 }
 
 .effect-text { white-space: pre-line; }
+
+/* Challenge unlock page */
+.challenge-id-cell { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.challenge-id-link { color: #fff1cc; font-size: 16px; font-weight: 900; text-decoration: none; border-bottom: 1px solid rgba(255,241,204,.28); }
+.challenge-id-link:hover { color: #fff8e8; border-bottom-color: currentColor; }
+.prerequisite-cell { display: flex; align-items: center; gap: 10px; min-width: 225px; }
+.achievement-sprite.compact { transform: scale(.72); transform-origin: left center; margin-right: -18px; }

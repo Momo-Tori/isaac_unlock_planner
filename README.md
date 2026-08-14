@@ -1,12 +1,12 @@
 # 以撒开荒解锁规划器
 
-一个纯前端的《以撒的结合》开荒解锁规划器。浏览器直接读取 `persistentgamedata*.dat` 的成就块，根据角色/Boss 展示 Completion Mark 奖励，并用推荐优先级帮助新档决定先刷什么。
+一个纯前端的《以撒的结合》开荒解锁规划器。浏览器直接读取 `persistentgamedata*.dat` 的成就块，根据角色、Boss 或挑战展示解锁奖励，并用推荐优先级帮助新档决定先刷什么。
 
 ## 直接使用
 
 1. 双击 `index.html`。
 2. 点击 **读取 persistentgamedata**，或把 `.dat` 拖到顶部区域。
-3. 在 **按角色 / 按 Boss** 两个页面之间切换。
+3. 在 **按角色 / 按 Boss / 挑战解锁** 三个页面之间切换。
 4. 页面默认按 **重要度顺序** 排列；也可以切换回 **默认顺序**。
 5. 载入存档后关闭 **显示已解锁**，即可只看还需要完成的目标。
 
@@ -16,6 +16,8 @@
 
 ```text
 Huiji Completion Mark 表 ───────> data/unlocks.js
+                                   │
+Huiji 挑战成就表 ─────────────────> data/challenges.js
                                    │
 Bilibili 推荐清单 + 人工修订 ───> data/recommendations.js
                                    │
@@ -39,14 +41,18 @@ EID 中英文效果（构建阶段） ─────> data/effects.js
 
 - 34 个角色（17 表 + 17 堕化）
 - 13 个 Completion Mark / Boss 目标
+- 45 个挑战解锁目标
 - 340 条规范化解锁规则
 - 其中 34 条是多 Boss 捆绑规则
 - 推荐数据当前显式记录 187 条：
   - 61 条 `strong`（强烈推荐 / 红）
   - 120 条 `recommended`（推荐 / 黄）
+  - 6 条因新版推荐修订被显式降为 `normal`
   - 其他没有进入推荐表的规则默认也是 `normal`
 - 推荐源中仍有 1 条没有进入当前 Boss 模型：游魂“完成所有困难模式 → 神性”，因为它是“全困难印记”元目标，不对应单个当前 Boss 行。
 - EID 与本地机制兜底目前能为 **308 / 340** 条规则生成效果数据；剩余 32 条均为 Baby 类解锁。所有当前 `strong` / `recommended` 奖励均有非空效果说明。
+- 挑战优先级：14 条 `strong`（强烈推荐）、13 条 `recommended`（推荐）、18 条 `normal`（普通）。
+- 挑战页从灰机 Wiki 表读取挑战 ID、前置成就 ID、奖励成就 ID；奖励效果优先使用 EID，金心/金炸弹/充能钥匙和角色初始配置等机制型奖励使用本地说明。
 - EID 原始描述中的 `#` 分隔符按效果条目换行显示，避免长段文本挤在同一行。
 
 ## 目录
@@ -59,6 +65,7 @@ js/
   save-parser.js
 data/
   unlocks.js
+  challenges.js
   recommendations.js
   recommendations-report.json
   effects.js
@@ -71,6 +78,7 @@ assets/
     Achievement_sprite.jpg
 tools/
   build_unlocks.py
+  build_challenges.py
   build_recommendations.py
   crawl_effects.py
   localize_assets.py
@@ -90,7 +98,18 @@ python tools/build_unlocks.py "你的成就页面.html"
 
 脚本会展开 `rowspan`，并把堕化角色共享同一 achievement ID 的多个 Boss 合并成一条 `bossIds[]` 规则。当前默认 Boss 顺序将 **Boss Rush 放在妈妈的心之前**。
 
-### 2. 更新推荐清单
+### 2. 重新从灰机 Wiki 保存页刷新挑战成就映射
+
+同一份 `Project:存档/成就` HTML 还包含挑战表。运行：
+
+```bash
+python tools/build_challenges.py "你的成就页面.html"
+```
+
+脚本会刷新 45 个挑战的 `prerequisiteAchievementId` 与 `rewardAchievementId`，并保留 `data/challenges.js` 中已有的奖励名称、效果和优先级。挑战页面通过前置成就 ID 判断挑战是否已经开放，通过奖励成就 ID 判断挑战是否已经完成。
+
+
+### 3. 更新推荐清单
 
 推荐来源记录为：
 
@@ -112,7 +131,7 @@ python tools/build_recommendations.py
 
 网页运行时不会请求推荐来源；最终结果固定写入 `data/recommendations.js`。
 
-### 3. 更新效果数据
+### 4. 更新效果数据
 
 ```bash
 python tools/crawl_effects.py --refresh
@@ -128,7 +147,7 @@ python tools/crawl_effects.py --refresh
 
 **注意：**效果抓取器只在构建阶段联网；最终网页运行时不爬站点。
 
-### 4. 人工修正
+### 5. 人工修正
 
 `data/overrides.js` 最后加载，优先级最高：
 
@@ -176,6 +195,7 @@ window.ISAAC_OVERRIDES = {
 ## 当前展示约定
 
 - 页面打开时默认按重要度排序。
+- 挑战页默认同样按重要度排序；切换“默认顺序”后按挑战 ID 从小到大排列。
 - Boss 默认顺序以 Boss Rush 开头，其次为妈妈的心。
 - 没有 EID 描述且不属于 Baby 的奖励，会显示统一说明：`解锁「XXX」这一非收藏道具 / 机制内容。`
 - Baby 类解锁暂保留“效果说明待补充”。
@@ -184,6 +204,8 @@ window.ISAAC_OVERRIDES = {
 ## 数据来源
 
 - 角色 × Boss × Achievement ID：用户提供的灰机 Wiki `Project:存档/成就` 保存页。
+- 挑战 ID × 前置 Achievement ID × 奖励 Achievement ID：同一灰机 Wiki `Project:存档/成就` 保存页。
+- 挑战奖励名称辅助核对：IsaacGuru Challenges；挑战奖励中文效果由 EID 提供，机制型奖励使用本地说明。
 - 存档结构：用户提供的灰机 Wiki `Persistentgamedata.js`。
 - 高价值推荐：狐九郎整理的 Bilibili 动态 `https://www.bilibili.com/opus/1083165871339208713`；其中 v 9.10 推荐数据来自 @UP主 陈哥1，最初版与 v 9.10 最新修订参考 @UP主 恺恺orz（`https://www.bilibili.com/video/BV11pj7zEEHL`），并叠加本项目用户提供的当前版本修订。
 - 效果构建源：External Item Descriptions 的简体中文 / 英文数据。

@@ -4,6 +4,7 @@
   const DATA = window.ISAAC_UNLOCK_DATA;
   const RECOMMENDATIONS = window.ISAAC_RECOMMENDATIONS?.entries || {};
   const EFFECTS = window.ISAAC_EFFECTS?.entries || {};
+  const CHALLENGES = window.ISAAC_CHALLENGE_DATA?.entries || [];
   const OVERRIDES = window.ISAAC_OVERRIDES || {};
   const Parser = window.IsaacSaveParser;
   if (!DATA || !Parser) throw new Error('页面数据或存档解析器未加载。');
@@ -25,6 +26,7 @@
   };
 
   const el = {
+    selectorSection: document.getElementById('selectorSection'),
     grid: document.getElementById('entityGrid'),
     selectorKicker: document.getElementById('selectorKicker'),
     selectorTitle: document.getElementById('selectorTitle'),
@@ -192,6 +194,10 @@
   }
 
   function renderHeader() {
+    if (state.view === 'challenge') {
+      el.tableHead.innerHTML = '<tr><th>挑战 ID</th><th>挑战前置成就</th><th>挑战解锁成就 / 道具</th><th>道具描述</th><th>是否解锁</th></tr>';
+      return;
+    }
     const isChar = state.view === 'character';
     el.tableHead.innerHTML = isChar
       ? '<tr><th>Boss 图像和名字</th><th>解锁道具 / 奖励</th><th>道具效果</th><th>是否解锁</th></tr>'
@@ -210,7 +216,72 @@
     return `<div class="target-cell">${safeImage([characterLocalImage(char), char.image], 'entity-thumb')}<div><strong>${esc(char.name)}</strong>${requirementText(rule, state.selectedBossId)}</div></div>`;
   }
 
+  function challengeRows() {
+    let rows = CHALLENGES.map((challenge) => ({
+      challenge,
+      prerequisiteUnlocked: challenge.prerequisiteAchievementId == null
+        ? true
+        : unlockStatus(challenge.prerequisiteAchievementId),
+      unlocked: unlockStatus(challenge.rewardAchievementId)
+    }));
+
+    if (!state.showUnlocked && state.save) rows = rows.filter((x) => x.unlocked !== true);
+
+    rows.sort((a, b) => {
+      if (state.sort === 'priority') {
+        const pd = PRIORITY_SCORE[b.challenge.priority] - PRIORITY_SCORE[a.challenge.priority];
+        if (pd) return pd;
+      }
+      return a.challenge.challengeId - b.challenge.challengeId;
+    });
+    return rows;
+  }
+
+  function challengePrerequisiteCell(challenge, unlocked) {
+    const aid = challenge.prerequisiteAchievementId;
+    if (aid == null) {
+      return '<div class="prerequisite-cell"><span class="status-badge unlocked">无需前置</span></div>';
+    }
+    const wikiUrl = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('成就')}/${aid}`;
+    return `<div class="prerequisite-cell">
+      <span class="achievement-sprite compact" aria-hidden="true" style="--ach-x:${-((aid - 1) % ACHIEVEMENT_SPRITE.columns) * ACHIEVEMENT_SPRITE.cell}px;--ach-y:${-Math.floor((aid - 1) / ACHIEVEMENT_SPRITE.columns) * ACHIEVEMENT_SPRITE.cell}px"></span>
+      <div><a class="reward-link" href="${esc(wikiUrl)}" target="_blank" rel="noopener noreferrer">成就 #${aid}</a><div class="meta-line">${unlocked === true ? '挑战已开放' : unlocked === false ? '挑战尚未开放' : '读取存档后判断是否开放'}</div></div>
+      ${statusBadge(unlocked)}
+    </div>`;
+  }
+
+  function renderChallengeRows() {
+    const rows = challengeRows();
+    if (!rows.length) {
+      const isFiltered = !state.showUnlocked && state.save;
+      const message = isFiltered ? '推荐挑战已经全部完成 🎉' : '当前没有挑战数据';
+      const detail = isFiltered ? '打开“显示已解锁”可以重新查看完整挑战列表。' : '请检查 data/challenges.js 是否正确加载。';
+      el.tableBody.innerHTML = `<tr class="empty-state"><td colspan="5"><strong>${message}</strong><span>${detail}</span></td></tr>`;
+      return;
+    }
+
+    el.tableBody.innerHTML = rows.map(({ challenge, prerequisiteUnlocked, unlocked }) => {
+      const rewardImage = achievementSprite(challenge.rewardAchievementId);
+      const rewardWiki = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('成就')}/${challenge.rewardAchievementId}`;
+      const challengeWiki = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('挑战')}/${challenge.challengeId}`;
+      const effect = challenge.effect
+        ? `<div class="effect-text">${esc(challenge.effect)}</div>`
+        : `<div class="effect-text">解锁「${esc(challenge.rewardName)}」这一非收藏道具 / 机制内容。</div>`;
+      return `<tr class="unlock-row priority-${challenge.priority}">
+        <td><div class="challenge-id-cell"><a class="challenge-id-link" href="${esc(challengeWiki)}" target="_blank" rel="noopener noreferrer">#${challenge.challengeId}</a>${priorityPill(challenge.priority)}</div></td>
+        <td>${challengePrerequisiteCell(challenge, prerequisiteUnlocked)}</td>
+        <td><div class="reward-cell">${rewardImage}<div><div class="reward-name"><a class="reward-link" href="${esc(rewardWiki)}" target="_blank" rel="noopener noreferrer">${esc(challenge.rewardName)}</a></div><div class="meta-line">奖励成就 ID #${challenge.rewardAchievementId}</div></div></div></td>
+        <td>${effect}</td>
+        <td>${statusBadge(unlocked)}</td>
+      </tr>`;
+    }).join('');
+  }
+
   function renderRows() {
+    if (state.view === 'challenge') {
+      renderChallengeRows();
+      return;
+    }
     const rows = ruleRows();
     if (!rows.length) {
       const isFiltered = !state.showUnlocked && state.save;
@@ -248,7 +319,9 @@
     document.querySelectorAll('.page-tab').forEach((b) => b.classList.toggle('active', b.dataset.view === state.view));
     document.querySelectorAll('.segment').forEach((b) => b.classList.toggle('active', b.dataset.sort === state.sort));
     el.showUnlocked.checked = state.showUnlocked;
-    renderEntityGrid();
+    const isChallenge = state.view === 'challenge';
+    el.selectorSection.hidden = isChallenge;
+    if (!isChallenge) renderEntityGrid();
     renderHeader();
     renderRows();
   }
