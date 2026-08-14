@@ -2,6 +2,8 @@
 
 一个纯前端的《以撒的结合》开荒解锁规划器。浏览器直接读取 `persistentgamedata*.dat` 的成就块，根据角色/Boss 展示 Completion Mark 奖励，并用推荐优先级帮助新档决定先刷什么。
 
+[点击这里尝试](https://momo-tori.github.io/isaac_unlock_planner/)
+
 ## 直接使用
 
 1. 双击 `index.html`。
