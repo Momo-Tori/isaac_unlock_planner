@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>以撒开荒解锁规划器</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">THE BINDING OF ISAAC · 本地存档工具</div>
+        <h1>开荒解锁规划器</h1>
+        <p class="subtitle">按角色或 Boss 查看解锁奖励，并结合存档过滤已经完成的目标。</p>
+      </div>
+
+      <div class="save-panel" id="dropZone">
+        <input id="saveInput" type="file" accept=".dat,application/octet-stream" hidden />
+        <button class="primary-button" id="loadSaveBtn" type="button">读取 persistentgamedata</button>
+        <div class="save-status" id="saveStatus">
+          <span class="status-dot idle"></span>
+          <div>
+            <strong>尚未读取存档</strong>
+            <small>文件只在浏览器本地解析，不会上传。</small>
+          </div>
+        </div>
+        <div class="save-hint">
+          <strong>找不到存档？</strong> 通常可在
+          <code>%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance</code>
+          或 <code>%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance+\save_backups</code>
+          中寻找时间最近的 <code>...persistentgamedata*.dat</code>（其中星号 <code>*</code> 的数字表示第几个存档）。
+        </div>
+      </div>
+    </header>
+
+    <nav class="page-tabs" aria-label="页面切换">
+      <button class="page-tab active" type="button" data-view="character">按角色</button>
+      <button class="page-tab" type="button" data-view="boss">按 Boss</button>
+    </nav>
+
+    <main>
+      <section class="selector-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker" id="selectorKicker">角色</span>
+            <h2 id="selectorTitle">选择角色</h2>
+          </div>
+          <div class="selection-summary" id="selectionSummary"></div>
+        </div>
+        <div class="entity-grid" id="entityGrid"></div>
+      </section>
+
+      <section class="results-section">
+        <div class="results-heading">
+          <div class="controls">
+            <div class="segmented" role="group" aria-label="排列顺序">
+              <button type="button" class="segment" data-sort="default">默认顺序</button>
+              <button type="button" class="segment active" data-sort="priority">重要度顺序</button>
+            </div>
+            <label class="switch-control">
+              <input type="checkbox" id="showUnlocked" checked />
+              <span class="switch"></span>
+              <span>显示已解锁</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="legend" aria-label="优先级颜色说明">
+          <span><i class="legend-swatch strong"></i>强烈推荐</span>
+          <span><i class="legend-swatch recommended"></i>推荐</span>
+          <span><i class="legend-swatch normal"></i>普通</span>
+        </div>
+
+        <div class="table-wrap">
+          <table class="unlock-table">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>推荐数据来源与致谢</strong></p>
+      <p>萌新向人物道具解锁优先顺序参考狐九郎整理的
+        <a class="footer-link" href="https://www.bilibili.com/opus/1083165871339208713" target="_blank" rel="noopener noreferrer">《【以撒的结合】v 9.10 更新版-萌新向人物道具解锁优先顺序（搬运整理）》</a>。
+      </p>
+      <p>其中 v 9.10 推荐数据来自 <strong>@UP主 陈哥1</strong> 的更新内容整理；最初版与 v 9.10 最新修订参考 <strong>@UP主 恺恺orz</strong>，修订来源：
+        <a class="footer-link" href="https://www.bilibili.com/video/BV11pj7zEEHL" target="_blank" rel="noopener noreferrer">BV11pj7zEEHL</a>。
+        感谢原整理者与两位 UP 主对萌新解锁路线的整理和修订。
+      </p>
+      <p>存档格式与成就解锁状态解析参考灰机 Wiki 的
+        <a class="footer-link" href="https://isaac.huijiwiki.com/wiki/%E9%9B%B6%E4%BB%B6:Persistentgamedata.js" target="_blank" rel="noopener noreferrer"><code>Persistentgamedata.js</code></a>；
+        本工具按其存档结构重新实现了只读取 Achievement block 的本地解析逻辑。
+      </p>
+      <p class="muted">本工具仅将公开推荐数据结构化，并结合本地 <code>persistentgamedata</code> 显示解锁状态；存档不会上传。</p>
+    </footer>
+  </div>
+
+  <script src="./data/unlocks.js"></script>
+  <script src="./data/recommendations.js"></script>
+  <script src="./data/effects.js"></script>
+  <script src="./data/overrides.js"></script>
+  <script src="./js/save-parser.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
