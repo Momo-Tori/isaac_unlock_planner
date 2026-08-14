@@ -7,6 +7,20 @@
   const CHALLENGES = window.ISAAC_CHALLENGE_DATA?.entries || [];
   const OVERRIDES = window.ISAAC_OVERRIDES || {};
   const Parser = window.IsaacSaveParser;
+  // app.js 自身通过 ?v=... 加载；本地图片沿用同一版本号，避免 GitHub Pages 更新图片后仍命中旧缓存。
+  const CACHE_VERSION = (() => {
+    try {
+      const src = document.currentScript && document.currentScript.src;
+      return src ? (new URL(src, window.location.href).searchParams.get('v') || '') : '';
+    } catch (_) {
+      return '';
+    }
+  })();
+  function versionedLocalUrl(url) {
+    if (!url || !CACHE_VERSION || /^(?:https?:|data:|blob:)/i.test(url)) return url;
+    const joiner = url.includes('?') ? '&' : '?';
+    return `${url}${joiner}v=${encodeURIComponent(CACHE_VERSION)}`;
+  }
   if (!DATA || !Parser) throw new Error('页面数据或存档解析器未加载。');
 
   const PRIORITY_SCORE = { strong: 3, recommended: 2, normal: 1 };
@@ -57,11 +71,11 @@
   }
 
   function characterLocalImage(character) {
-    return `./assets/character/${character.id}.png`;
+    return versionedLocalUrl(`./assets/character/${character.id}.png`);
   }
 
   function bossImage(boss) {
-    return [`./assets/boss/${boss.id}.png`];
+    return [versionedLocalUrl(`./assets/boss/${boss.id}.png`)];
   }
 
   const ACHIEVEMENT_SPRITE = { columns: 20, rows: 33, cell: 64, maxId: 660 };
