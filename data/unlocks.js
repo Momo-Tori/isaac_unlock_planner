@@ -371,15 +371,6 @@ window.ISAAC_UNLOCK_DATA = {
   ],
   "unlockRules": [
     {
-      "id": "c00-isaac-a167",
-      "characterId": "c00-isaac",
-      "bossIds": [
-        "moms-heart"
-      ],
-      "achievementId": 167,
-      "defaultOrder": 1
-    },
-    {
       "id": "c00-isaac-a70",
       "characterId": "c00-isaac",
       "bossIds": [
@@ -387,6 +378,15 @@ window.ISAAC_UNLOCK_DATA = {
       ],
       "achievementId": 70,
       "defaultOrder": 0
+    },
+    {
+      "id": "c00-isaac-a167",
+      "characterId": "c00-isaac",
+      "bossIds": [
+        "moms-heart"
+      ],
+      "achievementId": 167,
+      "defaultOrder": 1
     },
     {
       "id": "c00-isaac-a179",
@@ -488,15 +488,6 @@ window.ISAAC_UNLOCK_DATA = {
       "defaultOrder": 12
     },
     {
-      "id": "c01-magdalene-a168",
-      "characterId": "c01-magdalene",
-      "bossIds": [
-        "moms-heart"
-      ],
-      "achievementId": 168,
-      "defaultOrder": 1
-    },
-    {
       "id": "c01-magdalene-a109",
       "characterId": "c01-magdalene",
       "bossIds": [
@@ -504,6 +495,15 @@ window.ISAAC_UNLOCK_DATA = {
       ],
       "achievementId": 109,
       "defaultOrder": 0
+    },
+    {
+      "id": "c01-magdalene-a168",
+      "characterId": "c01-magdalene",
+      "bossIds": [
+        "moms-heart"
+      ],
+      "achievementId": 168,
+      "defaultOrder": 1
     },
     {
       "id": "c01-magdalene-a180",
@@ -605,15 +605,6 @@ window.ISAAC_UNLOCK_DATA = {
       "defaultOrder": 12
     },
     {
-      "id": "c02-cain-a171",
-      "characterId": "c02-cain",
-      "bossIds": [
-        "moms-heart"
-      ],
-      "achievementId": 171,
-      "defaultOrder": 1
-    },
-    {
       "id": "c02-cain-a110",
       "characterId": "c02-cain",
       "bossIds": [
@@ -621,6 +612,15 @@ window.ISAAC_UNLOCK_DATA = {
       ],
       "achievementId": 110,
       "defaultOrder": 0
+    },
+    {
+      "id": "c02-cain-a171",
+      "characterId": "c02-cain",
+      "bossIds": [
+        "moms-heart"
+      ],
+      "achievementId": 171,
+      "defaultOrder": 1
     },
     {
       "id": "c02-cain-a181",
@@ -3963,7 +3963,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "179": {
-      "name": "Fart Baby",
+      "name": "Farting Baby",
       "condition": "Defeat Hush as Isaac",
       "image": null,
       "quality": null,

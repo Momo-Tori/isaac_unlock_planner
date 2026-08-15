@@ -63,6 +63,7 @@ CATEGORY_PRIORITY = {'collectible':0, 'trinket':1, 'card':2, 'pill':3}
 # English-only aliases for source typos / achievement-title wording differences.
 ENGLISH_ALIASES_RAW = {
     'A Cross': 'The Relic',
+    'Fart Baby': 'Farting Baby',
     'The D20': 'D20',
     'Celctic Cross': 'Celtic Cross',
     'Blood Penny': 'Bloody Penny',

@@ -122,6 +122,8 @@ python tools/build_unlocks.py "你的成就页面.html"
 
 脚本会展开 `rowspan`，并把堕化角色共享同一 achievement ID 的多个 Boss 合并成一条 `bossIds[]` 规则。当前默认 Boss 顺序将 **Boss Rush 放在妈妈的心之前**。`achievementCatalog` 的奖励名来自 `tools/achievement_rewards_en.json`，只保存 canonical English name；构建器不会读取旧的 `data/unlocks.js`。
 
+> 注意：`tools/achievement_rewards_en.json` 保存的是**实际解锁奖励的英文实体名**，不是 Achievement 标题。两者在少数情况下不同，例如 Achievement #179 的标题是 `Fart Baby`，但实际收藏品是 `Farting Baby`。
+
 ### 2. 重新从灰机 Wiki 保存页刷新挑战成就映射
 
 同一份 `Project:存档/成就` HTML 还包含挑战表。运行：

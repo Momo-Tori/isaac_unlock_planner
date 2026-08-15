@@ -444,6 +444,14 @@ window.ISAAC_EFFECTS = {
       "source": "eid-zh_cn",
       "matchRoute": "english-eid"
     },
+    "179": {
+      "name": "放屁宝宝",
+      "effect": "阻挡弹幕\n受击时, 10%概率放屁, 效果为魅惑/中毒/击退三种其一\n屁造成5-6点伤害",
+      "entityType": "collectible",
+      "entityId": 404,
+      "source": "eid-zh_cn",
+      "matchRoute": "english-eid"
+    },
     "180": {
       "name": "纯洁",
       "effect": "↑ 根据光环颜色对角色属性进行增强\n受伤时, 移除光环, 在下个房间获得新的光环\n黄色 = ↑ 移速+0.5\n蓝色 = ↑ 射速修正+2\n红色 = ↑ 伤害+4\n橙色 = ↑ 射程+3",
@@ -2459,11 +2467,11 @@ window.ISAAC_EFFECTS = {
   },
   "stats": {
     "eidRows": 1069,
-    "matchedAchievements": 307,
-    "unmatchedAchievements": 33,
+    "matchedAchievements": 308,
+    "unmatchedAchievements": 32,
     "specialAchievementEntries": 3,
     "routes": {
-      "english": 286,
+      "english": 287,
       "chineseFallback": 0,
       "explicit": 4,
       "localSpecial": 3,

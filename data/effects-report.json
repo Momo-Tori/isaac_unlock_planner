@@ -1,11 +1,11 @@
 {
   "stats": {
     "eidRows": 1069,
-    "matchedAchievements": 307,
-    "unmatchedAchievements": 33,
+    "matchedAchievements": 308,
+    "unmatchedAchievements": 32,
     "specialAchievementEntries": 3,
     "routes": {
-      "english": 286,
+      "english": 287,
       "chineseFallback": 0,
       "explicit": 4,
       "localSpecial": 3,
@@ -87,12 +87,6 @@
       "achievementId": 177,
       "englishName": "Fighting Baby",
       "name": "Fighting Baby",
-      "reason": "baby-or-cosmetic"
-    },
-    {
-      "achievementId": 179,
-      "englishName": "Fart Baby",
-      "name": "Fart Baby",
       "reason": "baby-or-cosmetic"
     },
     {
@@ -731,9 +725,11 @@
     },
     {
       "achievementId": 179,
-      "englishName": "Fart Baby",
-      "route": "unmatched-baby",
-      "name": "Fart Baby"
+      "englishName": "Farting Baby",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 404,
+      "zhName": "放屁宝宝"
     },
     {
       "achievementId": 180,

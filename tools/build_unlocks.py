@@ -4,7 +4,7 @@
 Inputs:
 - a saved Huiji Wiki ``Project:存档/成就`` HTML page for the physical
   character/Boss -> achievement-ID matrix;
-- ``tools/achievement_rewards_en.json`` for canonical *English* reward names.
+- ``tools/achievement_rewards_en.json`` for canonical *English* names of the actual unlocked rewards (not necessarily the achievement titles).
 
 The previous generated ``data/unlocks.js`` is deliberately never read.  This
 keeps the generated catalog reproducible and prevents translated display names
@@ -93,7 +93,7 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('html', type=Path, help='saved Huiji Project:存档/成就 HTML')
     ap.add_argument('--catalog', type=Path, default=EN_CATALOG,
-                    help='canonical English reward-name seed')
+                    help='canonical English unlocked-reward-name seed (not achievement-title names)')
     args=ap.parse_args()
 
     english_catalog=load_english_catalog(args.catalog)
