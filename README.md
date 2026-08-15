@@ -6,15 +6,7 @@
 
 ## 直接使用
 
-1. 通过 GitHub Pages 或本地 HTTP 服务打开页面。因为优先级现在由浏览器运行时读取 JSON，直接双击 `index.html` 的 `file://` 模式可能被浏览器拦截 JSON 请求。
-
-   本地调试可运行：
-
-   ```bash
-   python -m http.server 8000
-   ```
-
-   然后访问 `http://localhost:8000/`。
+1. 通过 GitHub Pages、普通 FTP 静态空间、本地 HTTP 服务，或直接双击 `index.html` 打开页面。运行时不再 `fetch()` 推荐 JSON，推荐源会在发布前编译为普通 JS，因此传统静态服务器也可使用。
 2. 点击 **读取 persistentgamedata**，或把 `.dat` 拖到顶部区域。
 3. 在 **按角色 / 按 Boss / 挑战解锁** 三个页面之间切换。
 4. 页面默认按 **重要度顺序** 排列；也可以切换回 **默认顺序**。
@@ -41,9 +33,11 @@ EID 中英文效果（构建阶段） ─────> data/effects.js
                               ▲       ▲
                               │       │
 tools/recommendation_seed.json       tools/challenge_priority.json
-  （角色-Boss-priority，运行时读取）   （挑战-priority，运行时读取）
+  （角色-Boss-priority，开发源）        （挑战-priority，开发源）
                               │       │
-                              └── fetch + 即时排序/着色 ──┘
+                              └── build_recommendation_profiles.py ──> data/recommendation_profiles.js
+                                                                  │
+                                                                  └── 即时排序/着色
                                    ▲
                                    │
                         js/save-parser.js
@@ -52,7 +46,7 @@ tools/recommendation_seed.json       tools/challenge_priority.json
                        persistentgamedata.dat
 ```
 
-**优先级不再写入任何 `data/*.js` 生成数据。** `unlocks.js` / `challenges.js` 只描述游戏数据；推荐配置由网页运行时直接读取两个 JSON。
+`unlocks.js` / `challenges.js` 仍然不保存 priority。两个 JSON 是人工维护的推荐源，发布时只被编译进独立的 `data/recommendation_profiles.js`；游戏数据与推荐数据依然解耦。网页不会运行时请求 JSON。
 
 ## 当前数据规模
 
@@ -81,6 +75,7 @@ data/
   effects.js
   effects-report.json
   overrides.js
+  recommendation_profiles.js
 assets/
   character/
   boss/
@@ -91,6 +86,8 @@ tools/
   build_unlocks.py
   build_challenges.py
   validate_priorities.py
+  build_recommendation_profiles.py
+  recommendation_profiles.json
   crawl_effects.py
   achievement_rewards_en.json
   challenge_rewards.json
@@ -110,7 +107,7 @@ tools/
 python tools/rebuild_data.py "你的成就页面.html" --refresh-eid
 ```
 
-该脚本会删除并重建 `data/unlocks.js`、`data/challenges.js`、`data/effects.js` 等**生成物**，然后运行 `validate_priorities.py` 检查两个运行时优先级 JSON。优先级 JSON 本身是配置源，不会被 clean rebuild 改写。如果已经有最新 EID 构建缓存，可以省略 `--refresh-eid`。
+该脚本会删除并重建 `data/unlocks.js`、`data/challenges.js`、`data/effects.js` 等**生成物**，运行 `validate_priorities.py` 检查优先级 JSON，再执行 `build_recommendation_profiles.py` 生成浏览器直接加载的 `data/recommendation_profiles.js`。优先级 JSON 本身是配置源，不会被 clean rebuild 改写。如果已经有最新 EID 构建缓存，可以省略 `--refresh-eid`。
 
 ### 1. 重新从灰机 Wiki 保存页生成矩阵
 
@@ -153,7 +150,7 @@ tools/recommendation_seed.json
 }
 ```
 
-不保存 `rewardName`、achievement ID，也不会编译成 `data/recommendations.js`。网页启动时直接读取该 JSON，再用当前 `unlocks.js` 的角色/Boss 规则即时决定排序、标签与红/黄/灰背景。
+不保存 `rewardName`、achievement ID，也不会写进 `unlocks.js`。`build_recommendation_profiles.py` 会把它与挑战优先级一起打包成独立的 `data/recommendation_profiles.js`，网页再即时决定排序、标签与红/黄/灰背景。
 
 挑战优先级独立保存在：
 
@@ -163,10 +160,11 @@ tools/challenge_priority.json
 
 每条只保存 `challengeId + priority`。`data/challenges.js` 不保存优先级。
 
-修改这两个 JSON 后不需要重建数据，只需发布前运行：
+修改这两个 JSON 后不需要重建游戏数据，只需发布前运行：
 
 ```bash
 python tools/validate_priorities.py
+python tools/build_recommendation_profiles.py
 python tools/bump_cache_version.py
 ```
 
@@ -204,6 +202,18 @@ window.ISAAC_OVERRIDES = {
 ```
 
 可覆盖 `name`、`effect`、`image`。**priority 不再允许从 overrides 覆盖**，唯一来源是运行时 JSON。
+
+## 推荐方案、自定义与本地保存
+
+- 首次打开时，如果浏览器没有用户推荐配置，会将 `data/recommendation_profiles.js` 中的默认方案复制到 `localStorage`。
+- 切换内置推荐方案时，会把选中的方案复制为新的当前用户配置。
+- 每条人物/Boss 成就最右侧都有 `⋮` 菜单，可即时改成 `strong / recommended / normal`；捆绑多个 Boss 的同一成就会同步修改全部对应 pair。
+- 挑战页也有相同的 `⋮` 菜单，按 `challengeId` 保存修改。
+- 当前配置可导出为 JSON，也可以重新导入。导入成功后会成为当前本地配置。
+- 当前推荐配置只保存在当前站点 origin 的 `localStorage`；GitHub Pages 与另一个 FTP 域名之间不会共享浏览器数据。
+- 成功读取的 `persistentgamedata` 原始内容也会保存在 `localStorage`，下次进入自动重新解析。浏览器不能在下次访问时静默读取原来的文件系统路径，因此游戏进度更新后仍需重新选择最新 `.dat`。页面提供“清除本地缓存”按钮。
+
+内置多方案由 `tools/recommendation_profiles.json` 管理。以后添加新方案时，可以为它指定独立的角色/Boss JSON 与挑战 JSON，然后重新运行 `build_recommendation_profiles.py`。
 
 ## 存档解析
 

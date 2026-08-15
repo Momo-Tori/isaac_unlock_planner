@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Validate runtime priority JSON against generated unlock/challenge data.
 
-This script writes no runtime data. Priority JSON files are the source of truth
-and are fetched directly by the browser.
+This script writes no runtime data. Priority JSON files are the editable source
+of truth; build_recommendation_profiles.py compiles them for the browser.
 """
 from __future__ import annotations
 from pathlib import Path

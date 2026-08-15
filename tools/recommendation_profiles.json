@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "defaultProfileId": "beginner-9.10",
+  "profiles": [
+    {
+      "id": "beginner-9.10",
+      "name": "萌新开荒推荐",
+      "description": "基于当前 v9.10 萌新向人物 / 挑战优先级整理。",
+      "source": "https://www.bilibili.com/opus/1083165871339208713",
+      "characterBossFile": "recommendation_seed.json",
+      "challengeFile": "challenge_priority.json"
+    }
+  ]
+}

@@ -5,8 +5,9 @@
   const EFFECTS = window.ISAAC_EFFECTS?.entries || {};
   const CHALLENGES = window.ISAAC_CHALLENGE_DATA?.entries || [];
   const OVERRIDES = window.ISAAC_OVERRIDES || {};
+  const PROFILE_BUNDLE = window.ISAAC_RECOMMENDATION_PROFILES;
   const Parser = window.IsaacSaveParser;
-  // app.js 自身通过 ?v=... 加载；本地图片沿用同一版本号，避免 GitHub Pages 更新图片后仍命中旧缓存。
+
   const CACHE_VERSION = (() => {
     try {
       const src = document.currentScript && document.currentScript.src;
@@ -15,72 +16,38 @@
       return '';
     }
   })();
+
   function versionedLocalUrl(url) {
     if (!url || !CACHE_VERSION || /^(?:https?:|data:|blob:)/i.test(url)) return url;
     const joiner = url.includes('?') ? '&' : '?';
     return `${url}${joiner}v=${encodeURIComponent(CACHE_VERSION)}`;
   }
-  if (!DATA || !Parser) throw new Error('页面数据或存档解析器未加载。');
+
+  if (!DATA || !Parser || !PROFILE_BUNDLE) {
+    throw new Error('页面数据、推荐方案或存档解析器未加载。');
+  }
 
   const PRIORITY_SCORE = { strong: 3, recommended: 2, normal: 1 };
   const PRIORITY_LABEL = { strong: '强烈推荐', recommended: '推荐', normal: '普通' };
-  const runtimePriority = {
-    recommendationByPair: new Map(),
-    challengeById: new Map(),
-    loaded: false
+  const PROFILE_FORMAT = 'isaac-unlock-planner-profile';
+  const PROFILE_VERSION = 1;
+  const STORAGE_KEYS = {
+    profile: 'isaac_unlock_planner.current_profile.v1',
+    save: 'isaac_unlock_planner.cached_save.v1'
   };
 
-  function pairKey(characterId, bossId) {
-    return `${characterId}::${bossId}`;
-  }
-
-  function normalizePriority(value) {
-    return Object.prototype.hasOwnProperty.call(PRIORITY_SCORE, value) ? value : 'normal';
-  }
-
-  function rulePriority(rule) {
-    let best = 'normal';
-    for (const bossId of rule.bossIds) {
-      const priority = runtimePriority.recommendationByPair.get(pairKey(rule.characterId, bossId)) || 'normal';
-      if (PRIORITY_SCORE[priority] > PRIORITY_SCORE[best]) best = priority;
-    }
-    return best;
-  }
-
-  function challengePriority(challengeId) {
-    return runtimePriority.challengeById.get(Number(challengeId)) || 'normal';
-  }
-
-  async function fetchJson(path) {
-    const response = await fetch(versionedLocalUrl(path), { cache: 'no-store' });
-    if (!response.ok) throw new Error(`${path} 加载失败：HTTP ${response.status}`);
-    return response.json();
-  }
-
-  async function loadRuntimePriorities() {
-    const [recommendations, challenges] = await Promise.all([
-      fetchJson('./tools/recommendation_seed.json'),
-      fetchJson('./tools/challenge_priority.json')
-    ]);
-
-    const pairMap = new Map();
-    for (const entry of recommendations.entries || []) {
-      const priority = normalizePriority(entry.priority);
-      pairMap.set(pairKey(entry.characterId, entry.bossId), priority);
-    }
-
-    const challengeMap = new Map();
-    for (const entry of challenges.entries || []) {
-      challengeMap.set(Number(entry.challengeId), normalizePriority(entry.priority));
-    }
-
-    runtimePriority.recommendationByPair = pairMap;
-    runtimePriority.challengeById = challengeMap;
-    runtimePriority.loaded = true;
-  }
   const byId = (items) => new Map(items.map((x) => [x.id, x]));
   const characters = byId(DATA.characters);
   const bosses = byId(DATA.bosses);
+  const rulesById = new Map(DATA.unlockRules.map((rule) => [rule.id, rule]));
+  const validPairs = new Set(DATA.unlockRules.flatMap((rule) => rule.bossIds.map((bossId) => pairKey(rule.characterId, bossId))));
+  const validChallengeIds = new Set(CHALLENGES.map((x) => Number(x.challengeId)));
+  const builtinProfiles = new Map((PROFILE_BUNDLE.profiles || []).map((x) => [x.id, x]));
+
+  const runtimePriority = {
+    recommendationByPair: new Map(),
+    challengeById: new Map()
+  };
 
   const state = {
     view: 'character',
@@ -89,7 +56,9 @@
     sort: 'priority',
     showUnlocked: true,
     save: null,
-    saveName: ''
+    saveName: '',
+    currentProfile: null,
+    menuTarget: null
   };
 
   const el = {
@@ -103,9 +72,39 @@
     showUnlocked: document.getElementById('showUnlocked'),
     saveInput: document.getElementById('saveInput'),
     loadSaveBtn: document.getElementById('loadSaveBtn'),
+    clearSaveBtn: document.getElementById('clearSaveBtn'),
     saveStatus: document.getElementById('saveStatus'),
-    dropZone: document.getElementById('dropZone')
+    dropZone: document.getElementById('dropZone'),
+    profileSelect: document.getElementById('profileSelect'),
+    profileStatus: document.getElementById('profileStatus'),
+    importProfileBtn: document.getElementById('importProfileBtn'),
+    exportProfileBtn: document.getElementById('exportProfileBtn'),
+    profileImportInput: document.getElementById('profileImportInput'),
+    priorityMenu: document.getElementById('priorityMenu')
   };
+
+  function pairKey(characterId, bossId) {
+    return `${characterId}::${bossId}`;
+  }
+
+  function normalizePriority(value) {
+    return Object.prototype.hasOwnProperty.call(PRIORITY_SCORE, value) ? value : 'normal';
+  }
+
+  function safeStorageGet(key) {
+    try { return window.localStorage.getItem(key); }
+    catch (error) { console.warn('localStorage 读取失败：', error); return null; }
+  }
+
+  function safeStorageSet(key, value) {
+    try { window.localStorage.setItem(key, value); return true; }
+    catch (error) { console.warn('localStorage 写入失败：', error); return false; }
+  }
+
+  function safeStorageRemove(key) {
+    try { window.localStorage.removeItem(key); }
+    catch (error) { console.warn('localStorage 删除失败：', error); }
+  }
 
   function esc(value) {
     return String(value ?? '').replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
@@ -162,6 +161,19 @@
     };
   }
 
+  function rulePriority(rule) {
+    let best = 'normal';
+    for (const bossId of rule.bossIds) {
+      const priority = runtimePriority.recommendationByPair.get(pairKey(rule.characterId, bossId)) || 'normal';
+      if (PRIORITY_SCORE[priority] > PRIORITY_SCORE[best]) best = priority;
+    }
+    return best;
+  }
+
+  function challengePriority(challengeId) {
+    return runtimePriority.challengeById.get(Number(challengeId)) || 'normal';
+  }
+
   function unlockStatus(aid) {
     if (!state.save) return null;
     return state.save.isAchievementUnlocked(aid);
@@ -184,6 +196,328 @@
     return `<div class="requirement">${prefix}：${esc(names.join(' + '))}</div>`;
   }
 
+  // ---------- Recommendation profile persistence ----------
+
+  function snapshotFromBuiltin(profile) {
+    return {
+      format: PROFILE_FORMAT,
+      version: PROFILE_VERSION,
+      name: profile.name || profile.id,
+      description: profile.description || '',
+      source: profile.source || '',
+      baseProfileId: profile.id,
+      customized: false,
+      updatedAt: new Date().toISOString(),
+      characterBoss: (profile.characterBoss || []).map((x) => ({
+        characterId: x.characterId,
+        bossId: x.bossId,
+        priority: normalizePriority(x.priority)
+      })),
+      challenges: (profile.challenges || []).map((x) => ({
+        challengeId: Number(x.challengeId),
+        priority: normalizePriority(x.priority)
+      }))
+    };
+  }
+
+  function validateProfileSnapshot(raw) {
+    if (!raw || typeof raw !== 'object') throw new Error('配置文件不是有效对象。');
+    if (raw.format !== PROFILE_FORMAT) throw new Error(`配置格式不受支持，应为 ${PROFILE_FORMAT}。`);
+    if (Number(raw.version) !== PROFILE_VERSION) throw new Error(`配置版本不受支持：${raw.version}`);
+    if (!Array.isArray(raw.characterBoss) || !Array.isArray(raw.challenges)) throw new Error('配置缺少 characterBoss / challenges 数组。');
+
+    const pairMap = new Map();
+    for (const entry of raw.characterBoss) {
+      if (!entry || !characters.has(entry.characterId) || !bosses.has(entry.bossId)) {
+        throw new Error(`配置包含未知角色/Boss：${entry?.characterId || '?'} / ${entry?.bossId || '?'}`);
+      }
+      const key = pairKey(entry.characterId, entry.bossId);
+      if (!validPairs.has(key)) throw new Error(`该角色/Boss 不存在解锁规则：${entry.characterId} / ${entry.bossId}`);
+      if (pairMap.has(key)) throw new Error(`配置包含重复角色/Boss：${entry.characterId} / ${entry.bossId}`);
+      const priority = normalizePriority(entry.priority);
+      if (priority !== entry.priority) throw new Error(`无效优先级：${entry.priority}`);
+      if (priority !== 'normal') pairMap.set(key, priority);
+    }
+
+    // Bundled tainted rewards must stay consistent across every Boss contained in the same achievement rule.
+    for (const rule of DATA.unlockRules) {
+      if (rule.bossIds.length <= 1) continue;
+      const values = rule.bossIds.map((bossId) => pairMap.get(pairKey(rule.characterId, bossId)) || 'normal');
+      if (new Set(values).size !== 1) {
+        throw new Error(`捆绑成就 #${rule.achievementId} 的多个 Boss 优先级不一致。`);
+      }
+    }
+
+    const challengeMap = new Map();
+    for (const entry of raw.challenges) {
+      const cid = Number(entry?.challengeId);
+      if (!validChallengeIds.has(cid)) throw new Error(`配置包含未知挑战 ID：${entry?.challengeId}`);
+      if (challengeMap.has(cid)) throw new Error(`配置包含重复挑战 ID：${cid}`);
+      const priority = normalizePriority(entry.priority);
+      if (priority !== entry.priority) throw new Error(`无效挑战优先级：${entry.priority}`);
+      if (priority !== 'normal') challengeMap.set(cid, priority);
+    }
+
+    return {
+      format: PROFILE_FORMAT,
+      version: PROFILE_VERSION,
+      name: String(raw.name || '自定义推荐'),
+      description: String(raw.description || ''),
+      source: String(raw.source || ''),
+      baseProfileId: builtinProfiles.has(raw.baseProfileId) ? raw.baseProfileId : null,
+      customized: Boolean(raw.customized),
+      updatedAt: String(raw.updatedAt || new Date().toISOString()),
+      pairMap,
+      challengeMap
+    };
+  }
+
+  function currentProfilePayload() {
+    const characterBoss = [...runtimePriority.recommendationByPair.entries()]
+      .map(([key, priority]) => {
+        const [characterId, bossId] = key.split('::');
+        return { characterId, bossId, priority };
+      })
+      .sort((a, b) => {
+        const ca = characters.get(a.characterId)?.order ?? 999;
+        const cb = characters.get(b.characterId)?.order ?? 999;
+        const ba = bosses.get(a.bossId)?.order ?? 999;
+        const bb = bosses.get(b.bossId)?.order ?? 999;
+        return ca - cb || ba - bb || a.bossId.localeCompare(b.bossId);
+      });
+
+    const challenges = CHALLENGES.map((challenge) => ({
+      challengeId: Number(challenge.challengeId),
+      priority: challengePriority(challenge.challengeId)
+    }));
+
+    return {
+      format: PROFILE_FORMAT,
+      version: PROFILE_VERSION,
+      name: state.currentProfile?.name || '自定义推荐',
+      description: state.currentProfile?.description || '',
+      source: state.currentProfile?.source || '',
+      baseProfileId: state.currentProfile?.baseProfileId || null,
+      customized: Boolean(state.currentProfile?.customized),
+      updatedAt: new Date().toISOString(),
+      characterBoss,
+      challenges
+    };
+  }
+
+  function persistCurrentProfile() {
+    if (!state.currentProfile) return;
+    const payload = currentProfilePayload();
+    state.currentProfile.updatedAt = payload.updatedAt;
+    const ok = safeStorageSet(STORAGE_KEYS.profile, JSON.stringify(payload));
+    if (!ok) el.profileStatus.textContent = '浏览器未允许保存配置';
+  }
+
+  function applyProfileSnapshot(raw, { persist = true } = {}) {
+    const parsed = validateProfileSnapshot(raw);
+    runtimePriority.recommendationByPair = parsed.pairMap;
+    runtimePriority.challengeById = parsed.challengeMap;
+    state.currentProfile = {
+      format: parsed.format,
+      version: parsed.version,
+      name: parsed.name,
+      description: parsed.description,
+      source: parsed.source,
+      baseProfileId: parsed.baseProfileId,
+      customized: parsed.customized,
+      updatedAt: parsed.updatedAt
+    };
+    if (persist) persistCurrentProfile();
+  }
+
+  function initializeRecommendationProfile() {
+    const stored = safeStorageGet(STORAGE_KEYS.profile);
+    if (stored) {
+      try {
+        applyProfileSnapshot(JSON.parse(stored), { persist: false });
+        return;
+      } catch (error) {
+        console.warn('已保存的推荐配置无效，将恢复默认方案。', error);
+        safeStorageRemove(STORAGE_KEYS.profile);
+      }
+    }
+
+    const defaultProfile = builtinProfiles.get(PROFILE_BUNDLE.defaultProfileId) || PROFILE_BUNDLE.profiles?.[0];
+    if (!defaultProfile) throw new Error('没有可用的内置推荐方案。');
+    applyProfileSnapshot(snapshotFromBuiltin(defaultProfile), { persist: true });
+  }
+
+  function markProfileCustomized() {
+    if (!state.currentProfile) return;
+    state.currentProfile.customized = true;
+    persistCurrentProfile();
+  }
+
+  function setRulePriority(ruleId, priority) {
+    const rule = rulesById.get(ruleId);
+    if (!rule) return;
+    const normalized = normalizePriority(priority);
+    for (const bossId of rule.bossIds) {
+      const key = pairKey(rule.characterId, bossId);
+      if (normalized === 'normal') runtimePriority.recommendationByPair.delete(key);
+      else runtimePriority.recommendationByPair.set(key, normalized);
+    }
+    markProfileCustomized();
+    closePriorityMenu();
+    render();
+  }
+
+  function setChallengePriority(challengeId, priority) {
+    const cid = Number(challengeId);
+    if (!validChallengeIds.has(cid)) return;
+    const normalized = normalizePriority(priority);
+    if (normalized === 'normal') runtimePriority.challengeById.delete(cid);
+    else runtimePriority.challengeById.set(cid, normalized);
+    markProfileCustomized();
+    closePriorityMenu();
+    render();
+  }
+
+  function renderProfileControls() {
+    const current = state.currentProfile;
+    if (!current) return;
+    const options = [];
+    const isExactBuiltin = !current.customized && current.baseProfileId && builtinProfiles.has(current.baseProfileId);
+    if (!isExactBuiltin) {
+      options.push(`<option value="__current__">当前：${esc(current.name)}${current.customized ? '（已自定义）' : ''}</option>`);
+    }
+    for (const profile of PROFILE_BUNDLE.profiles || []) {
+      options.push(`<option value="${esc(profile.id)}">${esc(profile.name)}</option>`);
+    }
+    el.profileSelect.innerHTML = options.join('');
+    el.profileSelect.value = isExactBuiltin ? current.baseProfileId : '__current__';
+    el.profileStatus.textContent = current.customized ? '修改已保存在此浏览器' : '当前方案已保存在此浏览器';
+  }
+
+  function switchBuiltinProfile(profileId) {
+    const profile = builtinProfiles.get(profileId);
+    if (!profile) return;
+    if (state.currentProfile?.customized) {
+      const ok = window.confirm('切换推荐方案会覆盖当前自定义修改。建议先导出配置。是否继续？');
+      if (!ok) { renderProfileControls(); return; }
+    }
+    applyProfileSnapshot(snapshotFromBuiltin(profile), { persist: true });
+    render();
+  }
+
+  function sanitizeFileName(name) {
+    return String(name || 'recommendation-profile').replace(/[\\/:*?"<>|]+/g, '_').trim() || 'recommendation-profile';
+  }
+
+  function exportCurrentProfile() {
+    const payload = currentProfilePayload();
+    payload.exportedAt = new Date().toISOString();
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `${sanitizeFileName(payload.name)}.json`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async function importProfileFile(file) {
+    if (!file) return;
+    try {
+      const raw = JSON.parse(await file.text());
+      raw.customized = true;
+      raw.name = raw.name || file.name.replace(/\.json$/i, '');
+      applyProfileSnapshot(raw, { persist: true });
+      el.profileStatus.textContent = `已导入 ${file.name}`;
+      render();
+    } catch (error) {
+      window.alert(`导入配置失败：${error?.message || String(error)}`);
+    } finally {
+      el.profileImportInput.value = '';
+    }
+  }
+
+  // ---------- Save persistence ----------
+
+  function arrayBufferToBase64(buffer) {
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      binary += String.fromCharCode(...bytes.subarray(i, Math.min(i + chunk, bytes.length)));
+    }
+    return btoa(binary);
+  }
+
+  function base64ToArrayBuffer(base64) {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return bytes.buffer;
+  }
+
+  function setSaveStatus(type, title, detail) {
+    el.saveStatus.innerHTML = `<span class="status-dot ${type}"></span><div><strong title="${esc(title)}">${esc(title)}</strong><small>${esc(detail)}</small></div>`;
+    el.clearSaveBtn.hidden = !state.save && !safeStorageGet(STORAGE_KEYS.save);
+  }
+
+  function applySaveBuffer(buffer, name, { restored = false, persist = false, lastModified = 0 } = {}) {
+    const parsed = Parser.parsePersistentGameData(buffer);
+    state.save = parsed;
+    state.saveName = name || 'persistentgamedata.dat';
+    if (persist) {
+      safeStorageSet(STORAGE_KEYS.save, JSON.stringify({
+        version: 1,
+        name: state.saveName,
+        lastModified: Number(lastModified || 0),
+        storedAt: new Date().toISOString(),
+        data: arrayBufferToBase64(buffer)
+      }));
+    }
+    const prefix = restored ? '已从浏览器本地缓存恢复 · ' : '';
+    setSaveStatus('ready', state.saveName, `${prefix}已解锁 ${parsed.unlockedCount} 个成就 · 成就块 ${parsed.achievementCount} 项`);
+  }
+
+  async function loadSave(file) {
+    if (!file) return;
+    try {
+      const buffer = await file.arrayBuffer();
+      applySaveBuffer(buffer, file.name, { persist: true, lastModified: file.lastModified });
+      render();
+    } catch (error) {
+      setSaveStatus('error', '读取失败', error?.message || String(error));
+    }
+  }
+
+  function restorePersistedSave() {
+    const stored = safeStorageGet(STORAGE_KEYS.save);
+    if (!stored) return;
+    try {
+      const payload = JSON.parse(stored);
+      if (Number(payload.version) !== 1 || !payload.data) throw new Error('缓存格式不受支持');
+      applySaveBuffer(base64ToArrayBuffer(payload.data), payload.name, { restored: true, persist: false, lastModified: payload.lastModified });
+    } catch (error) {
+      console.warn('本地存档缓存损坏，已清除。', error);
+      safeStorageRemove(STORAGE_KEYS.save);
+      state.save = null;
+      state.saveName = '';
+      setSaveStatus('error', '本地存档缓存已失效', '请重新读取最新 persistentgamedata。');
+    }
+  }
+
+  function clearPersistedSave() {
+    safeStorageRemove(STORAGE_KEYS.save);
+    state.save = null;
+    state.saveName = '';
+    el.saveInput.value = '';
+    setSaveStatus('idle', '尚未读取存档', '文件只在浏览器本地解析，不会上传。');
+    render();
+  }
+
+  // ---------- UI rendering ----------
+
   function ruleRows() {
     let rules;
     if (state.view === 'character') {
@@ -192,12 +526,12 @@
       rules = DATA.unlockRules.filter((r) => r.bossIds.includes(state.selectedBossId));
     }
 
-    const decorated = rules.map((rule) => {
-      const reward = rewardFor(rule.achievementId);
-      const unlocked = unlockStatus(rule.achievementId);
-      const priority = rulePriority(rule);
-      return { rule, reward, priority, unlocked };
-    });
+    const decorated = rules.map((rule) => ({
+      rule,
+      reward: rewardFor(rule.achievementId),
+      priority: rulePriority(rule),
+      unlocked: unlockStatus(rule.achievementId)
+    }));
 
     let filtered = decorated;
     if (!state.showUnlocked && state.save) filtered = decorated.filter((x) => x.unlocked !== true);
@@ -260,13 +594,13 @@
 
   function renderHeader() {
     if (state.view === 'challenge') {
-      el.tableHead.innerHTML = '<tr><th>挑战 ID</th><th>挑战前置成就</th><th>挑战解锁成就 / 道具</th><th>道具描述</th><th>是否解锁</th></tr>';
+      el.tableHead.innerHTML = '<tr><th>挑战 ID</th><th>挑战前置成就</th><th>挑战解锁成就 / 道具</th><th>道具描述</th><th>是否解锁</th><th class="options-column" aria-label="选项"></th></tr>';
       return;
     }
     const isChar = state.view === 'character';
     el.tableHead.innerHTML = isChar
-      ? '<tr><th>Boss 图像和名字</th><th>解锁道具 / 奖励</th><th>道具效果</th><th>是否解锁</th></tr>'
-      : '<tr><th>角色图像和名字</th><th>解锁道具 / 奖励</th><th>道具效果</th><th>是否解锁</th></tr>';
+      ? '<tr><th>Boss 图像和名字</th><th>解锁道具 / 奖励</th><th>道具效果</th><th>是否解锁</th><th class="options-column" aria-label="选项"></th></tr>'
+      : '<tr><th>角色图像和名字</th><th>解锁道具 / 奖励</th><th>道具效果</th><th>是否解锁</th><th class="options-column" aria-label="选项"></th></tr>';
   }
 
   function targetCell(rule) {
@@ -281,18 +615,18 @@
     return `<div class="target-cell">${safeImage([characterLocalImage(char), char.image], 'entity-thumb')}<div><strong>${esc(char.name)}</strong>${requirementText(rule, state.selectedBossId)}</div></div>`;
   }
 
+  function rowMenuButton(kind, id, priority) {
+    return `<button type="button" class="row-menu-button" data-priority-kind="${esc(kind)}" data-priority-id="${esc(id)}" data-current-priority="${esc(priority)}" aria-label="修改优先级" title="修改优先级">&#8942;</button>`;
+  }
+
   function challengeRows() {
     let rows = CHALLENGES.map((challenge) => ({
       challenge,
       priority: challengePriority(challenge.challengeId),
-      prerequisiteUnlocked: challenge.prerequisiteAchievementId == null
-        ? true
-        : unlockStatus(challenge.prerequisiteAchievementId),
+      prerequisiteUnlocked: challenge.prerequisiteAchievementId == null ? true : unlockStatus(challenge.prerequisiteAchievementId),
       unlocked: unlockStatus(challenge.rewardAchievementId)
     }));
-
     if (!state.showUnlocked && state.save) rows = rows.filter((x) => x.unlocked !== true);
-
     rows.sort((a, b) => {
       if (state.sort === 'priority') {
         const pd = PRIORITY_SCORE[b.priority] - PRIORITY_SCORE[a.priority];
@@ -305,9 +639,7 @@
 
   function challengePrerequisiteCell(challenge, unlocked) {
     const aid = challenge.prerequisiteAchievementId;
-    if (aid == null) {
-      return '<div class="prerequisite-cell"><span class="status-badge unlocked">无需前置</span></div>';
-    }
+    if (aid == null) return '<div class="prerequisite-cell"><span class="status-badge unlocked">无需前置</span></div>';
     const wikiUrl = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('成就')}/${aid}`;
     return `<div class="prerequisite-cell">
       <span class="achievement-sprite compact" aria-hidden="true" style="--ach-x:${-((aid - 1) % ACHIEVEMENT_SPRITE.columns) * ACHIEVEMENT_SPRITE.cell}px;--ach-y:${-Math.floor((aid - 1) / ACHIEVEMENT_SPRITE.columns) * ACHIEVEMENT_SPRITE.cell}px"></span>
@@ -322,7 +654,7 @@
       const isFiltered = !state.showUnlocked && state.save;
       const message = isFiltered ? '推荐挑战已经全部完成 🎉' : '当前没有挑战数据';
       const detail = isFiltered ? '打开“显示已解锁”可以重新查看完整挑战列表。' : '请检查 data/challenges.js 是否正确加载。';
-      el.tableBody.innerHTML = `<tr class="empty-state"><td colspan="5"><strong>${message}</strong><span>${detail}</span></td></tr>`;
+      el.tableBody.innerHTML = `<tr class="empty-state"><td colspan="6"><strong>${message}</strong><span>${detail}</span></td></tr>`;
       return;
     }
 
@@ -330,23 +662,22 @@
       const rewardImage = achievementSprite(challenge.rewardAchievementId);
       const rewardWiki = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('成就')}/${challenge.rewardAchievementId}`;
       const challengeWiki = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('挑战')}/${challenge.challengeId}`;
-      // Challenge rewards can also be multi-entity achievements (227/228/233).
-      // Prefer the centralized EID/special effect entry when available.
       const effectEntry = EFFECTS[String(challenge.rewardAchievementId)] || null;
       const rewardName = effectEntry?.name || challenge.rewardName;
       const effectText = effectEntry?.effect || challenge.effect || `解锁「${rewardName}」这一非收藏道具 / 机制内容。`;
-      const effect = `<div class="effect-text">${esc(effectText)}</div>`;
       return `<tr class="unlock-row priority-${priority}">
         <td><div class="challenge-id-cell"><a class="challenge-id-link" href="${esc(challengeWiki)}" target="_blank" rel="noopener noreferrer">#${challenge.challengeId}</a>${priorityPill(priority)}</div></td>
         <td>${challengePrerequisiteCell(challenge, prerequisiteUnlocked)}</td>
         <td><div class="reward-cell">${rewardImage}<div><div class="reward-name"><a class="reward-link" href="${esc(rewardWiki)}" target="_blank" rel="noopener noreferrer">${esc(rewardName)}</a></div><div class="meta-line">奖励成就 ID #${challenge.rewardAchievementId}</div></div></div></td>
-        <td>${effect}</td>
+        <td><div class="effect-text">${esc(effectText)}</div></td>
         <td>${statusBadge(unlocked)}</td>
+        <td class="row-options">${rowMenuButton('challenge', challenge.challengeId, priority)}</td>
       </tr>`;
     }).join('');
   }
 
   function renderRows() {
+    closePriorityMenu();
     if (state.view === 'challenge') {
       renderChallengeRows();
       return;
@@ -356,30 +687,23 @@
       const isFiltered = !state.showUnlocked && state.save;
       const message = isFiltered ? '这一项的相关奖励已全部解锁 🎉' : '当前选择没有对应的解锁规则';
       const detail = isFiltered ? '打开“显示已解锁”可以重新查看完整列表。' : '数据模型支持空列表，不会影响其他页面。';
-      el.tableBody.innerHTML = `<tr class="empty-state"><td colspan="4"><strong>${message}</strong><span>${detail}</span></td></tr>`;
+      el.tableBody.innerHTML = `<tr class="empty-state"><td colspan="5"><strong>${message}</strong><span>${detail}</span></td></tr>`;
       return;
     }
 
     el.tableBody.innerHTML = rows.map(({ rule, reward, priority, unlocked }) => {
       const rewardImage = achievementSprite(rule.achievementId);
-      const fallbackEffect = isBabyReward(reward.name)
-        ? ''
-        : `解锁「${reward.name}」这一非收藏道具 / 机制内容。`;
+      const fallbackEffect = isBabyReward(reward.name) ? '' : `解锁「${reward.name}」这一非收藏道具 / 机制内容。`;
       const rawEffectText = reward.effect || fallbackEffect;
-      // EID uses separators between effect clauses. Render them as separate lines
-      // instead of leaving a dense Chinese semicolon-delimited paragraph.
-      const effectText = rawEffectText && String(reward.source || '').startsWith('eid-')
-        ? String(rawEffectText).replace(/；\s*/g, '\n')
-        : rawEffectText;
-      const effect = effectText
-        ? `<div class="effect-text">${esc(effectText)}</div>`
-        : '<div class="effect-text effect-missing">效果说明待补充</div>';
+      const effectText = rawEffectText && String(reward.source || '').startsWith('eid-') ? String(rawEffectText).replace(/；\s*/g, '\n') : rawEffectText;
+      const effect = effectText ? `<div class="effect-text">${esc(effectText)}</div>` : '<div class="effect-text effect-missing">效果说明待补充</div>';
       const wikiUrl = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('成就')}/${rule.achievementId}`;
       return `<tr class="unlock-row priority-${priority}">
         <td>${targetCell(rule)}</td>
         <td><div class="reward-cell">${rewardImage}<div><div class="reward-name"><a class="reward-link" href="${esc(wikiUrl)}" target="_blank" rel="noopener noreferrer">${esc(reward.name)}</a>${priorityPill(priority)}</div><div class="meta-line">成就 ID #${rule.achievementId}</div></div></div></td>
         <td>${effect}</td>
         <td>${statusBadge(unlocked)}</td>
+        <td class="row-options">${rowMenuButton('rule', rule.id, priority)}</td>
       </tr>`;
     }).join('');
   }
@@ -388,6 +712,7 @@
     document.querySelectorAll('.page-tab').forEach((b) => b.classList.toggle('active', b.dataset.view === state.view));
     document.querySelectorAll('.segment').forEach((b) => b.classList.toggle('active', b.dataset.sort === state.sort));
     el.showUnlocked.checked = state.showUnlocked;
+    renderProfileControls();
     const isChallenge = state.view === 'challenge';
     el.selectorSection.hidden = isChallenge;
     if (!isChallenge) renderEntityGrid();
@@ -395,49 +720,96 @@
     renderRows();
   }
 
-  function setSaveStatus(type, title, detail) {
-    el.saveStatus.innerHTML = `<span class="status-dot ${type}"></span><div><strong>${esc(title)}</strong><small>${esc(detail)}</small></div>`;
+  // ---------- Priority menu ----------
+
+  function closePriorityMenu() {
+    state.menuTarget = null;
+    el.priorityMenu.hidden = true;
+    el.priorityMenu.innerHTML = '';
   }
 
-  async function loadSave(file) {
-    if (!file) return;
-    try {
-      const buffer = await file.arrayBuffer();
-      const parsed = Parser.parsePersistentGameData(buffer);
-      state.save = parsed;
-      state.saveName = file.name;
-      setSaveStatus('ready', file.name, `已解锁 ${parsed.unlockedCount} 个成就 · 成就块 ${parsed.achievementCount} 项`);
-      render();
-    } catch (error) {
-      state.save = null;
-      state.saveName = '';
-      setSaveStatus('error', '读取失败', error?.message || String(error));
-      render();
-    }
+  function openPriorityMenu(button) {
+    const kind = button.dataset.priorityKind;
+    const id = button.dataset.priorityId;
+    const current = normalizePriority(button.dataset.currentPriority);
+    state.menuTarget = { kind, id };
+    el.priorityMenu.innerHTML = ['strong', 'recommended', 'normal'].map((priority) => (
+      `<button type="button" class="priority-menu-item${priority === current ? ' active' : ''}" data-set-priority="${priority}" role="menuitem"><span class="priority-menu-dot ${priority}"></span><span>${PRIORITY_LABEL[priority]}</span>${priority === current ? '<span class="priority-menu-check">✓</span>' : ''}</button>`
+    )).join('');
+    el.priorityMenu.hidden = false;
+
+    const rect = button.getBoundingClientRect();
+    const menuRect = el.priorityMenu.getBoundingClientRect();
+    let left = rect.right - menuRect.width;
+    let top = rect.bottom + 5;
+    left = Math.max(8, Math.min(left, window.innerWidth - menuRect.width - 8));
+    if (top + menuRect.height > window.innerHeight - 8) top = rect.top - menuRect.height - 5;
+    el.priorityMenu.style.left = `${left}px`;
+    el.priorityMenu.style.top = `${Math.max(8, top)}px`;
   }
+
+  // ---------- Events ----------
 
   document.querySelectorAll('.page-tab').forEach((button) => {
     button.addEventListener('click', () => { state.view = button.dataset.view; render(); });
   });
+
   document.querySelectorAll('.segment').forEach((button) => {
-    button.addEventListener('click', () => { state.sort = button.dataset.sort; renderRows(); document.querySelectorAll('.segment').forEach((b) => b.classList.toggle('active', b.dataset.sort === state.sort)); });
+    button.addEventListener('click', () => {
+      state.sort = button.dataset.sort;
+      renderRows();
+      document.querySelectorAll('.segment').forEach((b) => b.classList.toggle('active', b.dataset.sort === state.sort));
+    });
   });
+
   el.showUnlocked.addEventListener('change', () => { state.showUnlocked = el.showUnlocked.checked; renderRows(); });
   el.loadSaveBtn.addEventListener('click', () => el.saveInput.click());
+  el.clearSaveBtn.addEventListener('click', clearPersistedSave);
   el.saveInput.addEventListener('change', () => loadSave(el.saveInput.files?.[0]));
 
+  el.profileSelect.addEventListener('change', () => {
+    if (el.profileSelect.value !== '__current__') switchBuiltinProfile(el.profileSelect.value);
+  });
+  el.importProfileBtn.addEventListener('click', () => el.profileImportInput.click());
+  el.exportProfileBtn.addEventListener('click', exportCurrentProfile);
+  el.profileImportInput.addEventListener('change', () => importProfileFile(el.profileImportInput.files?.[0]));
+
+  el.tableBody.addEventListener('click', (event) => {
+    const button = event.target.closest('.row-menu-button');
+    if (!button) return;
+    event.stopPropagation();
+    if (!el.priorityMenu.hidden && state.menuTarget?.kind === button.dataset.priorityKind && String(state.menuTarget?.id) === String(button.dataset.priorityId)) {
+      closePriorityMenu();
+    } else {
+      openPriorityMenu(button);
+    }
+  });
+
+  el.priorityMenu.addEventListener('click', (event) => {
+    const item = event.target.closest('[data-set-priority]');
+    if (!item || !state.menuTarget) return;
+    const priority = item.dataset.setPriority;
+    if (state.menuTarget.kind === 'rule') setRulePriority(state.menuTarget.id, priority);
+    else if (state.menuTarget.kind === 'challenge') setChallengePriority(state.menuTarget.id, priority);
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!el.priorityMenu.hidden && !el.priorityMenu.contains(event.target) && !event.target.closest('.row-menu-button')) closePriorityMenu();
+  });
+  window.addEventListener('resize', closePriorityMenu);
+  window.addEventListener('scroll', closePriorityMenu, true);
+
   ['dragenter', 'dragover'].forEach((eventName) => el.dropZone.addEventListener(eventName, (event) => {
-    event.preventDefault(); el.dropZone.classList.add('dragging');
+    event.preventDefault();
+    el.dropZone.classList.add('dragging');
   }));
   ['dragleave', 'drop'].forEach((eventName) => el.dropZone.addEventListener(eventName, (event) => {
-    event.preventDefault(); el.dropZone.classList.remove('dragging');
+    event.preventDefault();
+    el.dropZone.classList.remove('dragging');
   }));
   el.dropZone.addEventListener('drop', (event) => loadSave(event.dataTransfer?.files?.[0]));
 
-  loadRuntimePriorities()
-    .catch((error) => {
-      console.error('优先级 JSON 加载失败，将按普通优先级显示。', error);
-      setSaveStatus('error', '优先级配置加载失败', '请检查 tools/recommendation_seed.json 与 tools/challenge_priority.json 是否可访问。');
-    })
-    .finally(() => render());
+  initializeRecommendationProfile();
+  restorePersistedSave();
+  render();
 })();

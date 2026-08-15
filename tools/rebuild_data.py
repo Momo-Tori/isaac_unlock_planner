@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cleanly rebuild generated data while keeping priority as runtime JSON config."""
+"""Cleanly rebuild generated game data and browser-loadable recommendation profiles."""
 from __future__ import annotations
 from pathlib import Path
 import argparse, subprocess, sys
@@ -20,7 +20,7 @@ def main():
     args=ap.parse_args()
 
     # Generated products only. Runtime priority JSON and source seeds are never deleted.
-    for rel in ('data/unlocks.js','data/challenges.js','data/effects.js','data/effects-report.json'):
+    for rel in ('data/unlocks.js','data/challenges.js','data/effects.js','data/effects-report.json','data/recommendation_profiles.js'):
         p=ROOT/rel
         if p.exists():
             p.unlink()
@@ -32,6 +32,7 @@ def main():
     if args.refresh_eid: effect_args.append('--refresh')
     run(*effect_args)
     run(TOOLS/'validate_priorities.py')
-    print('clean rebuild complete; runtime priority stays in tools/*.json')
+    run(TOOLS/'build_recommendation_profiles.py')
+    print('clean rebuild complete; tools/*.json remain the editable recommendation sources')
 
 if __name__=='__main__': main()

@@ -9,7 +9,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>以撒开荒解锁规划器</title>
-  <link rel="stylesheet" href="./styles.css?v=20260815132504" />
+  <link rel="stylesheet" href="./styles.css?v=20260815-profile1" />
 </head>
 <body>
   <div class="app-shell">
@@ -22,7 +22,10 @@
 
       <div class="save-panel" id="dropZone">
         <input id="saveInput" type="file" accept=".dat,application/octet-stream" hidden />
-        <button class="primary-button" id="loadSaveBtn" type="button">读取 persistentgamedata</button>
+        <div class="save-actions">
+          <button class="primary-button" id="loadSaveBtn" type="button">读取 persistentgamedata</button>
+          <button class="secondary-button save-clear-button" id="clearSaveBtn" type="button" hidden>清除本地缓存</button>
+        </div>
         <div class="save-status" id="saveStatus">
           <span class="status-dot idle"></span>
           <div>
@@ -35,6 +38,7 @@
           <code>%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance</code>
           或 <code>%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance+\save_backups</code>
           中寻找时间最近的 <code>...persistentgamedata*.dat</code>（其中星号 <code>*</code> 的数字表示第几个存档）。
+          成功读取后会将该存档内容保存在当前浏览器中，下次打开自动恢复；游戏进度变化后请重新读取最新存档。
         </div>
       </div>
     </header>
@@ -59,16 +63,28 @@
 
       <section class="results-section">
         <div class="results-heading">
-          <div class="controls">
-            <div class="segmented" role="group" aria-label="排列顺序">
-              <button type="button" class="segment" data-sort="default">默认顺序</button>
-              <button type="button" class="segment active" data-sort="priority">重要度顺序</button>
+          <div class="recommendation-toolbar">
+            <div class="profile-controls">
+              <label class="profile-select-label" for="profileSelect">
+                <span>推荐方案</span>
+                <select id="profileSelect" class="profile-select" aria-label="推荐方案"></select>
+              </label>
+              <span class="profile-status" id="profileStatus"></span>
+              <button class="secondary-button compact-button" id="importProfileBtn" type="button">导入配置</button>
+              <button class="secondary-button compact-button" id="exportProfileBtn" type="button">导出配置</button>
+              <input id="profileImportInput" type="file" accept="application/json,.json" hidden />
             </div>
-            <label class="switch-control">
-              <input type="checkbox" id="showUnlocked" checked />
-              <span class="switch"></span>
-              <span>显示已解锁</span>
-            </label>
+            <div class="controls">
+              <div class="segmented" role="group" aria-label="排列顺序">
+                <button type="button" class="segment" data-sort="default">默认顺序</button>
+                <button type="button" class="segment active" data-sort="priority">重要度顺序</button>
+              </div>
+              <label class="switch-control">
+                <input type="checkbox" id="showUnlocked" checked />
+                <span class="switch"></span>
+                <span>显示已解锁</span>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -86,6 +102,8 @@
         </div>
       </section>
     </main>
+
+    <div class="priority-menu" id="priorityMenu" hidden role="menu" aria-label="修改优先级"></div>
 
     <footer>
       <p><strong>推荐数据来源与致谢</strong></p>
@@ -106,12 +124,13 @@
     </footer>
   </div>
 
-  <!-- CACHE_VERSION: 20260815132504。发布新版本前运行 python tools/bump_cache_version.py -->
-  <script src="./data/unlocks.js?v=20260815132504"></script>
-  <script src="./data/challenges.js?v=20260815132504"></script>
-  <script src="./data/effects.js?v=20260815132504"></script>
-  <script src="./data/overrides.js?v=20260815132504"></script>
-  <script src="./js/save-parser.js?v=20260815132504"></script>
-  <script src="./js/app.js?v=20260815132504"></script>
+  <!-- CACHE_VERSION: 20260815-profile1。发布新版本前运行 python tools/bump_cache_version.py -->
+  <script src="./data/unlocks.js?v=20260815-profile1"></script>
+  <script src="./data/challenges.js?v=20260815-profile1"></script>
+  <script src="./data/effects.js?v=20260815-profile1"></script>
+  <script src="./data/overrides.js?v=20260815-profile1"></script>
+  <script src="./data/recommendation_profiles.js?v=20260815-profile1"></script>
+  <script src="./js/save-parser.js?v=20260815-profile1"></script>
+  <script src="./js/app.js?v=20260815-profile1"></script>
 </body>
 </html>
