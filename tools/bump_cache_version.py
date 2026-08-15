@@ -37,7 +37,7 @@ def main() -> int:
     print(f"Updated index resource refs: {n1}")
     print(f"Updated index marker: {n2}")
     print(f"Updated sprite ref: {n3}")
-    if n1 < 8 or n2 != 1 or n3 != 1:
+    if n1 < 7 or n2 != 1 or n3 != 1:
         print("Warning: expected references were not all found; please inspect the files.", file=sys.stderr)
         return 1
     return 0

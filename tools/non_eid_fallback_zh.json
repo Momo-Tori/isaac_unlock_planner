@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "purpose": "Last-resort Chinese display/effect labels for unlocks that fail the English EID entity pipeline.",
+  "entries": {
+    "191": {
+      "name": "一枚硬币"
+    },
+    "199": {
+      "name": "解锁角色莉莉丝"
+    },
+    "236": {
+      "name": "木制硬币"
+    },
+    "237": {
+      "name": "商店钥匙"
+    },
+    "601": {
+      "name": "大箱子"
+    },
+    "604": {
+      "name": "黑福袋"
+    },
+    "607": {
+      "name": "夹娃娃机"
+    },
+    "609": {
+      "name": "木箱子"
+    },
+    "612": {
+      "name": "愚人金"
+    },
+    "613": {
+      "name": "金硬币"
+    },
+    "616": {
+      "name": "忏悔室"
+    },
+    "617": {
+      "name": "金饰品"
+    }
+  }
+}

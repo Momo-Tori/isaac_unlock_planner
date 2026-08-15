@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "defaultPriority": "normal",
+  "entries": [
+    {
+      "challengeId": 1,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 2,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 3,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 4,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 5,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 6,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 7,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 8,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 9,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 10,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 11,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 12,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 13,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 14,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 15,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 16,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 17,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 18,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 19,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 20,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 21,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 22,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 23,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 24,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 25,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 26,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 27,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 28,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 29,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 30,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 31,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 32,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 33,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 34,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 35,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 36,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 37,
+      "priority": "strong"
+    },
+    {
+      "challengeId": 38,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 39,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 40,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 41,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 42,
+      "priority": "normal"
+    },
+    {
+      "challengeId": 43,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 44,
+      "priority": "recommended"
+    },
+    {
+      "challengeId": 45,
+      "priority": "normal"
+    }
+  ]
+}

@@ -13,7 +13,3 @@ This project combines several independently maintained data sources at build tim
 The save parser was implemented from the `Persistentgamedata.js` file supplied by the user. Runtime save parsing is local-only.
 
 Before redistributing or publishing a derived build, review the current upstream terms and attribution requirements for every third-party data/image source you include.
-
-## Localized artwork builder
-
-`tools/localize_assets.py` uses build-time artwork sources only; the parser/save data is not sent anywhere. Character portraits can be sourced from `saarsc/IsaacCasinoOBS`. The script deliberately does **not** fetch or overwrite Boss images or the Achievement sprite, because both are treated as curated user-provided project assets.

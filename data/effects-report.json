@@ -1,8 +1,16 @@
 {
   "stats": {
     "eidRows": 1069,
-    "matchedAchievements": 308,
-    "unmatchedAchievements": 32,
+    "matchedAchievements": 307,
+    "unmatchedAchievements": 33,
+    "specialAchievementEntries": 3,
+    "routes": {
+      "english": 286,
+      "chineseFallback": 0,
+      "explicit": 4,
+      "localSpecial": 3,
+      "localFallback": 17
+    },
     "sourceRows": {
       "ab+": 781,
       "rep": 571,
@@ -17,131 +25,2839 @@
   "unmatched": [
     {
       "achievementId": 167,
+      "englishName": "Lost Baby",
+      "name": "Lost Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 168,
+      "englishName": "Cute Baby",
+      "name": "Cute Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 169,
+      "englishName": "Crow Baby",
+      "name": "Crow Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 170,
+      "englishName": "Shadow Baby",
+      "name": "Shadow Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 171,
+      "englishName": "Glass Baby",
+      "name": "Glass Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 172,
+      "englishName": "Wrapped Baby",
+      "name": "Wrapped Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 173,
+      "englishName": "Begotten Baby",
+      "name": "Begotten Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 174,
+      "englishName": "Dead Baby",
+      "name": "Dead Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 175,
+      "englishName": "-0- Baby",
+      "name": "-0- Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 176,
+      "englishName": "Glitch Baby",
+      "name": "Glitch Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 177,
+      "englishName": "Fighting Baby",
+      "name": "Fighting Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 179,
+      "englishName": "Fart Baby",
+      "name": "Fart Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 205,
+      "englishName": "Cry Baby",
+      "name": "Cry Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 206,
+      "englishName": "Red Baby",
+      "name": "Red Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 207,
+      "englishName": "Green Baby",
+      "name": "Green Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 208,
+      "englishName": "Brown Baby",
+      "name": "Brown Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 209,
+      "englishName": "Blue Baby",
+      "name": "Blue Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 210,
+      "englishName": "Lil' Baby",
+      "name": "Lil' Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 211,
+      "englishName": "Rage Baby",
+      "name": "Rage Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 212,
+      "englishName": "Black Baby",
+      "name": "Black Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 213,
+      "englishName": "Long Baby",
+      "name": "Long Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 214,
+      "englishName": "Yellow Baby",
+      "name": "Yellow Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 215,
+      "englishName": "White Baby",
+      "name": "White Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 216,
+      "englishName": "Big Baby",
+      "name": "Big Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 217,
+      "englishName": "Noose Baby",
+      "name": "Noose Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 223,
+      "englishName": "Goat Head Baby",
+      "name": "Goat Head Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 241,
+      "englishName": "Super Greed Baby",
+      "name": "Super Greed Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 317,
+      "englishName": "Mort Baby",
+      "name": "Mort Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 403,
+      "englishName": "Bound Baby",
+      "name": "Bound Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 416,
+      "englishName": "Wisp Baby",
+      "name": "Wisp Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 427,
+      "englishName": "Glowing Baby",
+      "name": "Glowing Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 428,
+      "englishName": "Double Baby",
+      "name": "Double Baby",
+      "reason": "baby-or-cosmetic"
+    },
+    {
+      "achievementId": 439,
+      "englishName": "Illusion Baby",
+      "name": "Illusion Baby",
+      "reason": "baby-or-cosmetic"
+    }
+  ],
+  "audit": [
+    {
+      "achievementId": 9,
+      "englishName": "The Nail",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 83,
+      "zhName": "钉子"
+    },
+    {
+      "achievementId": 20,
+      "englishName": "A Cross",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 98,
+      "zhName": "圣遗物"
+    },
+    {
+      "achievementId": 21,
+      "englishName": "Sack of Pennies",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 94,
+      "zhName": "硬币袋"
+    },
+    {
+      "achievementId": 29,
+      "englishName": "The D6",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 105,
+      "zhName": "六面骰"
+    },
+    {
+      "achievementId": 43,
+      "englishName": "Mom's Knife",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 114,
+      "zhName": "妈妈的菜刀"
+    },
+    {
+      "achievementId": 44,
+      "englishName": "Razor Blade",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 126,
+      "zhName": "剃刀片"
+    },
+    {
+      "achievementId": 45,
+      "englishName": "Guardian Angel",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 112,
+      "zhName": "守护天使"
+    },
+    {
+      "achievementId": 46,
+      "englishName": "bomb bag",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 131,
+      "zhName": "炸弹袋"
+    },
+    {
+      "achievementId": 47,
+      "englishName": "Demon Baby",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 113,
+      "zhName": "恶魔宝宝"
+    },
+    {
+      "achievementId": 48,
+      "englishName": "Forget Me Now",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 127,
+      "zhName": "遗忘药"
+    },
+    {
+      "achievementId": 49,
+      "englishName": "The D20",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 166,
+      "zhName": "二十面骰"
+    },
+    {
+      "achievementId": 50,
+      "englishName": "Celctic Cross",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 162,
+      "zhName": "凯尔特十字"
+    },
+    {
+      "achievementId": 51,
+      "englishName": "Abel",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 188,
+      "zhName": "亚伯"
+    },
+    {
+      "achievementId": 52,
+      "englishName": "Curved Horn",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 35,
+      "zhName": "弯羊角"
+    },
+    {
+      "achievementId": 53,
+      "englishName": "Sacraficial Dagger",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 172,
+      "zhName": "献祭匕首"
+    },
+    {
+      "achievementId": 54,
+      "englishName": "Bloody Lust",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 157,
+      "zhName": "嗜血"
+    },
+    {
+      "achievementId": 55,
+      "englishName": "Blood Penny",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 49,
+      "zhName": "染血硬币"
+    },
+    {
+      "achievementId": 56,
+      "englishName": "Blood Rights",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 186,
+      "zhName": "血之权利"
+    },
+    {
+      "achievementId": 70,
+      "englishName": "Isaac's Head",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 54,
+      "zhName": "以撒的头"
+    },
+    {
+      "achievementId": 71,
+      "englishName": "Maggy's Faith",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 55,
+      "zhName": "抹大拉的信仰"
+    },
+    {
+      "achievementId": 72,
+      "englishName": "Judas' Tongue",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 56,
+      "zhName": "犹大的舌头"
+    },
+    {
+      "achievementId": 73,
+      "englishName": "???'s Soul",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 57,
+      "zhName": "???的灵魂"
+    },
+    {
+      "achievementId": 74,
+      "englishName": "Samson's Lock",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 58,
+      "zhName": "参孙的发髻"
+    },
+    {
+      "achievementId": 75,
+      "englishName": "Cain's Eye",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 59,
+      "zhName": "该隐的眼睛"
+    },
+    {
+      "achievementId": 76,
+      "englishName": "Eve's Bird Foot",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 60,
+      "zhName": "夏娃的鸟爪"
+    },
+    {
+      "achievementId": 77,
+      "englishName": "The Left Hand",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 61,
+      "zhName": "左断手"
+    },
+    {
+      "achievementId": 105,
+      "englishName": "Missing No.",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 258,
+      "zhName": "编号丢失"
+    },
+    {
+      "achievementId": 106,
+      "englishName": "Isaac's Tears",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 323,
+      "zhName": "以撒的泪盆"
+    },
+    {
+      "achievementId": 107,
+      "englishName": "Guillotine",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 206,
+      "zhName": "断头台"
+    },
+    {
+      "achievementId": 108,
+      "englishName": "Judas' Shadow",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 311,
+      "zhName": "犹大的影子"
+    },
+    {
+      "achievementId": 109,
+      "englishName": "Maggy's Bow",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 312,
+      "zhName": "抹大拉的蝴蝶结"
+    },
+    {
+      "achievementId": 110,
+      "englishName": "Cain's Other Eye",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 319,
+      "zhName": "该隐的另一只眼"
+    },
+    {
+      "achievementId": 111,
+      "englishName": "Black Lipstick",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 17,
+      "zhName": "黑色口红"
+    },
+    {
+      "achievementId": 112,
+      "englishName": "Eve's Mascara",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 310,
+      "zhName": "夏娃的睫毛膏"
+    },
+    {
+      "achievementId": 113,
+      "englishName": "Fate's Reward",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 361,
+      "zhName": "宿命的报答"
+    },
+    {
+      "achievementId": 114,
+      "englishName": "???'s Only Friend",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 320,
+      "zhName": "???唯一的朋友"
+    },
+    {
+      "achievementId": 115,
+      "englishName": "Samson's Chain",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 321,
+      "zhName": "参孙的脚镣"
+    },
+    {
+      "achievementId": 116,
+      "englishName": "Lazarus' Rags",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 332,
+      "zhName": "拉撒路的绷带"
+    },
+    {
+      "achievementId": 117,
+      "englishName": "Broken Ankh",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 28,
+      "zhName": "碎安卡十字"
+    },
+    {
+      "achievementId": 118,
+      "englishName": "Store Credit",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 13,
+      "zhName": "商店积分"
+    },
+    {
+      "achievementId": 119,
+      "englishName": "Pandora's Box",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 297,
+      "zhName": "潘多拉魔盒"
+    },
+    {
+      "achievementId": 121,
+      "englishName": "Blank Card",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 286,
+      "zhName": "空白卡牌"
+    },
+    {
+      "achievementId": 122,
+      "englishName": "Book of Secrets",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 287,
+      "zhName": "秘密之书"
+    },
+    {
+      "achievementId": 123,
+      "englishName": "Mysterious Paper",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 21,
+      "zhName": "神秘纸片"
+    },
+    {
+      "achievementId": 124,
+      "englishName": "Mystery Sack",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 271,
+      "zhName": "神秘的袋子"
+    },
+    {
+      "achievementId": 125,
+      "englishName": "Undefined",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 324,
+      "zhName": "未定义"
+    },
+    {
+      "achievementId": 126,
+      "englishName": "Satanic Bible",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 292,
+      "zhName": "撒但圣经"
+    },
+    {
+      "achievementId": 127,
+      "englishName": "Daemon's Tail",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 22,
+      "zhName": "恶魔的尾巴"
+    },
+    {
+      "achievementId": 128,
+      "englishName": "Abbadon",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 230,
+      "zhName": "亚巴顿"
+    },
+    {
+      "achievementId": 129,
+      "englishName": "Isaac's Heart",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 276,
+      "zhName": "以撒的心脏"
+    },
+    {
+      "achievementId": 130,
+      "englishName": "The Mind",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 333,
+      "zhName": "思想"
+    },
+    {
+      "achievementId": 131,
+      "englishName": "The Body",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 334,
+      "zhName": "肉体"
+    },
+    {
+      "achievementId": 132,
+      "englishName": "The Soul",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 335,
+      "zhName": "灵魂"
+    },
+    {
+      "achievementId": 133,
+      "englishName": "The D100",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 283,
+      "zhName": "一百面骰"
+    },
+    {
+      "achievementId": 149,
+      "englishName": "Missing Poster",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 23,
+      "zhName": "寻人启事"
+    },
+    {
+      "achievementId": 167,
+      "englishName": "Lost Baby",
+      "route": "unmatched-baby",
       "name": "Lost Baby"
     },
     {
       "achievementId": 168,
+      "englishName": "Cute Baby",
+      "route": "unmatched-baby",
       "name": "Cute Baby"
     },
     {
       "achievementId": 169,
+      "englishName": "Crow Baby",
+      "route": "unmatched-baby",
       "name": "Crow Baby"
     },
     {
       "achievementId": 170,
+      "englishName": "Shadow Baby",
+      "route": "unmatched-baby",
       "name": "Shadow Baby"
     },
     {
       "achievementId": 171,
+      "englishName": "Glass Baby",
+      "route": "unmatched-baby",
       "name": "Glass Baby"
     },
     {
       "achievementId": 172,
+      "englishName": "Wrapped Baby",
+      "route": "unmatched-baby",
       "name": "Wrapped Baby"
     },
     {
       "achievementId": 173,
+      "englishName": "Begotten Baby",
+      "route": "unmatched-baby",
       "name": "Begotten Baby"
     },
     {
       "achievementId": 174,
+      "englishName": "Dead Baby",
+      "route": "unmatched-baby",
       "name": "Dead Baby"
     },
     {
       "achievementId": 175,
+      "englishName": "-0- Baby",
+      "route": "unmatched-baby",
       "name": "-0- Baby"
     },
     {
       "achievementId": 176,
+      "englishName": "Glitch Baby",
+      "route": "unmatched-baby",
       "name": "Glitch Baby"
     },
     {
       "achievementId": 177,
+      "englishName": "Fighting Baby",
+      "route": "unmatched-baby",
       "name": "Fighting Baby"
     },
     {
       "achievementId": 179,
+      "englishName": "Fart Baby",
+      "route": "unmatched-baby",
       "name": "Fart Baby"
     },
     {
+      "achievementId": 180,
+      "englishName": "Purity",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 407,
+      "zhName": "纯洁"
+    },
+    {
+      "achievementId": 181,
+      "englishName": "D12",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 386,
+      "zhName": "十二面骰"
+    },
+    {
+      "achievementId": 182,
+      "englishName": "Betrayal",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 391,
+      "zhName": "背叛"
+    },
+    {
+      "achievementId": 183,
+      "englishName": "Fate's Reward",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 361,
+      "zhName": "宿命的报答"
+    },
+    {
+      "achievementId": 184,
+      "englishName": "Athame",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 408,
+      "zhName": "祭祀之刃"
+    },
+    {
+      "achievementId": 185,
+      "englishName": "Blind Rage",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 81,
+      "zhName": "盲目的怒火"
+    },
+    {
+      "achievementId": 186,
+      "englishName": "Maw of the Void",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 399,
+      "zhName": "虚空之喉"
+    },
+    {
+      "achievementId": 187,
+      "englishName": "Empty Vessel",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 409,
+      "zhName": "空容器"
+    },
+    {
+      "achievementId": 188,
+      "englishName": "Eden's Blessing",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 381,
+      "zhName": "伊甸的祝福"
+    },
+    {
+      "achievementId": 189,
+      "englishName": "Sworn Protector",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 363,
+      "zhName": "宣誓守护者"
+    },
+    {
+      "achievementId": 190,
+      "englishName": "Incubus",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 360,
+      "zhName": "淫魔"
+    },
+    {
+      "achievementId": 191,
+      "englishName": "Keeper now holds…A Penny!",
+      "route": "local-special"
+    },
+    {
+      "achievementId": 192,
+      "englishName": "Lil' Chest",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 362,
+      "zhName": "小箱子"
+    },
+    {
+      "achievementId": 193,
+      "englishName": "Censer",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 387,
+      "zhName": "香炉"
+    },
+    {
+      "achievementId": 194,
+      "englishName": "Evil Eye",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 410,
+      "zhName": "邪恶之眼"
+    },
+    {
+      "achievementId": 195,
+      "englishName": "My Shadow",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 433,
+      "zhName": "我的影子"
+    },
+    {
+      "achievementId": 196,
+      "englishName": "Cracked Dice",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 67,
+      "zhName": "碎裂六面骰"
+    },
+    {
+      "achievementId": 197,
+      "englishName": "Black Feather",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 80,
+      "zhName": "黑色羽毛"
+    },
+    {
+      "achievementId": 198,
+      "englishName": "Lusty Blood",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 411,
+      "zhName": "血嗜"
+    },
+    {
+      "achievementId": 199,
+      "englishName": "Lilith",
+      "route": "local-generic-fallback",
+      "name": "解锁角色莉莉丝"
+    },
+    {
+      "achievementId": 200,
+      "englishName": "Key Bum",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 388,
+      "zhName": "钥匙乞丐"
+    },
+    {
+      "achievementId": 201,
+      "englishName": "GB Bug",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 405,
+      "zhName": "恶性漏洞"
+    },
+    {
+      "achievementId": 202,
+      "englishName": "Zodiac",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 392,
+      "zhName": "黄道十二宫"
+    },
+    {
+      "achievementId": 203,
+      "englishName": "Box of Friends",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 357,
+      "zhName": "朋友盒"
+    },
+    {
+      "achievementId": 204,
+      "englishName": "Rib of Greed",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 84,
+      "zhName": "贪婪的肋骨"
+    },
+    {
+      "achievementId": 205,
+      "englishName": "Cry Baby",
+      "route": "unmatched-baby",
+      "name": "Cry Baby"
+    },
+    {
       "achievementId": 206,
+      "englishName": "Red Baby",
+      "route": "unmatched-baby",
       "name": "Red Baby"
     },
     {
       "achievementId": 207,
+      "englishName": "Green Baby",
+      "route": "unmatched-baby",
       "name": "Green Baby"
     },
     {
       "achievementId": 208,
+      "englishName": "Brown Baby",
+      "route": "unmatched-baby",
       "name": "Brown Baby"
     },
     {
       "achievementId": 209,
+      "englishName": "Blue Baby",
+      "route": "unmatched-baby",
       "name": "Blue Baby"
     },
     {
       "achievementId": 210,
+      "englishName": "Lil' Baby",
+      "route": "unmatched-baby",
       "name": "Lil' Baby"
     },
     {
       "achievementId": 211,
+      "englishName": "Rage Baby",
+      "route": "unmatched-baby",
       "name": "Rage Baby"
     },
     {
       "achievementId": 212,
+      "englishName": "Black Baby",
+      "route": "unmatched-baby",
       "name": "Black Baby"
     },
     {
       "achievementId": 213,
+      "englishName": "Long Baby",
+      "route": "unmatched-baby",
       "name": "Long Baby"
     },
     {
       "achievementId": 214,
+      "englishName": "Yellow Baby",
+      "route": "unmatched-baby",
       "name": "Yellow Baby"
     },
     {
       "achievementId": 215,
+      "englishName": "White Baby",
+      "route": "unmatched-baby",
       "name": "White Baby"
     },
     {
       "achievementId": 216,
+      "englishName": "Big Baby",
+      "route": "unmatched-baby",
       "name": "Big Baby"
     },
     {
       "achievementId": 217,
-      "name": "上吊绳宝宝"
+      "englishName": "Noose Baby",
+      "route": "unmatched-baby",
+      "name": "Noose Baby"
+    },
+    {
+      "achievementId": 218,
+      "englishName": "Rune Bag",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 389,
+      "zhName": "符文袋"
+    },
+    {
+      "achievementId": 219,
+      "englishName": "Cambion Conception",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 412,
+      "zhName": "恶魔受胎"
+    },
+    {
+      "achievementId": 220,
+      "englishName": "Serpent's Kiss",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 393,
+      "zhName": "蛇蝎之吻"
+    },
+    {
+      "achievementId": 221,
+      "englishName": "Succubus",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 417,
+      "zhName": "魅魔"
+    },
+    {
+      "achievementId": 222,
+      "englishName": "Immaculate Conception",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 413,
+      "zhName": "圣灵受胎"
     },
     {
       "achievementId": 223,
+      "englishName": "Goat Head Baby",
+      "route": "unmatched-baby",
       "name": "Goat Head Baby"
     },
     {
+      "achievementId": 236,
+      "englishName": "Keeper holds Wooden Nickel",
+      "route": "local-special"
+    },
+    {
+      "achievementId": 237,
+      "englishName": "Keeper holds Store Key",
+      "route": "local-special"
+    },
+    {
+      "achievementId": 238,
+      "englishName": "Deep Pockets",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 416,
+      "zhName": "深口袋"
+    },
+    {
+      "achievementId": 239,
+      "englishName": "Karma",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 85,
+      "zhName": "业报"
+    },
+    {
+      "achievementId": 240,
+      "englishName": "Sticky Nickels",
+      "route": "local-generic-fallback",
+      "name": "Sticky Nickels"
+    },
+    {
       "achievementId": 241,
+      "englishName": "Super Greed Baby",
+      "route": "unmatched-baby",
       "name": "Super Greed Baby"
     },
     {
+      "achievementId": 282,
+      "englishName": "D Infinity",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 489,
+      "zhName": "无限面骰"
+    },
+    {
+      "achievementId": 283,
+      "englishName": "Eucharist",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 499,
+      "zhName": "圣餐"
+    },
+    {
+      "achievementId": 284,
+      "englishName": "Silver Dollar",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 110,
+      "zhName": "银币"
+    },
+    {
+      "achievementId": 285,
+      "englishName": "Shade",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 468,
+      "zhName": "阴影"
+    },
+    {
+      "achievementId": 286,
+      "englishName": "King Baby",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 472,
+      "zhName": "国王宝宝"
+    },
+    {
+      "achievementId": 287,
+      "englishName": "Bloody Crown",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 111,
+      "zhName": "染血王冠"
+    },
+    {
+      "achievementId": 288,
+      "englishName": "Dull Razor",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 486,
+      "zhName": "钝剃刀片"
+    },
+    {
+      "achievementId": 289,
+      "englishName": "Eden's Soul",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 490,
+      "zhName": "伊甸的灵魂"
+    },
+    {
+      "achievementId": 290,
+      "englishName": "Dark Prince's Crown",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 442,
+      "zhName": "黑王子之冠"
+    },
+    {
+      "achievementId": 291,
+      "englishName": "Compound Fracture",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 453,
+      "zhName": "复杂性骨折"
+    },
+    {
+      "achievementId": 292,
+      "englishName": "Euthanesia",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 496,
+      "zhName": "安乐死"
+    },
+    {
+      "achievementId": 293,
+      "englishName": "Holy Card",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 51,
+      "zhName": "神圣卡"
+    },
+    {
+      "achievementId": 294,
+      "englishName": "Crooked Penny",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 485,
+      "zhName": "被掰弯的硬币"
+    },
+    {
+      "achievementId": 295,
+      "englishName": "Void",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 477,
+      "zhName": "虚空"
+    },
+    {
+      "achievementId": 296,
+      "englishName": "D1",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 476,
+      "zhName": "一面骰"
+    },
+    {
+      "achievementId": 297,
+      "englishName": "Glyph of Balance",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 464,
+      "zhName": "平衡符号"
+    },
+    {
+      "achievementId": 298,
+      "englishName": "Sack of Sacks",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 500,
+      "zhName": "袋中袋"
+    },
+    {
+      "achievementId": 299,
+      "englishName": "Eye of Belial",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 462,
+      "zhName": "彼列之眼"
+    },
+    {
+      "achievementId": 300,
+      "englishName": "Meconium",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 91,
+      "zhName": "胎粪"
+    },
+    {
+      "achievementId": 301,
+      "englishName": "Stem Cell",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 119,
+      "zhName": "干细胞"
+    },
+    {
+      "achievementId": 302,
+      "englishName": "Crow Heart",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 107,
+      "zhName": "乌鸦的心"
+    },
+    {
+      "achievementId": 303,
+      "englishName": "Metronome",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 488,
+      "zhName": "节拍器"
+    },
+    {
+      "achievementId": 304,
+      "englishName": "Bat Wing",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 118,
+      "zhName": "蝙蝠翅膀"
+    },
+    {
+      "achievementId": 305,
+      "englishName": "Plan C",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 475,
+      "zhName": "计划C"
+    },
+    {
+      "achievementId": 306,
+      "englishName": "Duality",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 498,
+      "zhName": "二元性"
+    },
+    {
+      "achievementId": 307,
+      "englishName": "Dad's Lost Coin",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 455,
+      "zhName": "爸爸丢失的硬币"
+    },
+    {
+      "achievementId": 308,
+      "englishName": "Eye of Greed",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 450,
+      "zhName": "贪婪的眼睛"
+    },
+    {
+      "achievementId": 309,
+      "englishName": "Black Rune",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 41,
+      "zhName": "黑符文"
+    },
+    {
+      "achievementId": 310,
+      "englishName": "Locust of Wrath",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 113,
+      "zhName": "战争蝗虫"
+    },
+    {
+      "achievementId": 311,
+      "englishName": "Locust of Pestilence",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 114,
+      "zhName": "瘟疫蝗虫"
+    },
+    {
+      "achievementId": 312,
+      "englishName": "Locust of Famine",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 115,
+      "zhName": "饥荒蝗虫"
+    },
+    {
+      "achievementId": 313,
+      "englishName": "Locust of Death",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 116,
+      "zhName": "死亡蝗虫"
+    },
+    {
+      "achievementId": 314,
+      "englishName": "Locust of Conquest",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 117,
+      "zhName": "征服蝗虫"
+    },
+    {
+      "achievementId": 315,
+      "englishName": "Hushy",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 470,
+      "zhName": "死寂宝宝"
+    },
+    {
+      "achievementId": 316,
+      "englishName": "Brown Nugget",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 504,
+      "zhName": "棕色粪块"
+    },
+    {
       "achievementId": 317,
+      "englishName": "Mort Baby",
+      "route": "unmatched-baby",
       "name": "Mort Baby"
     },
     {
+      "achievementId": 318,
+      "englishName": "Smelter",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 479,
+      "zhName": "熔炉"
+    },
+    {
+      "achievementId": 392,
+      "englishName": "Marrow",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 541,
+      "zhName": "骨髓"
+    },
+    {
+      "achievementId": 393,
+      "englishName": "Slipped Rib",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 542,
+      "zhName": "滑肋骨"
+    },
+    {
+      "achievementId": 394,
+      "englishName": "Pointy Rib",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 544,
+      "zhName": "尖肋骨"
+    },
+    {
+      "achievementId": 395,
+      "englishName": "Jaw Bone",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 548,
+      "zhName": "颌骨"
+    },
+    {
+      "achievementId": 396,
+      "englishName": "Brittle Bones",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 549,
+      "zhName": "脆骨症"
+    },
+    {
+      "achievementId": 397,
+      "englishName": "Divorce Papers",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 547,
+      "zhName": "离婚协议书"
+    },
+    {
+      "achievementId": 398,
+      "englishName": "Hallowed Ground",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 543,
+      "zhName": "圣地大便"
+    },
+    {
+      "achievementId": 399,
+      "englishName": "Finger Bone",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 128,
+      "zhName": "指骨"
+    },
+    {
+      "achievementId": 400,
+      "englishName": "Dad's Ring",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 546,
+      "zhName": "爸爸的戒指"
+    },
+    {
+      "achievementId": 401,
+      "englishName": "Book of the Dead",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 545,
+      "zhName": "亡者之书"
+    },
+    {
       "achievementId": 403,
+      "englishName": "Bound Baby",
+      "route": "unmatched-baby",
       "name": "Bound Baby"
     },
     {
       "achievementId": 416,
+      "englishName": "Wisp Baby",
+      "route": "unmatched-baby",
       "name": "Wisp Baby"
     },
     {
+      "achievementId": 417,
+      "englishName": "Book of Virtues",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 584,
+      "zhName": "美德之书"
+    },
+    {
+      "achievementId": 418,
+      "englishName": "Urn of Souls",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 640,
+      "zhName": "灵魂之瓮"
+    },
+    {
+      "achievementId": 419,
+      "englishName": "Blessed Penny",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 131,
+      "zhName": "神圣硬币"
+    },
+    {
+      "achievementId": 420,
+      "englishName": "Alabaster Box",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 585,
+      "zhName": "白玉香膏盒"
+    },
+    {
+      "achievementId": 421,
+      "englishName": "Beth's Faith",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 142,
+      "zhName": "伯大尼的信仰"
+    },
+    {
+      "achievementId": 422,
+      "englishName": "Soul Locket",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 686,
+      "zhName": "灵魂吊坠"
+    },
+    {
+      "achievementId": 423,
+      "englishName": "Divine Intervention",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 568,
+      "zhName": "神圣干预"
+    },
+    {
+      "achievementId": 424,
+      "englishName": "Vade Retro",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 653,
+      "zhName": "驱魔护符"
+    },
+    {
+      "achievementId": 425,
+      "englishName": "Star of Bethlehem",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 651,
+      "zhName": "伯列恒之星"
+    },
+    {
       "achievementId": 427,
+      "englishName": "Glowing Baby",
+      "route": "unmatched-baby",
       "name": "Glowing Baby"
     },
     {
       "achievementId": 428,
+      "englishName": "Double Baby",
+      "route": "unmatched-baby",
       "name": "Double Baby"
     },
     {
+      "achievementId": 429,
+      "englishName": "The Stairway",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 586,
+      "zhName": "天堂阶梯"
+    },
+    {
+      "achievementId": 430,
+      "englishName": "Red Stew",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 621,
+      "zhName": "红豆汤"
+    },
+    {
+      "achievementId": 431,
+      "englishName": "Birthright",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 619,
+      "zhName": "长子名分"
+    },
+    {
+      "achievementId": 432,
+      "englishName": "Damocles",
+      "route": "explicit-entity-id",
+      "entityType": "collectible",
+      "entityId": 577,
+      "zhName": "达摩克里斯之剑"
+    },
+    {
+      "achievementId": 433,
+      "englishName": "Rock Bottom",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 562,
+      "zhName": "谷底石"
+    },
+    {
+      "achievementId": 434,
+      "englishName": "Inner Child",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 688,
+      "zhName": "内在孩童"
+    },
+    {
+      "achievementId": 435,
+      "englishName": "Vanishing Twin",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 697,
+      "zhName": "消失的胞胎"
+    },
+    {
+      "achievementId": 436,
+      "englishName": "Genesis",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 622,
+      "zhName": "创世记"
+    },
+    {
+      "achievementId": 437,
+      "englishName": "Suplex",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 709,
+      "zhName": "背摔！"
+    },
+    {
       "achievementId": 439,
+      "englishName": "Illusion Baby",
+      "route": "unmatched-baby",
       "name": "Illusion Baby"
+    },
+    {
+      "achievementId": 440,
+      "englishName": "Meat Cleaver",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 631,
+      "zhName": "切肉刀"
+    },
+    {
+      "achievementId": 441,
+      "englishName": "Options?",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 670,
+      "zhName": "选择？"
+    },
+    {
+      "achievementId": 442,
+      "englishName": "Yuck Heart",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 639,
+      "zhName": "难吃的心"
+    },
+    {
+      "achievementId": 443,
+      "englishName": "Candy Heart",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 671,
+      "zhName": "糖心"
+    },
+    {
+      "achievementId": 444,
+      "englishName": "Guppy's Eye",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 665,
+      "zhName": "嗝屁猫的眼睛"
+    },
+    {
+      "achievementId": 445,
+      "englishName": "A Pound of Flesh",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 672,
+      "zhName": "一磅肉"
+    },
+    {
+      "achievementId": 446,
+      "englishName": "Akeldama",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 641,
+      "zhName": "血田"
+    },
+    {
+      "achievementId": 447,
+      "englishName": "Redemption",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 673,
+      "zhName": "赎罪"
+    },
+    {
+      "achievementId": 448,
+      "englishName": "Eternal D6",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 609,
+      "zhName": "永恒六面骰"
+    },
+    {
+      "achievementId": 449,
+      "englishName": "Montezuma's Revenge",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 680,
+      "zhName": "水土不服症"
+    },
+    {
+      "achievementId": 450,
+      "englishName": "Bird Cage",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 610,
+      "zhName": "鸟肥笼"
+    },
+    {
+      "achievementId": 451,
+      "englishName": "Cracked Orb",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 675,
+      "zhName": "碎裂的宝珠"
+    },
+    {
+      "achievementId": 452,
+      "englishName": "Bloody Gust",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 695,
+      "zhName": "嗜血腥风"
+    },
+    {
+      "achievementId": 453,
+      "englishName": "Empty Heart",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 676,
+      "zhName": "空虚之心"
+    },
+    {
+      "achievementId": 454,
+      "englishName": "Devil's Crown",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 146,
+      "zhName": "恶魔王冠"
+    },
+    {
+      "achievementId": 455,
+      "englishName": "Lil Abaddon",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 679,
+      "zhName": "亚巴顿宝宝"
+    },
+    {
+      "achievementId": 456,
+      "englishName": "Tinytoma",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 645,
+      "zhName": "小畸胎瘤"
+    },
+    {
+      "achievementId": 457,
+      "englishName": "Astral Projection",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 677,
+      "zhName": "灵魂出窍"
+    },
+    {
+      "achievementId": 458,
+      "englishName": "'M",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 138,
+      "zhName": "'M"
+    },
+    {
+      "achievementId": 459,
+      "englishName": "Everything Jar",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 720,
+      "zhName": "百宝罐"
+    },
+    {
+      "achievementId": 460,
+      "englishName": "Lost Soul",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 612,
+      "zhName": "迷失游魂"
+    },
+    {
+      "achievementId": 461,
+      "englishName": "Hungry Soul",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 684,
+      "zhName": "饥饿幽魂"
+    },
+    {
+      "achievementId": 462,
+      "englishName": "Blood Puppy",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 565,
+      "zhName": "嗜血小宠"
+    },
+    {
+      "achievementId": 463,
+      "englishName": "C Section",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 678,
+      "zhName": "剖腹产"
+    },
+    {
+      "achievementId": 464,
+      "englishName": "Keeper's Sack",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 716,
+      "zhName": "店主的胯袋"
+    },
+    {
+      "achievementId": 465,
+      "englishName": "Keeper's Box",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 719,
+      "zhName": "店主的盒子"
+    },
+    {
+      "achievementId": 466,
+      "englishName": "Lil Portal",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 681,
+      "zhName": "黑洞宝宝"
+    },
+    {
+      "achievementId": 467,
+      "englishName": "Worm Friend",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 682,
+      "zhName": "触手朋友"
+    },
+    {
+      "achievementId": 468,
+      "englishName": "Bone Spurs",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 683,
+      "zhName": "骨刺"
+    },
+    {
+      "achievementId": 469,
+      "englishName": "Spirit Shackles",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 674,
+      "zhName": "灵魂枷锁"
+    },
+    {
+      "achievementId": 470,
+      "englishName": "Revelation",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 643,
+      "zhName": "终末天启"
+    },
+    {
+      "achievementId": 471,
+      "englishName": "Jar of Wisps",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 685,
+      "zhName": "魂火罐"
+    },
+    {
+      "achievementId": 472,
+      "englishName": "Magic Skin",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 642,
+      "zhName": "玄奇驴皮"
+    },
+    {
+      "achievementId": 473,
+      "englishName": "Friend Finder",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 687,
+      "zhName": "寻友护符"
+    },
+    {
+      "achievementId": 491,
+      "englishName": "Glitched Crown",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 689,
+      "zhName": "错误王冠"
+    },
+    {
+      "achievementId": 492,
+      "englishName": "Belly Jelly",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 690,
+      "zhName": "肚肚软糖"
+    },
+    {
+      "achievementId": 493,
+      "englishName": "Blue Key",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 150,
+      "zhName": "蓝钥匙"
+    },
+    {
+      "achievementId": 494,
+      "englishName": "Sanguine Bond",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 692,
+      "zhName": "血色羁绊"
+    },
+    {
+      "achievementId": 495,
+      "englishName": "The Swarm",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 693,
+      "zhName": "虫群"
+    },
+    {
+      "achievementId": 496,
+      "englishName": "Heartbreak",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 694,
+      "zhName": "心碎"
+    },
+    {
+      "achievementId": 497,
+      "englishName": "Larynx",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 611,
+      "zhName": "声带"
+    },
+    {
+      "achievementId": 498,
+      "englishName": "Azazel's Rage",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 699,
+      "zhName": "阿撒泻勒之怒"
+    },
+    {
+      "achievementId": 499,
+      "englishName": "Salvation",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 696,
+      "zhName": "救恩"
+    },
+    {
+      "achievementId": 500,
+      "englishName": "TMTRAINER",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 721,
+      "zhName": "错误技"
+    },
+    {
+      "achievementId": 501,
+      "englishName": "Sacred Orb",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 691,
+      "zhName": "十字圣球"
+    },
+    {
+      "achievementId": 502,
+      "englishName": "Twisted Pair",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 698,
+      "zhName": "作孽双子"
+    },
+    {
+      "achievementId": 503,
+      "englishName": "Strawman",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 667,
+      "zhName": "稻草人"
+    },
+    {
+      "achievementId": 504,
+      "englishName": "Echo Chamber",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 700,
+      "zhName": "回声室"
+    },
+    {
+      "achievementId": 505,
+      "englishName": "Isaac's Tomb",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 701,
+      "zhName": "以撒的坟墓"
+    },
+    {
+      "achievementId": 506,
+      "englishName": "Vengeful Spirit",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 702,
+      "zhName": "复仇之魂"
+    },
+    {
+      "achievementId": 507,
+      "englishName": "Esau Jr.",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 703,
+      "zhName": "小以扫"
+    },
+    {
+      "achievementId": 524,
+      "englishName": "0 - The Fool?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 56,
+      "zhName": "0-愚者？"
+    },
+    {
+      "achievementId": 525,
+      "englishName": "I - The Magician?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 57,
+      "zhName": "I-魔术师？"
+    },
+    {
+      "achievementId": 526,
+      "englishName": "II - The High Priestess?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 58,
+      "zhName": "II-女祭司？"
+    },
+    {
+      "achievementId": 527,
+      "englishName": "III - The Empress?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 59,
+      "zhName": "III-皇后？"
+    },
+    {
+      "achievementId": 528,
+      "englishName": "IV - The Emperor?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 60,
+      "zhName": "IV-皇帝？"
+    },
+    {
+      "achievementId": 529,
+      "englishName": "V - The Hierophant?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 61,
+      "zhName": "V-教皇？"
+    },
+    {
+      "achievementId": 530,
+      "englishName": "VI - The Lovers?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 62,
+      "zhName": "VI-恋人？"
+    },
+    {
+      "achievementId": 534,
+      "englishName": "X - Wheel of Fortune?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 66,
+      "zhName": "X-命运之轮？"
+    },
+    {
+      "achievementId": 535,
+      "englishName": "XI - Strength?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 67,
+      "zhName": "XI-力量？"
+    },
+    {
+      "achievementId": 536,
+      "englishName": "XII - The Hanged Man?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 68,
+      "zhName": "XII-倒吊人？"
+    },
+    {
+      "achievementId": 537,
+      "englishName": "XIII - Death?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 69,
+      "zhName": "XIII-死亡？"
+    },
+    {
+      "achievementId": 539,
+      "englishName": "XV - The Devil?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 71,
+      "zhName": "XV-恶魔？"
+    },
+    {
+      "achievementId": 540,
+      "englishName": "XVI - The Tower?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 72,
+      "zhName": "XVI-塔？"
+    },
+    {
+      "achievementId": 541,
+      "englishName": "XVII - The Stars?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 73,
+      "zhName": "XVII-星星？"
+    },
+    {
+      "achievementId": 542,
+      "englishName": "XVIII - The Moon? / XIX - The Sun?",
+      "route": "explicit-bundle",
+      "entityId": [
+        74,
+        75
+      ]
+    },
+    {
+      "achievementId": 543,
+      "englishName": "XX - Judgement?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 76,
+      "zhName": "XX-审判？"
+    },
+    {
+      "achievementId": 544,
+      "englishName": "XXI - The World?",
+      "route": "explicit-entity-id",
+      "entityType": "card",
+      "entityId": 77,
+      "zhName": "XXI-世界？"
+    },
+    {
+      "achievementId": 548,
+      "englishName": "Mom's Lock",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 153,
+      "zhName": "妈妈的发髻"
+    },
+    {
+      "achievementId": 549,
+      "englishName": "Dice Bag",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 154,
+      "zhName": "骰子袋"
+    },
+    {
+      "achievementId": 550,
+      "englishName": "Holy Crown",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 155,
+      "zhName": "神圣王冠"
+    },
+    {
+      "achievementId": 551,
+      "englishName": "Mother's Kiss",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 156,
+      "zhName": "母亲的吻"
+    },
+    {
+      "achievementId": 552,
+      "englishName": "Gilded Key",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 159,
+      "zhName": "镀金钥匙"
+    },
+    {
+      "achievementId": 553,
+      "englishName": "Lucky Sack",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 160,
+      "zhName": "幸运袋"
+    },
+    {
+      "achievementId": 554,
+      "englishName": "Your Soul",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 173,
+      "zhName": "你的灵魂"
+    },
+    {
+      "achievementId": 555,
+      "englishName": "Number Magnet",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 174,
+      "zhName": "数字冰箱贴"
+    },
+    {
+      "achievementId": 556,
+      "englishName": "Dingle Berry",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 163,
+      "zhName": "粪蛋"
+    },
+    {
+      "achievementId": 557,
+      "englishName": "Ring Cap",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 164,
+      "zhName": "火药圈"
+    },
+    {
+      "achievementId": 558,
+      "englishName": "Strange Key",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 175,
+      "zhName": "奇怪的钥匙"
+    },
+    {
+      "achievementId": 559,
+      "englishName": "Lil Clot",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 176,
+      "zhName": "小血团"
+    },
+    {
+      "achievementId": 560,
+      "englishName": "Temporary Tatoo",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 177,
+      "zhName": "纹身贴"
+    },
+    {
+      "achievementId": 561,
+      "englishName": "Swallowed M80",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 178,
+      "zhName": "被吞下的M80鞭炮"
+    },
+    {
+      "achievementId": 562,
+      "englishName": "Wicked Crown",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 161,
+      "zhName": "邪恶王冠"
+    },
+    {
+      "achievementId": 563,
+      "englishName": "Azazel's Stump",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 162,
+      "zhName": "阿撒泻勒的残角"
+    },
+    {
+      "achievementId": 564,
+      "englishName": "Torn Pocket",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 158,
+      "zhName": "破损的口袋"
+    },
+    {
+      "achievementId": 565,
+      "englishName": "Torn Card",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 157,
+      "zhName": "扑克牌残片"
+    },
+    {
+      "achievementId": 566,
+      "englishName": "Nuh Uh!",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 165,
+      "zhName": "滚啊！"
+    },
+    {
+      "achievementId": 567,
+      "englishName": "Modeling Clay",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 166,
+      "zhName": "塑型黏土"
+    },
+    {
+      "achievementId": 568,
+      "englishName": "Kid's Drawing",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 169,
+      "zhName": "儿童涂鸦"
+    },
+    {
+      "achievementId": 569,
+      "englishName": "Crystal Key",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 170,
+      "zhName": "水晶钥匙"
+    },
+    {
+      "achievementId": 570,
+      "englishName": "The Twins",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 183,
+      "zhName": "双胞胎"
+    },
+    {
+      "achievementId": 571,
+      "englishName": "Adoption Papers",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 184,
+      "zhName": "领养协议书"
+    },
+    {
+      "achievementId": 572,
+      "englishName": "Keeper's Bargain",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 171,
+      "zhName": "店主的协议"
+    },
+    {
+      "achievementId": 573,
+      "englishName": "Cursed Penny",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 172,
+      "zhName": "诅咒硬币"
+    },
+    {
+      "achievementId": 574,
+      "englishName": "Cricket Leg",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 185,
+      "zhName": "蟋蟀腿"
+    },
+    {
+      "achievementId": 575,
+      "englishName": "Apollyon's Best Friend",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 186,
+      "zhName": "亚玻伦的挚友"
+    },
+    {
+      "achievementId": 576,
+      "englishName": "Polished Bone",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 167,
+      "zhName": "抛光骨头"
+    },
+    {
+      "achievementId": 577,
+      "englishName": "Hollow Heart",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 168,
+      "zhName": "空壳心"
+    },
+    {
+      "achievementId": 578,
+      "englishName": "Expansion Pack",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 181,
+      "zhName": "扩展电路板"
+    },
+    {
+      "achievementId": 579,
+      "englishName": "Beth's Essence",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 182,
+      "zhName": "伯大尼的精华"
+    },
+    {
+      "achievementId": 580,
+      "englishName": "RC Remote",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 179,
+      "zhName": "赛车遥控器"
+    },
+    {
+      "achievementId": 581,
+      "englishName": "Found Soul",
+      "route": "english-eid",
+      "entityType": "trinket",
+      "entityId": 180,
+      "zhName": "复得游魂"
+    },
+    {
+      "achievementId": 584,
+      "englishName": "Spindown Dice",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 723,
+      "zhName": "计数二十面骰"
+    },
+    {
+      "achievementId": 585,
+      "englishName": "Hypercoagulation",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 724,
+      "zhName": "高凝血"
+    },
+    {
+      "achievementId": 586,
+      "englishName": "Bag of Crafting",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 710,
+      "zhName": "合成宝袋"
+    },
+    {
+      "achievementId": 587,
+      "englishName": "Dark Arts",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 705,
+      "zhName": "暗仪刺刀"
+    },
+    {
+      "achievementId": 588,
+      "englishName": "IBS",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 725,
+      "zhName": "大肠激躁症"
+    },
+    {
+      "achievementId": 589,
+      "englishName": "Sumptorium",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 713,
+      "zhName": "圣血吸管"
+    },
+    {
+      "achievementId": 590,
+      "englishName": "Berserk!",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 704,
+      "zhName": "狂怒！"
+    },
+    {
+      "achievementId": 591,
+      "englishName": "Hemoptysis",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 726,
+      "zhName": "咯血症"
+    },
+    {
+      "achievementId": 592,
+      "englishName": "Flip",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 711,
+      "zhName": "生死逆转"
+    },
+    {
+      "achievementId": 593,
+      "englishName": "Corrupted Data",
+      "route": "local-generic-fallback",
+      "name": "Corrupted Data"
+    },
+    {
+      "achievementId": 594,
+      "englishName": "Ghost Bombs",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 727,
+      "zhName": "幽灵炸弹"
+    },
+    {
+      "achievementId": 595,
+      "englishName": "Gello",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 728,
+      "zhName": "格罗"
+    },
+    {
+      "achievementId": 596,
+      "englishName": "Keeper's Kin",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 717,
+      "zhName": "店主的亲友"
+    },
+    {
+      "achievementId": 597,
+      "englishName": "Abyss",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 706,
+      "zhName": "无底坑"
+    },
+    {
+      "achievementId": 598,
+      "englishName": "Decap Attack",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 729,
+      "zhName": "飞头攻击"
+    },
+    {
+      "achievementId": 599,
+      "englishName": "Lemegeton",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 712,
+      "zhName": "所罗门魔典"
+    },
+    {
+      "achievementId": 600,
+      "englishName": "Anima Sola",
+      "route": "english-eid",
+      "entityType": "collectible",
+      "entityId": 722,
+      "zhName": "孤魂铁索"
+    },
+    {
+      "achievementId": 601,
+      "englishName": "Mega Chest",
+      "route": "local-generic-fallback",
+      "name": "大箱子"
+    },
+    {
+      "achievementId": 602,
+      "englishName": "Queen of Hearts",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 79,
+      "zhName": "红桃Q"
+    },
+    {
+      "achievementId": 603,
+      "englishName": "Gold Pill",
+      "route": "english-eid",
+      "entityType": "pill",
+      "entityId": 9999,
+      "zhName": "金胶囊"
+    },
+    {
+      "achievementId": 604,
+      "englishName": "Black Sack",
+      "route": "local-generic-fallback",
+      "name": "黑福袋"
+    },
+    {
+      "achievementId": 605,
+      "englishName": "Charming Poop",
+      "route": "local-generic-fallback",
+      "name": "Charming Poop"
+    },
+    {
+      "achievementId": 606,
+      "englishName": "Horse Pill",
+      "route": "local-generic-fallback",
+      "name": "Horse Pill"
+    },
+    {
+      "achievementId": 607,
+      "englishName": "Crane Game",
+      "route": "local-generic-fallback",
+      "name": "夹娃娃机"
+    },
+    {
+      "achievementId": 608,
+      "englishName": "Hell Game",
+      "route": "local-generic-fallback",
+      "name": "Hell Game"
+    },
+    {
+      "achievementId": 609,
+      "englishName": "Wooden Chest",
+      "route": "local-generic-fallback",
+      "name": "木箱子"
+    },
+    {
+      "achievementId": 610,
+      "englishName": "Wild Card",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 80,
+      "zhName": "万用牌"
+    },
+    {
+      "achievementId": 611,
+      "englishName": "Haunted Chest",
+      "route": "local-generic-fallback",
+      "name": "Haunted Chest"
+    },
+    {
+      "achievementId": 612,
+      "englishName": "Fool's Gold",
+      "route": "local-generic-fallback",
+      "name": "愚人金"
+    },
+    {
+      "achievementId": 613,
+      "englishName": "Golden Penny",
+      "route": "local-generic-fallback",
+      "name": "金硬币"
+    },
+    {
+      "achievementId": 614,
+      "englishName": "Rotten Beggar",
+      "route": "local-generic-fallback",
+      "name": "Rotten Beggar"
+    },
+    {
+      "achievementId": 615,
+      "englishName": "Golden Battery",
+      "route": "local-generic-fallback",
+      "name": "Golden Battery"
+    },
+    {
+      "achievementId": 616,
+      "englishName": "Confessional",
+      "route": "local-generic-fallback",
+      "name": "忏悔室"
+    },
+    {
+      "achievementId": 617,
+      "englishName": "Golden Trinket",
+      "route": "local-generic-fallback",
+      "name": "金饰品"
+    },
+    {
+      "achievementId": 618,
+      "englishName": "Soul of Isaac",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 81,
+      "zhName": "以撒的魂石"
+    },
+    {
+      "achievementId": 619,
+      "englishName": "Soul of Magdalene",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 82,
+      "zhName": "抹大拉的魂石"
+    },
+    {
+      "achievementId": 620,
+      "englishName": "Soul of Cain",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 83,
+      "zhName": "该隐的魂石"
+    },
+    {
+      "achievementId": 621,
+      "englishName": "Soul of Judas",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 84,
+      "zhName": "犹大的魂石"
+    },
+    {
+      "achievementId": 622,
+      "englishName": "Soul of ???",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 85,
+      "zhName": "???的魂石"
+    },
+    {
+      "achievementId": 623,
+      "englishName": "Soul of Eve",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 86,
+      "zhName": "夏娃的魂石"
+    },
+    {
+      "achievementId": 624,
+      "englishName": "Soul of Samson",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 87,
+      "zhName": "参孙的魂石"
+    },
+    {
+      "achievementId": 625,
+      "englishName": "Soul of Azazel",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 88,
+      "zhName": "阿撒泻勒的魂石"
+    },
+    {
+      "achievementId": 626,
+      "englishName": "Soul of Lazarus",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 89,
+      "zhName": "拉撒路的魂石"
+    },
+    {
+      "achievementId": 627,
+      "englishName": "Soul of Eden",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 90,
+      "zhName": "伊甸的魂石"
+    },
+    {
+      "achievementId": 628,
+      "englishName": "Soul of the Lost",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 91,
+      "zhName": "游魂的魂石"
+    },
+    {
+      "achievementId": 629,
+      "englishName": "Soul of Lillith",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 92,
+      "zhName": "莉莉丝的魂石"
+    },
+    {
+      "achievementId": 630,
+      "englishName": "Soul of the Keeper",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 93,
+      "zhName": "店主的魂石"
+    },
+    {
+      "achievementId": 631,
+      "englishName": "Soul of Apollyon",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 94,
+      "zhName": "亚玻伦的魂石"
+    },
+    {
+      "achievementId": 632,
+      "englishName": "Soul of the Forgotten",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 95,
+      "zhName": "遗骸的魂石"
+    },
+    {
+      "achievementId": 633,
+      "englishName": "Soul of Bethany",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 96,
+      "zhName": "伯大尼的魂石"
+    },
+    {
+      "achievementId": 634,
+      "englishName": "Soul of Jacob and Esau",
+      "route": "english-eid",
+      "entityType": "card",
+      "entityId": 97,
+      "zhName": "雅各与以扫的魂石"
+    },
+    {
+      "achievementId": 227,
+      "route": "explicit-bundle-challenge",
+      "entityId": [
+        28,
+        29
+      ]
+    },
+    {
+      "achievementId": 228,
+      "route": "explicit-bundle-challenge",
+      "entityId": [
+        30,
+        31
+      ]
+    },
+    {
+      "achievementId": 233,
+      "route": "explicit-bundle-challenge",
+      "entityId": [
+        40,
+        263
+      ]
     }
   ]
 }

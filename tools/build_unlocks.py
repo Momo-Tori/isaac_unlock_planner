@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
-"""Rebuild the character/Boss/achievement matrix from a saved Huiji Wiki HTML page.
+"""Rebuild data/unlocks.js from source inputs only.
 
-This builder only owns the physical unlock matrix. Existing reward metadata in
-``data/unlocks.js`` is preserved when possible, so recommendation/effect data
-remain independent build layers.
+Inputs:
+- a saved Huiji Wiki ``Project:存档/成就`` HTML page for the physical
+  character/Boss -> achievement-ID matrix;
+- ``tools/achievement_rewards_en.json`` for canonical *English* reward names.
+
+The previous generated ``data/unlocks.js`` is deliberately never read.  This
+keeps the generated catalog reproducible and prevents translated display names
+from leaking back into the EID matching key.
 """
 from __future__ import annotations
 from pathlib import Path
@@ -12,6 +17,7 @@ from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'data' / 'unlocks.js'
+EN_CATALOG = ROOT / 'tools' / 'achievement_rewards_en.json'
 
 CHAR_EN = [
     'Isaac','Magdalene','Cain','Judas','???','Eve','Samson','Azazel','Lazarus','Eden',
@@ -37,14 +43,19 @@ BOSS_ROWS = [
     (14, 'greedier', '贪婪模式（困难）', 'Greedier Mode', 'greedier'),
 ]
 
+
 def slug(s: str) -> str:
     return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
 
-def load_existing():
-    if not OUT.exists(): return {}
-    s=OUT.read_text('utf-8')
-    m=re.search(r'window\.ISAAC_UNLOCK_DATA\s*=\s*(\{.*\});\s*$',s,re.S)
-    return json.loads(m.group(1)) if m else {}
+
+def load_english_catalog(path: Path):
+    data=json.loads(path.read_text('utf-8'))
+    entries=data.get('entries',{})
+    bad=[(aid,name) for aid,name in entries.items() if re.search(r'[\u3400-\u9fff]',name or '')]
+    if bad:
+        raise RuntimeError(f'English catalog contains CJK names: {bad[:5]}')
+    return entries
+
 
 def expand_table(table, width=36):
     active={}; grid=[]
@@ -65,35 +76,45 @@ def expand_table(table, width=36):
         active=nxt; grid.append(out)
     return grid
 
+
 def achievement_id(cell):
     if cell is None: return None
     node=cell.find(id=re.compile(r'^Achievement_\d+$'))
     return int(node['id'].split('_')[1]) if node else None
 
+
+def condition_for(rule, characters_by_id, bosses_by_id):
+    char=characters_by_id[rule['characterId']]['nameEn']
+    targets=' / '.join(bosses_by_id[x]['nameEn'] for x in rule['bossIds'])
+    return f'Defeat {targets} as {char}'
+
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('html', type=Path, help='saved Huiji Project:存档/成就 HTML')
+    ap.add_argument('--catalog', type=Path, default=EN_CATALOG,
+                    help='canonical English reward-name seed')
     args=ap.parse_args()
-    existing=load_existing()
+
+    english_catalog=load_english_catalog(args.catalog)
     soup=BeautifulSoup(args.html.read_text('utf-8',errors='ignore'),'html.parser')
     tables=soup.find_all('table')
     if not tables: raise RuntimeError('achievement table not found')
     grid=expand_table(tables[0])
 
-    old_chars={x.get('nameEn'):x for x in existing.get('characters',[])}
     characters=[]
     for idx,col in enumerate(range(1,35)):
         cell=grid[0][col]
         a=cell.find('a') if cell else None
         name=(a.get('title') if a else '') or (cell.get_text(' ',strip=True) if cell else '')
-        en=CHAR_EN[idx]; old=old_chars.get(en,{})
+        en=CHAR_EN[idx]
         characters.append({
-            'id': old.get('id') or f'c{idx:02d}-{slug(en) or idx}',
+            'id': f'c{idx:02d}-{slug(en) or idx}',
             'name': name,
             'nameEn': en,
             'tainted': idx>=17,
             'order': idx,
-            'image': old.get('image'),
+            'image': None,
         })
     bosses=[{'id':bid,'name':name,'nameEn':en,'order':i,'icon':icon}
             for i,(_,bid,name,en,icon) in enumerate(BOSS_ROWS)]
@@ -116,17 +137,30 @@ def main():
             rules.append({'id':f"{char['id']}-a{aid}",'characterId':char['id'],
                           'bossIds':g['bossIds'],'achievementId':aid,'defaultOrder':min(g['orders'])})
 
-    old_catalog=existing.get('achievementCatalog',{})
-    catalog={}
-    for aid in sorted({r['achievementId'] for r in rules}):
-        catalog[str(aid)] = old_catalog.get(str(aid), {
-            'name': f'成就 #{aid}', 'condition':'', 'image':None, 'quality':None, 'effect':''
-        })
+    required=sorted({r['achievementId'] for r in rules})
+    missing=[aid for aid in required if str(aid) not in english_catalog]
+    if missing:
+        raise RuntimeError(f'English reward catalog is missing {len(missing)} achievement IDs: {missing[:20]}')
 
-    payload={'version':2,'characters':characters,'bosses':bosses,
+    chars_by_id={x['id']:x for x in characters}
+    bosses_by_id={x['id']:x for x in bosses}
+    rule_by_aid={r['achievementId']:r for r in rules}
+    catalog={}
+    for aid in required:
+        rule=rule_by_aid[aid]
+        catalog[str(aid)]={
+            'name':english_catalog[str(aid)],
+            'condition':condition_for(rule,chars_by_id,bosses_by_id),
+            'image':None,
+            'quality':None,
+            'effect':'',
+        }
+
+    payload={'version':3,'catalogLanguage':'en','characters':characters,'bosses':bosses,
              'unlockRules':rules,'achievementCatalog':catalog}
-    OUT.write_text('// Generated by tools/build_unlocks.py\nwindow.ISAAC_UNLOCK_DATA = '+json.dumps(payload,ensure_ascii=False,indent=2)+';\n','utf-8')
+    OUT.write_text('// Generated from source inputs by tools/build_unlocks.py\nwindow.ISAAC_UNLOCK_DATA = '+json.dumps(payload,ensure_ascii=False,indent=2)+';\n','utf-8')
     print(json.dumps({'characters':len(characters),'bosses':len(bosses),'rules':len(rules),
+                      'catalog':len(catalog),'catalogCjkNames':sum(bool(re.search(r'[\u3400-\u9fff]',x['name'])) for x in catalog.values()),
                       'bundledRules':sum(len(r['bossIds'])>1 for r in rules)},ensure_ascii=False))
 
 if __name__=='__main__': main()

@@ -2,7 +2,6 @@
   'use strict';
 
   const DATA = window.ISAAC_UNLOCK_DATA;
-  const RECOMMENDATIONS = window.ISAAC_RECOMMENDATIONS?.entries || {};
   const EFFECTS = window.ISAAC_EFFECTS?.entries || {};
   const CHALLENGES = window.ISAAC_CHALLENGE_DATA?.entries || [];
   const OVERRIDES = window.ISAAC_OVERRIDES || {};
@@ -25,6 +24,60 @@
 
   const PRIORITY_SCORE = { strong: 3, recommended: 2, normal: 1 };
   const PRIORITY_LABEL = { strong: '强烈推荐', recommended: '推荐', normal: '普通' };
+  const runtimePriority = {
+    recommendationByPair: new Map(),
+    challengeById: new Map(),
+    loaded: false
+  };
+
+  function pairKey(characterId, bossId) {
+    return `${characterId}::${bossId}`;
+  }
+
+  function normalizePriority(value) {
+    return Object.prototype.hasOwnProperty.call(PRIORITY_SCORE, value) ? value : 'normal';
+  }
+
+  function rulePriority(rule) {
+    let best = 'normal';
+    for (const bossId of rule.bossIds) {
+      const priority = runtimePriority.recommendationByPair.get(pairKey(rule.characterId, bossId)) || 'normal';
+      if (PRIORITY_SCORE[priority] > PRIORITY_SCORE[best]) best = priority;
+    }
+    return best;
+  }
+
+  function challengePriority(challengeId) {
+    return runtimePriority.challengeById.get(Number(challengeId)) || 'normal';
+  }
+
+  async function fetchJson(path) {
+    const response = await fetch(versionedLocalUrl(path), { cache: 'no-store' });
+    if (!response.ok) throw new Error(`${path} 加载失败：HTTP ${response.status}`);
+    return response.json();
+  }
+
+  async function loadRuntimePriorities() {
+    const [recommendations, challenges] = await Promise.all([
+      fetchJson('./tools/recommendation_seed.json'),
+      fetchJson('./tools/challenge_priority.json')
+    ]);
+
+    const pairMap = new Map();
+    for (const entry of recommendations.entries || []) {
+      const priority = normalizePriority(entry.priority);
+      pairMap.set(pairKey(entry.characterId, entry.bossId), priority);
+    }
+
+    const challengeMap = new Map();
+    for (const entry of challenges.entries || []) {
+      challengeMap.set(Number(entry.challengeId), normalizePriority(entry.priority));
+    }
+
+    runtimePriority.recommendationByPair = pairMap;
+    runtimePriority.challengeById = challengeMap;
+    runtimePriority.loaded = true;
+  }
   const byId = (items) => new Map(items.map((x) => [x.id, x]));
   const characters = byId(DATA.characters);
   const bosses = byId(DATA.bosses);
@@ -97,14 +150,11 @@
   function rewardFor(aid) {
     const key = String(aid);
     const base = DATA.achievementCatalog[key] || { name: `成就 #${aid}`, condition: '', image: null, effect: '' };
-    const recommendation = RECOMMENDATIONS[key] || {};
     const effectData = EFFECTS[key] || {};
     const override = OVERRIDES[key] || OVERRIDES[aid] || {};
-    const merged = { ...base, ...recommendation, ...effectData, ...override };
-    const priority = ['strong', 'recommended', 'normal'].includes(merged.priority) ? merged.priority : 'normal';
+    const merged = { ...base, ...effectData, ...override };
     return {
       ...merged,
-      priority,
       name: merged.name || `成就 #${aid}`,
       image: merged.image || base.image || null,
       effect: merged.effect || '',
@@ -145,7 +195,8 @@
     const decorated = rules.map((rule) => {
       const reward = rewardFor(rule.achievementId);
       const unlocked = unlockStatus(rule.achievementId);
-      return { rule, reward, unlocked };
+      const priority = rulePriority(rule);
+      return { rule, reward, priority, unlocked };
     });
 
     let filtered = decorated;
@@ -153,7 +204,7 @@
 
     filtered.sort((a, b) => {
       if (state.sort === 'priority') {
-        const pd = PRIORITY_SCORE[b.reward.priority] - PRIORITY_SCORE[a.reward.priority];
+        const pd = PRIORITY_SCORE[b.priority] - PRIORITY_SCORE[a.priority];
         if (pd) return pd;
       }
       if (state.view === 'character') {
@@ -233,6 +284,7 @@
   function challengeRows() {
     let rows = CHALLENGES.map((challenge) => ({
       challenge,
+      priority: challengePriority(challenge.challengeId),
       prerequisiteUnlocked: challenge.prerequisiteAchievementId == null
         ? true
         : unlockStatus(challenge.prerequisiteAchievementId),
@@ -243,7 +295,7 @@
 
     rows.sort((a, b) => {
       if (state.sort === 'priority') {
-        const pd = PRIORITY_SCORE[b.challenge.priority] - PRIORITY_SCORE[a.challenge.priority];
+        const pd = PRIORITY_SCORE[b.priority] - PRIORITY_SCORE[a.priority];
         if (pd) return pd;
       }
       return a.challenge.challengeId - b.challenge.challengeId;
@@ -274,17 +326,20 @@
       return;
     }
 
-    el.tableBody.innerHTML = rows.map(({ challenge, prerequisiteUnlocked, unlocked }) => {
+    el.tableBody.innerHTML = rows.map(({ challenge, priority, prerequisiteUnlocked, unlocked }) => {
       const rewardImage = achievementSprite(challenge.rewardAchievementId);
       const rewardWiki = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('成就')}/${challenge.rewardAchievementId}`;
       const challengeWiki = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('挑战')}/${challenge.challengeId}`;
-      const effect = challenge.effect
-        ? `<div class="effect-text">${esc(challenge.effect)}</div>`
-        : `<div class="effect-text">解锁「${esc(challenge.rewardName)}」这一非收藏道具 / 机制内容。</div>`;
-      return `<tr class="unlock-row priority-${challenge.priority}">
-        <td><div class="challenge-id-cell"><a class="challenge-id-link" href="${esc(challengeWiki)}" target="_blank" rel="noopener noreferrer">#${challenge.challengeId}</a>${priorityPill(challenge.priority)}</div></td>
+      // Challenge rewards can also be multi-entity achievements (227/228/233).
+      // Prefer the centralized EID/special effect entry when available.
+      const effectEntry = EFFECTS[String(challenge.rewardAchievementId)] || null;
+      const rewardName = effectEntry?.name || challenge.rewardName;
+      const effectText = effectEntry?.effect || challenge.effect || `解锁「${rewardName}」这一非收藏道具 / 机制内容。`;
+      const effect = `<div class="effect-text">${esc(effectText)}</div>`;
+      return `<tr class="unlock-row priority-${priority}">
+        <td><div class="challenge-id-cell"><a class="challenge-id-link" href="${esc(challengeWiki)}" target="_blank" rel="noopener noreferrer">#${challenge.challengeId}</a>${priorityPill(priority)}</div></td>
         <td>${challengePrerequisiteCell(challenge, prerequisiteUnlocked)}</td>
-        <td><div class="reward-cell">${rewardImage}<div><div class="reward-name"><a class="reward-link" href="${esc(rewardWiki)}" target="_blank" rel="noopener noreferrer">${esc(challenge.rewardName)}</a></div><div class="meta-line">奖励成就 ID #${challenge.rewardAchievementId}</div></div></div></td>
+        <td><div class="reward-cell">${rewardImage}<div><div class="reward-name"><a class="reward-link" href="${esc(rewardWiki)}" target="_blank" rel="noopener noreferrer">${esc(rewardName)}</a></div><div class="meta-line">奖励成就 ID #${challenge.rewardAchievementId}</div></div></div></td>
         <td>${effect}</td>
         <td>${statusBadge(unlocked)}</td>
       </tr>`;
@@ -305,7 +360,7 @@
       return;
     }
 
-    el.tableBody.innerHTML = rows.map(({ rule, reward, unlocked }) => {
+    el.tableBody.innerHTML = rows.map(({ rule, reward, priority, unlocked }) => {
       const rewardImage = achievementSprite(rule.achievementId);
       const fallbackEffect = isBabyReward(reward.name)
         ? ''
@@ -320,9 +375,9 @@
         ? `<div class="effect-text">${esc(effectText)}</div>`
         : '<div class="effect-text effect-missing">效果说明待补充</div>';
       const wikiUrl = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('成就')}/${rule.achievementId}`;
-      return `<tr class="unlock-row priority-${reward.priority}">
+      return `<tr class="unlock-row priority-${priority}">
         <td>${targetCell(rule)}</td>
-        <td><div class="reward-cell">${rewardImage}<div><div class="reward-name"><a class="reward-link" href="${esc(wikiUrl)}" target="_blank" rel="noopener noreferrer">${esc(reward.name)}</a>${priorityPill(reward.priority)}</div><div class="meta-line">成就 ID #${rule.achievementId}</div></div></div></td>
+        <td><div class="reward-cell">${rewardImage}<div><div class="reward-name"><a class="reward-link" href="${esc(wikiUrl)}" target="_blank" rel="noopener noreferrer">${esc(reward.name)}</a>${priorityPill(priority)}</div><div class="meta-line">成就 ID #${rule.achievementId}</div></div></div></td>
         <td>${effect}</td>
         <td>${statusBadge(unlocked)}</td>
       </tr>`;
@@ -379,5 +434,10 @@
   }));
   el.dropZone.addEventListener('drop', (event) => loadSave(event.dataTransfer?.files?.[0]));
 
-  render();
+  loadRuntimePriorities()
+    .catch((error) => {
+      console.error('优先级 JSON 加载失败，将按普通优先级显示。', error);
+      setSaveStatus('error', '优先级配置加载失败', '请检查 tools/recommendation_seed.json 与 tools/challenge_priority.json 是否可访问。');
+    })
+    .finally(() => render());
 })();

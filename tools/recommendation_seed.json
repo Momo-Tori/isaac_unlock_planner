@@ -1,1054 +1,1068 @@
 {
+  "version": 2,
   "source": "https://www.bilibili.com/opus/1083165871339208713",
   "retrieved": "2026-08-14",
-  "normal": [
+  "defaultPriority": "normal",
+  "entries": [
     {
-      "characterIndex": 0,
-      "items": [
-        {
-          "condition": "撒旦",
-          "rewardName": "妈妈的菜刀 (Mom's Knife)",
-          "priority": "strong"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "无限面骰",
-          "priority": "strong"
-        },
-        {
-          "condition": "???",
-          "rewardName": "二十面骰 (D20)",
-          "priority": "recommended"
-        },
-        {
-          "condition": "羔羊",
-          "rewardName": "寻人启事 [非道具]",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "选择？",
-          "priority": "recommended"
-        },
-        {
-          "condition": "普通贪婪",
-          "rewardName": "小箱子 [非道具]",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c00-isaac",
+      "bossId": "satan",
+      "priority": "strong"
     },
     {
-      "characterIndex": 1,
-      "items": [
-        {
-          "condition": "精神错乱",
-          "rewardName": "圣餐 (Eucharist)",
-          "priority": "strong"
-        },
-        {
-          "condition": "头目车轮战",
-          "rewardName": "抹大拉的蝴蝶结",
-          "priority": "recommended"
-        },
-        {
-          "condition": "死寂",
-          "rewardName": "纯洁",
-          "priority": "recommended"
-        },
-        {
-          "condition": "以撒",
-          "rewardName": "圣遗物",
-          "priority": "recommended"
-        },
-        {
-          "condition": "???",
-          "rewardName": "凯尔特十字",
-          "priority": "recommended"
-        },
-        {
-          "condition": "羔羊",
-          "rewardName": "抹大拉的信仰",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "糖心",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "平衡符号",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c00-isaac",
+      "bossId": "blue-baby",
+      "priority": "strong"
     },
     {
-      "characterIndex": 2,
-      "items": [
-        {
-          "condition": "母亲",
-          "rewardName": "嗝屁猫的眼睛",
-          "priority": "strong"
-        },
-        {
-          "condition": "以撒",
-          "rewardName": "硬币袋",
-          "priority": "recommended"
-        },
-        {
-          "condition": "撒旦",
-          "rewardName": "炸弹袋",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "一磅肉",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "袋中袋",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c00-isaac",
+      "bossId": "lamb",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 3,
-      "items": [
-        {
-          "condition": "头目车轮战",
-          "rewardName": "犹大的影子",
-          "priority": "strong"
-        },
-        {
-          "condition": "羔羊",
-          "rewardName": "弯羊角",
-          "priority": "strong"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "比列之眼",
-          "priority": "strong"
-        },
-        {
-          "condition": "???",
-          "rewardName": "左断手",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "赎罪",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c00-isaac",
+      "bossId": "delirium",
+      "priority": "strong"
     },
     {
-      "characterIndex": 4,
-      "items": [
-        {
-          "condition": "以撒",
-          "rewardName": "六面骰 (D6)",
-          "priority": "strong"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "永恒六面骰",
-          "priority": "strong"
-        },
-        {
-          "condition": "撒旦",
-          "rewardName": "遗忘药",
-          "priority": "recommended"
-        },
-        {
-          "condition": "???",
-          "rewardName": "宿命",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c00-isaac",
+      "bossId": "beast",
+      "priority": "strong"
     },
     {
-      "characterIndex": 5,
-      "items": [
-        {
-          "condition": "精神错乱",
-          "rewardName": "钝剃刀片",
-          "priority": "strong"
-        },
-        {
-          "condition": "头目车轮战",
-          "rewardName": "夏娃的睫毛膏",
-          "priority": "recommended"
-        },
-        {
-          "condition": "死寂",
-          "rewardName": "祭祀之刃",
-          "priority": "recommended"
-        },
-        {
-          "condition": "撒旦",
-          "rewardName": "剃刀片",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "破碎的宝珠",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c00-isaac",
+      "bossId": "greed",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 6,
-      "items": [
-        {
-          "condition": "以撒",
-          "rewardName": "嗜血",
-          "priority": "strong"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "嗜血腥风",
-          "priority": "strong"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "虚空之心",
-          "priority": "strong"
-        },
-        {
-          "condition": "普通贪婪",
-          "rewardName": "血誓",
-          "priority": "strong"
-        },
-        {
-          "condition": "死寂",
-          "rewardName": "盲目的怒火",
-          "priority": "recommended"
-        },
-        {
-          "condition": "???",
-          "rewardName": "染血硬币",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c01-magdalene",
+      "bossId": "boss-rush",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 7,
-      "items": [
-        {
-          "condition": "以撒",
-          "rewardName": "撒旦圣经",
-          "priority": "strong"
-        },
-        {
-          "condition": "???",
-          "rewardName": "亚巴顿",
-          "priority": "strong"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "亚巴顿宝宝",
-          "priority": "strong"
-        },
-        {
-          "condition": "普通贪婪",
-          "rewardName": "解锁角色莉莉丝",
-          "priority": "strong"
-        },
-        {
-          "condition": "头目车轮战",
-          "rewardName": "钉子",
-          "priority": "recommended"
-        },
-        {
-          "condition": "死寂",
-          "rewardName": "虚空之喉",
-          "priority": "recommended"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "恶魔王冠",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c01-magdalene",
+      "bossId": "hush",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 8,
-      "items": [
-        {
-          "condition": "精神错乱",
-          "rewardName": "复杂性骨折",
-          "priority": "recommended"
-        },
-        {
-          "condition": "以撒",
-          "rewardName": "拉撒路的绷带",
-          "priority": "recommended"
-        },
-        {
-          "condition": "???",
-          "rewardName": "商店积分",
-          "priority": "recommended"
-        },
-        {
-          "condition": "羔羊",
-          "rewardName": "潘多拉魔盒 [非道具]",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "灵魂出窍",
-          "priority": "recommended"
-        },
-        {
-          "condition": "死寂",
-          "rewardName": "空容器",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c01-magdalene",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 9,
-      "items": [
-        {
-          "condition": "母亲",
-          "rewardName": "M (M进程)",
-          "priority": "strong"
-        },
-        {
-          "condition": "头目车轮战",
-          "rewardName": "未定义",
-          "priority": "recommended"
-        },
-        {
-          "condition": "死寂",
-          "rewardName": "伊甸的祝福",
-          "priority": "recommended"
-        },
-        {
-          "condition": "以撒",
-          "rewardName": "空白卡牌",
-          "priority": "recommended"
-        },
-        {
-          "condition": "撒旦",
-          "rewardName": "秘密之书",
-          "priority": "recommended"
-        },
-        {
-          "condition": "羔羊",
-          "rewardName": "神秘的袋子",
-          "priority": "recommended"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "伊甸的灵魂",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "百宝罐",
-          "priority": "strong"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "节拍器",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c01-magdalene",
+      "bossId": "blue-baby",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 10,
-      "items": [
-        {
-          "condition": "完成所有困难模式",
-          "rewardName": "神性",
-          "priority": "strong"
-        },
-        {
-          "condition": "头目车轮战",
-          "rewardName": "一百面骰",
-          "priority": "recommended"
-        },
-        {
-          "condition": "以撒",
-          "rewardName": "以撒的心脏",
-          "priority": "recommended"
-        },
-        {
-          "condition": "撒旦",
-          "rewardName": "心智",
-          "priority": "recommended"
-        },
-        {
-          "condition": "???",
-          "rewardName": "肉体",
-          "priority": "recommended"
-        },
-        {
-          "condition": "羔羊",
-          "rewardName": "灵魂",
-          "priority": "recommended"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "神圣卡",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c01-magdalene",
+      "bossId": "lamb",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 11,
-      "items": [
-        {
-          "condition": "死寂",
-          "rewardName": "淫魔",
-          "priority": "strong"
-        },
-        {
-          "condition": "以撒",
-          "rewardName": "符文袋",
-          "priority": "strong"
-        },
-        {
-          "condition": "???",
-          "rewardName": "恶魔受胎",
-          "priority": "strong"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "嗜血小宠",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "剖腹产",
-          "priority": "strong"
-        },
-        {
-          "condition": "头目车轮战",
-          "rewardName": "圣灵受胎",
-          "priority": "recommended"
-        },
-        {
-          "condition": "撒旦",
-          "rewardName": "蛇蝎之吻",
-          "priority": "recommended"
-        },
-        {
-          "condition": "羔羊",
-          "rewardName": "魅魔",
-          "priority": "recommended"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "安乐死",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c01-magdalene",
+      "bossId": "delirium",
+      "priority": "strong"
     },
     {
-      "characterIndex": 12,
-      "items": [
-        {
-          "condition": "精神错乱",
-          "rewardName": "弯币",
-          "priority": "strong"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "店主的胯袋",
-          "priority": "strong"
-        },
-        {
-          "condition": "死寂",
-          "rewardName": "一枚硬币",
-          "priority": "recommended"
-        },
-        {
-          "condition": "以撒",
-          "rewardName": "木制硬币",
-          "priority": "recommended"
-        },
-        {
-          "condition": "???",
-          "rewardName": "深口袋",
-          "priority": "recommended"
-        },
-        {
-          "condition": "超级撒旦",
-          "rewardName": "上吊绳宝宝 [非道具]",
-          "priority": "recommended"
-        },
-        {
-          "condition": "普通贪婪",
-          "rewardName": "贪婪的肋骨",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c01-magdalene",
+      "bossId": "beast",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 13,
-      "items": [
-        {
-          "condition": "精神错乱",
-          "rewardName": "虚空",
-          "priority": "strong"
-        },
-        {
-          "condition": "困难妈心",
-          "rewardName": "熔炉",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "触手朋友",
-          "priority": "recommended"
-        },
-        {
-          "condition": "普通贪婪",
-          "rewardName": "黑符文",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c01-magdalene",
+      "bossId": "greedier",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 14,
-      "items": [
-        {
-          "condition": "羔羊",
-          "rewardName": "脆骨症",
-          "priority": "strong"
-        },
-        {
-          "condition": "头目车轮战",
-          "rewardName": "离婚协议书",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难妈心",
-          "rewardName": "骨髓",
-          "priority": "recommended"
-        },
-        {
-          "condition": "死寂",
-          "rewardName": "圣地大便",
-          "priority": "recommended"
-        },
-        {
-          "condition": "撒旦",
-          "rewardName": "尖肋骨",
-          "priority": "recommended"
-        },
-        {
-          "condition": "???",
-          "rewardName": "颌骨",
-          "priority": "recommended"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "亡者之书",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c02-cain",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 15,
-      "items": [
-        {
-          "condition": "???",
-          "rewardName": "神圣硬币",
-          "priority": "strong"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "终末天启",
-          "priority": "strong"
-        },
-        {
-          "condition": "以撒",
-          "rewardName": "美德之书",
-          "priority": "recommended"
-        },
-        {
-          "condition": "撒旦",
-          "rewardName": "灵魂之翁",
-          "priority": "recommended"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "伯列恒之星",
-          "priority": "recommended"
-        },
-        {
-          "condition": "普通贪婪",
-          "rewardName": "灵魂吊坠",
-          "priority": "recommended"
-        }
-      ]
+      "characterId": "c02-cain",
+      "bossId": "satan",
+      "priority": "recommended"
     },
     {
-      "characterIndex": 16,
-      "items": [
-        {
-          "condition": "以撒",
-          "rewardName": "天堂的阶梯",
-          "priority": "strong"
-        },
-        {
-          "condition": "羔羊",
-          "rewardName": "达摩克利斯之剑",
-          "priority": "strong"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "背摔",
-          "priority": "recommended"
-        },
-        {
-          "condition": "头目车轮战",
-          "rewardName": "谷底石",
-          "priority": "strong"
-        },
-        {
-          "condition": "死寂",
-          "rewardName": "消失的跑胎",
-          "priority": "recommended"
-        },
-        {
-          "condition": "普通贪婪",
-          "rewardName": "内在儿童",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "创世纪",
-          "priority": "recommended"
-        },
-        {
-          "condition": "???",
-          "rewardName": "长子权",
-          "priority": "strong"
-        }
-      ]
+      "characterId": "c02-cain",
+      "bossId": "mother",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c02-cain",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c02-cain",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c03-judas",
+      "bossId": "boss-rush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c03-judas",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c03-judas",
+      "bossId": "lamb",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c03-judas",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c03-judas",
+      "bossId": "greedier",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c04-4",
+      "bossId": "isaac-boss",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c04-4",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c04-4",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c04-4",
+      "bossId": "mother",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c05-eve",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c05-eve",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c05-eve",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c05-eve",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c05-eve",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c06-samson",
+      "bossId": "isaac-boss",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c06-samson",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c06-samson",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c06-samson",
+      "bossId": "mother",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c06-samson",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c06-samson",
+      "bossId": "greed",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c07-azazel",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c07-azazel",
+      "bossId": "hush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c07-azazel",
+      "bossId": "isaac-boss",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c07-azazel",
+      "bossId": "blue-baby",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c07-azazel",
+      "bossId": "mother",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c07-azazel",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c07-azazel",
+      "bossId": "greed",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c08-lazarus",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c08-lazarus",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c08-lazarus",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c08-lazarus",
+      "bossId": "lamb",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c08-lazarus",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c08-lazarus",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c09-eden",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c09-eden",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c09-eden",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c09-eden",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c09-eden",
+      "bossId": "lamb",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c09-eden",
+      "bossId": "delirium",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c09-eden",
+      "bossId": "mother",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c09-eden",
+      "bossId": "beast",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c09-eden",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c10-the-lost",
+      "bossId": "boss-rush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c10-the-lost",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c10-the-lost",
+      "bossId": "satan",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c10-the-lost",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c10-the-lost",
+      "bossId": "lamb",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c10-the-lost",
+      "bossId": "delirium",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c11-lilith",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c11-lilith",
+      "bossId": "hush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c11-lilith",
+      "bossId": "isaac-boss",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c11-lilith",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c11-lilith",
+      "bossId": "blue-baby",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c11-lilith",
+      "bossId": "lamb",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c11-lilith",
+      "bossId": "delirium",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c11-lilith",
+      "bossId": "beast",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c11-lilith",
+      "bossId": "greed",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c12-keeper",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c12-keeper",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c12-keeper",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c12-keeper",
+      "bossId": "lamb",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c12-keeper",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c12-keeper",
+      "bossId": "mother",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c12-keeper",
+      "bossId": "greed",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c13-apollyon",
+      "bossId": "moms-heart",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c13-apollyon",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c13-apollyon",
+      "bossId": "beast",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c13-apollyon",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c14-the-forgotten",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c14-the-forgotten",
+      "bossId": "moms-heart",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c14-the-forgotten",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c14-the-forgotten",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c14-the-forgotten",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c14-the-forgotten",
+      "bossId": "lamb",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c14-the-forgotten",
+      "bossId": "delirium",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c15-bethany",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c15-bethany",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c15-bethany",
+      "bossId": "blue-baby",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c15-bethany",
+      "bossId": "delirium",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c15-bethany",
+      "bossId": "mother",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c15-bethany",
+      "bossId": "greed",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c16-jacob-and-esau",
+      "bossId": "boss-rush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c16-jacob-and-esau",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c16-jacob-and-esau",
+      "bossId": "isaac-boss",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c16-jacob-and-esau",
+      "bossId": "blue-baby",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c16-jacob-and-esau",
+      "bossId": "lamb",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c16-jacob-and-esau",
+      "bossId": "delirium",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c16-jacob-and-esau",
+      "bossId": "greed",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c16-jacob-and-esau",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c17-tainted-isaac",
+      "bossId": "boss-rush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c17-tainted-isaac",
+      "bossId": "hush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c17-tainted-isaac",
+      "bossId": "mega-satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c17-tainted-isaac",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c17-tainted-isaac",
+      "bossId": "mother",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c17-tainted-isaac",
+      "bossId": "beast",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c17-tainted-isaac",
+      "bossId": "greedier",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c18-tainted-magdalene",
+      "bossId": "mega-satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c18-tainted-magdalene",
+      "bossId": "delirium",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c18-tainted-magdalene",
+      "bossId": "mother",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c18-tainted-magdalene",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c18-tainted-magdalene",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c19-tainted-cain",
+      "bossId": "boss-rush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c19-tainted-cain",
+      "bossId": "hush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c19-tainted-cain",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c19-tainted-cain",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c19-tainted-cain",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c19-tainted-cain",
+      "bossId": "lamb",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c19-tainted-cain",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c20-tainted-judas",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c20-tainted-judas",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c20-tainted-judas",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c20-tainted-judas",
+      "bossId": "lamb",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c20-tainted-judas",
+      "bossId": "mega-satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c20-tainted-judas",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c20-tainted-judas",
+      "bossId": "beast",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c21-tainted",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c21-tainted",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c22-tainted-eve",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c22-tainted-eve",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c22-tainted-eve",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c22-tainted-eve",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c22-tainted-eve",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c22-tainted-eve",
+      "bossId": "lamb",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c22-tainted-eve",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c22-tainted-eve",
+      "bossId": "mother",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c22-tainted-eve",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c22-tainted-eve",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c23-tainted-samson",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c23-tainted-samson",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c23-tainted-samson",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c23-tainted-samson",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c23-tainted-samson",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c23-tainted-samson",
+      "bossId": "lamb",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c23-tainted-samson",
+      "bossId": "mega-satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c23-tainted-samson",
+      "bossId": "delirium",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c23-tainted-samson",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c23-tainted-samson",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c24-tainted-azazel",
+      "bossId": "boss-rush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c24-tainted-azazel",
+      "bossId": "hush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c24-tainted-azazel",
+      "bossId": "mother",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c24-tainted-azazel",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c25-tainted-lazarus",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c25-tainted-lazarus",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c25-tainted-lazarus",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c25-tainted-lazarus",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c25-tainted-lazarus",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c25-tainted-lazarus",
+      "bossId": "lamb",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c25-tainted-lazarus",
+      "bossId": "mega-satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c25-tainted-lazarus",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c25-tainted-lazarus",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c25-tainted-lazarus",
+      "bossId": "greedier",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c26-tainted-eden",
+      "bossId": "boss-rush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c26-tainted-eden",
+      "bossId": "hush",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c26-tainted-eden",
+      "bossId": "mega-satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c26-tainted-eden",
+      "bossId": "greedier",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c27-tainted-lost",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c27-tainted-lost",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c27-tainted-lost",
+      "bossId": "mother",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c27-tainted-lost",
+      "bossId": "beast",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c27-tainted-lost",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c28-tainted-lilith",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c28-tainted-lilith",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c28-tainted-lilith",
+      "bossId": "mega-satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c28-tainted-lilith",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c28-tainted-lilith",
+      "bossId": "mother",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c28-tainted-lilith",
+      "bossId": "beast",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c29-tainted-keeper",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c29-tainted-keeper",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c29-tainted-keeper",
+      "bossId": "isaac-boss",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c29-tainted-keeper",
+      "bossId": "satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c29-tainted-keeper",
+      "bossId": "blue-baby",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c29-tainted-keeper",
+      "bossId": "lamb",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c29-tainted-keeper",
+      "bossId": "mega-satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c29-tainted-keeper",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c30-tainted-apollyon",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c30-tainted-apollyon",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c30-tainted-apollyon",
+      "bossId": "delirium",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c30-tainted-apollyon",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c30-tainted-apollyon",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c31-tainted-forgotten",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c31-tainted-forgotten",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c31-tainted-forgotten",
+      "bossId": "mother",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c31-tainted-forgotten",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c32-tainted-bethany",
+      "bossId": "mega-satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c32-tainted-bethany",
+      "bossId": "mother",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c32-tainted-bethany",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c32-tainted-bethany",
+      "bossId": "greedier",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c33-tainted-jacob",
+      "bossId": "boss-rush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c33-tainted-jacob",
+      "bossId": "hush",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c33-tainted-jacob",
+      "bossId": "mega-satan",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c33-tainted-jacob",
+      "bossId": "mother",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c33-tainted-jacob",
+      "bossId": "beast",
+      "priority": "strong"
+    },
+    {
+      "characterId": "c33-tainted-jacob",
+      "bossId": "greedier",
+      "priority": "strong"
     }
-  ],
-  "tainted": [
-    {
-      "characterIndex": 17,
-      "items": [
-        {
-          "condition": "精神错乱",
-          "rewardName": "计数二十面骰 (红骰子)",
-          "priority": "strong"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "骰子袋",
-          "priority": "strong"
-        },
-        {
-          "condition": "头目/死寂",
-          "rewardName": "以撒的魂石",
-          "priority": "strong"
-        },
-        {
-          "condition": "超级撒旦",
-          "rewardName": "大箱子 [非道具]",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "错误王冠",
-          "priority": "strong"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "星星？卡牌",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 18,
-      "items": [
-        {
-          "condition": "超级撒旦",
-          "rewardName": "红桃Q",
-          "priority": "recommended"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "高凝血",
-          "priority": "recommended"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "母亲的吻",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "肚肚软糖",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "恋人？卡牌",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 19,
-      "items": [
-        {
-          "condition": "头目/死寂",
-          "rewardName": "该隐的魂石",
-          "priority": "strong"
-        },
-        {
-          "condition": "以撒/撒旦/???/羔羊",
-          "rewardName": "镀金钥匙",
-          "priority": "recommended"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "合成宝袋",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 20,
-      "items": [
-        {
-          "condition": "头目/死寂",
-          "rewardName": "犹大的魂石",
-          "priority": "recommended"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "暗仪刺刀",
-          "priority": "strong"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "血色羁绊",
-          "priority": "strong"
-        },
-        {
-          "condition": "以撒/撒旦/???/羔羊",
-          "rewardName": "你的灵魂",
-          "priority": "recommended"
-        },
-        {
-          "condition": "超级撒旦",
-          "rewardName": "黑福袋 [非道具]",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 21,
-      "items": [
-        {
-          "condition": "祸兽",
-          "rewardName": "虫群",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "皇帝？卡牌",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 22,
-      "items": [
-        {
-          "condition": "精神错乱",
-          "rewardName": "圣血吸管",
-          "priority": "strong"
-        },
-        {
-          "condition": "头目/死寂",
-          "rewardName": "夏娃的魂石",
-          "priority": "recommended"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "小血团",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "心碎",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "皇后？卡牌",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 23,
-      "items": [
-        {
-          "condition": "以撒/撒旦/???/羔羊",
-          "rewardName": "纹身贴",
-          "priority": "recommended"
-        },
-        {
-          "condition": "超级撒旦",
-          "rewardName": "夹娃娃机 [非道具]",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "祸兽相关",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 24,
-      "items": [
-        {
-          "condition": "头目/死寂",
-          "rewardName": "阿撒泻勒的魂石",
-          "priority": "strong"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "恶魔？卡牌",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 25,
-      "items": [
-        {
-          "condition": "精神错乱",
-          "rewardName": "生死逆转 (Flip)",
-          "priority": "strong"
-        },
-        {
-          "condition": "以撒/撒旦/???/羔羊",
-          "rewardName": "破损的口袋",
-          "priority": "recommended"
-        },
-        {
-          "condition": "超级撒旦",
-          "rewardName": "木箱子 [非道具]",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "救恩",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 26,
-      "items": [
-        {
-          "condition": "头目/死寂",
-          "rewardName": "伊甸的魂石",
-          "priority": "strong"
-        },
-        {
-          "condition": "超级撒旦",
-          "rewardName": "万用牌",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "世界？卡牌",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 27,
-      "items": [
-        {
-          "condition": "头目/死寂",
-          "rewardName": "游魂的魂石",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "十字圣球",
-          "priority": "strong"
-        },
-        {
-          "condition": "以撒/撒旦/???/羔羊",
-          "rewardName": "儿童涂鸦",
-          "priority": "recommended"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "水晶钥匙",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "0-愚者？卡牌",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 28,
-      "items": [
-        {
-          "condition": "头目/死寂",
-          "rewardName": "莉莉丝的魂石",
-          "priority": "recommended"
-        },
-        {
-          "condition": "超级撒旦",
-          "rewardName": "愚人金 [非道具]",
-          "priority": "recommended"
-        },
-        {
-          "condition": "精神错乱",
-          "rewardName": "格罗",
-          "priority": "recommended"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "领养协议书",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "作孽双子",
-          "priority": "strong"
-        }
-      ]
-    },
-    {
-      "characterIndex": 29,
-      "items": [
-        {
-          "condition": "头目/死寂",
-          "rewardName": "店主的魂石",
-          "priority": "recommended"
-        },
-        {
-          "condition": "以撒/撒旦/???/羔羊",
-          "rewardName": "店主的协议",
-          "priority": "recommended"
-        },
-        {
-          "condition": "超级撒旦",
-          "rewardName": "金硬币 [非道具]",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "倒吊人？卡牌",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 30,
-      "items": [
-        {
-          "condition": "精神错乱",
-          "rewardName": "无底坑",
-          "priority": "strong"
-        },
-        {
-          "condition": "头目/死寂",
-          "rewardName": "亚玻伦的魂石",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "回声室",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "塔？卡牌",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 31,
-      "items": [
-        {
-          "condition": "头目/死寂",
-          "rewardName": "遗骸的魂石",
-          "priority": "recommended"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "空壳心",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "以撒的坟墓",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 32,
-      "items": [
-        {
-          "condition": "超级撒旦",
-          "rewardName": "忏悔室 [非道具]",
-          "priority": "recommended"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "所罗门魔典",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "教皇？卡牌",
-          "priority": "recommended"
-        }
-      ]
-    },
-    {
-      "characterIndex": 33,
-      "items": [
-        {
-          "condition": "超级撒旦",
-          "rewardName": "金饰品 [非道具]",
-          "priority": "recommended"
-        },
-        {
-          "condition": "母亲",
-          "rewardName": "复得游魂",
-          "priority": "recommended"
-        },
-        {
-          "condition": "祸兽",
-          "rewardName": "小以扫",
-          "priority": "recommended"
-        },
-        {
-          "condition": "困难贪婪",
-          "rewardName": "太阳与月亮卡牌",
-          "priority": "recommended"
-        }
-      ]
-    }
-  ],
-  "note": "Structured recommendation seed; v5 priority corrections are applied in build_recommendations.py from the user-provided update list."
+  ]
 }
