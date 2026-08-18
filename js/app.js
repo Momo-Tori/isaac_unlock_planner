@@ -4,6 +4,7 @@
   const DATA = window.ISAAC_UNLOCK_DATA;
   const EFFECTS = window.ISAAC_EFFECTS?.entries || {};
   const CHALLENGES = window.ISAAC_CHALLENGE_DATA?.entries || [];
+  const ACHIEVEMENTS = window.ISAAC_ACHIEVEMENT_DATA;
   const OVERRIDES = window.ISAAC_OVERRIDES || {};
   const PROFILE_BUNDLE = window.ISAAC_RECOMMENDATION_PROFILES;
   const Parser = window.IsaacSaveParser;
@@ -23,7 +24,7 @@
     return `${url}${joiner}v=${encodeURIComponent(CACHE_VERSION)}`;
   }
 
-  if (!DATA || !Parser || !PROFILE_BUNDLE) {
+  if (!DATA || !Parser || !PROFILE_BUNDLE || !ACHIEVEMENTS) {
     throw new Error('页面数据、推荐方案或存档解析器未加载。');
   }
 
@@ -43,11 +44,20 @@
   const rulesById = new Map(DATA.unlockRules.map((rule) => [rule.id, rule]));
   const validPairs = new Set(DATA.unlockRules.flatMap((rule) => rule.bossIds.map((bossId) => pairKey(rule.characterId, bossId))));
   const validChallengeIds = new Set(CHALLENGES.map((x) => Number(x.challengeId)));
+  const achievementLists = [
+    ACHIEVEMENTS.main,
+    ACHIEVEMENTS.characters.normal,
+    ACHIEVEMENTS.characters.tainted,
+    ACHIEVEMENTS.cumulative,
+    ACHIEVEMENTS.completion
+  ];
+  const validAchievementListIds = new Set(achievementLists.flat().map((x) => Number(x.achievementId)));
   const builtinProfiles = new Map((PROFILE_BUNDLE.profiles || []).map((x) => [x.id, x]));
 
   const runtimePriority = {
     recommendationByPair: new Map(),
-    challengeById: new Map()
+    challengeById: new Map(),
+    achievementById: new Map()
   };
 
   const state = {
@@ -72,6 +82,8 @@
     selectionSummary: document.getElementById('selectionSummary'),
     tableHead: document.getElementById('tableHead'),
     tableBody: document.getElementById('tableBody'),
+    standardResults: document.getElementById('standardResults'),
+    achievementResults: document.getElementById('achievementResults'),
     showUnlocked: document.getElementById('showUnlocked'),
     saveInput: document.getElementById('saveInput'),
     loadSaveBtn: document.getElementById('loadSaveBtn'),
@@ -231,6 +243,10 @@
     return runtimePriority.challengeById.get(Number(challengeId)) || 'normal';
   }
 
+  function achievementPriority(achievementId) {
+    return runtimePriority.achievementById.get(Number(achievementId)) || 'normal';
+  }
+
   function unlockStatus(aid) {
     if (!state.save) return null;
     return state.save.isAchievementUnlocked(aid);
@@ -273,7 +289,8 @@
       challenges: (profile.challenges || []).map((x) => ({
         challengeId: Number(x.challengeId),
         priority: normalizePriority(x.priority)
-      }))
+      })),
+      achievements: []
     };
   }
 
@@ -315,6 +332,16 @@
       if (priority !== 'normal') challengeMap.set(cid, priority);
     }
 
+    const achievementMap = new Map();
+    for (const entry of raw.achievements || []) {
+      const aid = Number(entry?.achievementId);
+      if (!validAchievementListIds.has(aid)) throw new Error(`配置包含未知成就 ID：${entry?.achievementId}`);
+      if (achievementMap.has(aid)) throw new Error(`配置包含重复成就 ID：${aid}`);
+      const priority = normalizePriority(entry.priority);
+      if (priority !== entry.priority) throw new Error(`无效成就优先级：${entry.priority}`);
+      if (priority !== 'normal') achievementMap.set(aid, priority);
+    }
+
     return {
       format: PROFILE_FORMAT,
       version: PROFILE_VERSION,
@@ -325,7 +352,8 @@
       customized: Boolean(raw.customized),
       updatedAt: String(raw.updatedAt || new Date().toISOString()),
       pairMap,
-      challengeMap
+      challengeMap,
+      achievementMap
     };
   }
 
@@ -348,6 +376,11 @@
       priority: challengePriority(challenge.challengeId)
     }));
 
+    const achievements = [...validAchievementListIds].sort((a, b) => a - b).map((achievementId) => ({
+      achievementId,
+      priority: achievementPriority(achievementId)
+    }));
+
     return {
       format: PROFILE_FORMAT,
       version: PROFILE_VERSION,
@@ -358,7 +391,8 @@
       customized: Boolean(state.currentProfile?.customized),
       updatedAt: new Date().toISOString(),
       characterBoss,
-      challenges
+      challenges,
+      achievements
     };
   }
 
@@ -374,6 +408,7 @@
     const parsed = validateProfileSnapshot(raw);
     runtimePriority.recommendationByPair = parsed.pairMap;
     runtimePriority.challengeById = parsed.challengeMap;
+    runtimePriority.achievementById = parsed.achievementMap;
     state.currentProfile = {
       format: parsed.format,
       version: parsed.version,
@@ -430,6 +465,17 @@
     const normalized = normalizePriority(priority);
     if (normalized === 'normal') runtimePriority.challengeById.delete(cid);
     else runtimePriority.challengeById.set(cid, normalized);
+    markProfileCustomized();
+    closePriorityMenu();
+    render();
+  }
+
+  function setAchievementPriority(achievementId, priority) {
+    const aid = Number(achievementId);
+    if (!validAchievementListIds.has(aid)) return;
+    const normalized = normalizePriority(priority);
+    if (normalized === 'normal') runtimePriority.achievementById.delete(aid);
+    else runtimePriority.achievementById.set(aid, normalized);
     markProfileCustomized();
     closePriorityMenu();
     render();
@@ -765,16 +811,120 @@
     }).join('');
   }
 
+  function sortedAchievementRows(entries) {
+    let rows = entries.map((entry, order) => ({
+      entry,
+      order,
+      priority: achievementPriority(entry.achievementId),
+      unlocked: unlockStatus(entry.achievementId)
+    }));
+    if (!state.showUnlocked && state.save) rows = rows.filter((row) => row.unlocked !== true);
+    rows.sort((a, b) => {
+      if (state.sort === 'priority') {
+        const difference = PRIORITY_SCORE[b.priority] - PRIORITY_SCORE[a.priority];
+        if (difference) return difference;
+      }
+      return a.order - b.order;
+    });
+    return rows;
+  }
+
+  function achievementReward(entry) {
+    if (!entry.rewardName) return '<span class="effect-missing">无额外奖励</span>';
+    const effect = entry.rewardEffect
+      ? `<div class="achievement-reward-effect">${esc(entry.rewardEffect)}</div>`
+      : '';
+    return `<div class="achievement-reward"><strong>${esc(entry.rewardName)}</strong>${effect}</div>`;
+  }
+
+  function achievementTable(entries, { includeIsaac = false, characterStartIndex = null, showReward = true } = {}) {
+    const rows = sortedAchievementRows(entries);
+    const isaac = DATA.characters[0];
+    const characterByAchievement = characterStartIndex == null
+      ? new Map()
+      : new Map(entries.map((entry, index) => [entry.achievementId, DATA.characters[characterStartIndex + index]]));
+    const isaacRow = includeIsaac && (state.showUnlocked || !state.save)
+      ? `<tr class="unlock-row priority-normal default-character-row">
+          <td><div class="reward-cell">${safeImage([characterLocalImage(isaac), isaac.image], 'reward-thumb')}<div><div class="reward-name">以撒${priorityPill('normal')}</div><div class="meta-line">无对应成就 ID</div></div></div></td>
+          <td><div class="achievement-condition">游戏开始时默认开放。</div></td>${showReward ? '<td><strong>以撒</strong></td>' : ''}<td>${statusBadge(true)}</td><td class="row-options"></td>
+        </tr>`
+      : '';
+    const body = rows.map(({ entry, priority, unlocked }, index) => {
+      const groupStart = entry.sequenceGroup && (index === 0 || rows[index - 1].entry.sequenceGroup !== entry.sequenceGroup)
+        ? ' sequence-start'
+        : '';
+      const wikiUrl = `https://isaac.huijiwiki.com/wiki/${encodeURIComponent('成就')}/${entry.achievementId}`;
+      const character = characterByAchievement.get(entry.achievementId);
+      const icon = character
+        ? safeImage([characterLocalImage(character), character.image], 'reward-thumb')
+        : achievementSprite(entry.achievementId);
+      return `<tr class="unlock-row priority-${priority}${groupStart}">
+        <td><div class="reward-cell">${icon}<div><div class="reward-name"><a class="reward-link" href="${esc(wikiUrl)}" target="_blank" rel="noopener noreferrer">${esc(entry.name)}</a>${priorityPill(priority)}</div><div class="meta-line">成就 ID #${entry.achievementId}</div></div></div></td>
+        <td><div class="achievement-condition">${esc(entry.condition)}</div></td>
+        ${showReward ? `<td>${achievementReward(entry)}</td>` : ''}
+        <td>${statusBadge(unlocked)}</td>
+        <td class="row-options">${rowMenuButton('achievement', entry.achievementId, priority)}</td>
+      </tr>`;
+    }).join('');
+    const columnCount = showReward ? 5 : 4;
+    const empty = !isaacRow && !body
+      ? `<tr class="empty-state"><td colspan="${columnCount}"><strong>这一类成就已经全部完成</strong><span>打开“显示已解锁”可以重新查看完整列表。</span></td></tr>`
+      : '';
+    const rewardHeader = showReward ? '<th>奖励</th>' : '';
+    return `<div class="table-wrap achievement-table-wrap"><table class="unlock-table achievement-table${showReward ? '' : ' without-reward'}"><thead><tr><th>成就图标和名称</th><th>解锁条件</th>${rewardHeader}<th>是否解锁</th><th class="options-column" aria-label="选项"></th></tr></thead><tbody>${isaacRow}${body}${empty}</tbody></table></div>`;
+  }
+
+  function achievementGraph() {
+    const positions = new Map([
+      [4, [8, 124]], [234, [118, 124]],
+      [34, [228, 48]], [57, [358, 0]], [78, [358, 96]],
+      [320, [228, 220]], [407, [338, 220]], [635, [448, 220]]
+    ]);
+    const arrows = ACHIEVEMENTS.mainEdges.map(([from, to]) => {
+      const [x1, y1] = positions.get(from);
+      const [x2, y2] = positions.get(to);
+      return `<path d="M ${x1 + 36} ${y1 + 36} L ${x2 + 36} ${y2 + 36}" marker-end="url(#achievementArrow)" />`;
+    }).join('');
+    const nodes = ACHIEVEMENTS.main.map((entry) => {
+      const [x, y] = positions.get(entry.achievementId);
+      const unlocked = unlockStatus(entry.achievementId);
+      const stateClass = unlocked === false ? ' locked' : unlocked === true ? ' unlocked' : '';
+      const stateLabel = unlocked === false ? '，未解锁' : unlocked === true ? '，已解锁' : '';
+      return `<g class="achievement-graph-item${stateClass}"><title>${esc(entry.name)}，成就 #${entry.achievementId}${stateLabel}</title><rect class="achievement-graph-node" x="${x}" y="${y}" width="72" height="72" rx="6" /><foreignObject x="${x + 4}" y="${y + 4}" width="64" height="64"><div xmlns="http://www.w3.org/1999/xhtml" class="achievement-graph-icon">${achievementSprite(entry.achievementId)}</div></foreignObject></g>`;
+    }).join('');
+    return `<div class="achievement-graph-wrap"><svg class="achievement-graph" viewBox="0 0 528 292" role="img" aria-label="主线成就解锁流程"><defs><marker id="achievementArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" /></marker></defs><g class="achievement-graph-edges">${arrows}</g>${nodes}</svg></div>`;
+  }
+
+  function achievementSection(title, count, content, extraClass = '') {
+    return `<section class="achievement-category ${extraClass}"><div class="achievement-category-heading"><div><span class="section-kicker">其他成就</span><h2>${esc(title)}</h2></div><span>${count} 个成就</span></div>${content}</section>`;
+  }
+
+  function renderAchievementRows() {
+    const characterColumns = `<div class="achievement-character-columns"><div><h3>表角色</h3>${achievementTable(ACHIEVEMENTS.characters.normal, { includeIsaac: true, characterStartIndex: 1, showReward: false })}</div><div><h3>里角色</h3>${achievementTable(ACHIEVEMENTS.characters.tainted, { characterStartIndex: 17, showReward: false })}</div></div>`;
+    el.achievementResults.innerHTML = [
+      achievementSection('主线成就', ACHIEVEMENTS.main.length, achievementGraph() + achievementTable(ACHIEVEMENTS.main), 'main-achievements'),
+      achievementSection('角色解锁类', ACHIEVEMENTS.characters.normal.length + ACHIEVEMENTS.characters.tainted.length, characterColumns),
+      achievementSection('次数 / 累计型成就', ACHIEVEMENTS.cumulative.length, achievementTable(ACHIEVEMENTS.cumulative)),
+      achievementSection('完成类成就', ACHIEVEMENTS.completion.length, achievementTable(ACHIEVEMENTS.completion))
+    ].join('');
+  }
+
   function render() {
     document.querySelectorAll('.page-tab').forEach((b) => b.classList.toggle('active', b.dataset.view === state.view));
     document.querySelectorAll('.segment').forEach((b) => b.classList.toggle('active', b.dataset.sort === state.sort));
     el.showUnlocked.checked = state.showUnlocked;
     renderProfileControls();
-    const isChallenge = state.view === 'challenge';
-    el.selectorSection.hidden = isChallenge;
-    if (!isChallenge) renderEntityGrid();
-    renderHeader();
-    renderRows();
+    const hasSelector = state.view === 'character' || state.view === 'boss';
+    const isAchievement = state.view === 'achievement';
+    el.selectorSection.hidden = !hasSelector;
+    el.standardResults.hidden = isAchievement;
+    el.achievementResults.hidden = !isAchievement;
+    if (hasSelector) renderEntityGrid();
+    if (isAchievement) renderAchievementRows();
+    else {
+      renderHeader();
+      renderRows();
+    }
   }
 
   // ---------- Priority menu ----------
@@ -815,12 +965,18 @@
     button.addEventListener('click', () => {
       state.sort = button.dataset.sort;
       persistUiPreferences();
-      renderRows();
+      if (state.view === 'achievement') renderAchievementRows();
+      else renderRows();
       document.querySelectorAll('.segment').forEach((b) => b.classList.toggle('active', b.dataset.sort === state.sort));
     });
   });
 
-  el.showUnlocked.addEventListener('change', () => { state.showUnlocked = el.showUnlocked.checked; persistUiPreferences(); renderRows(); });
+  el.showUnlocked.addEventListener('change', () => {
+    state.showUnlocked = el.showUnlocked.checked;
+    persistUiPreferences();
+    if (state.view === 'achievement') renderAchievementRows();
+    else renderRows();
+  });
   el.loadSaveBtn.addEventListener('click', () => el.saveInput.click());
   el.clearSaveBtn.addEventListener('click', clearPersistedSave);
   el.saveInput.addEventListener('change', () => loadSave(el.saveInput.files?.[0]));
@@ -832,7 +988,7 @@
   el.exportProfileBtn.addEventListener('click', exportCurrentProfile);
   el.profileImportInput.addEventListener('change', () => importProfileFile(el.profileImportInput.files?.[0]));
 
-  el.tableBody.addEventListener('click', (event) => {
+  function handleRowMenuClick(event) {
     const button = event.target.closest('.row-menu-button');
     if (!button) return;
     event.stopPropagation();
@@ -841,7 +997,10 @@
     } else {
       openPriorityMenu(button);
     }
-  });
+  }
+
+  el.tableBody.addEventListener('click', handleRowMenuClick);
+  el.achievementResults.addEventListener('click', handleRowMenuClick);
 
   el.priorityMenu.addEventListener('click', (event) => {
     const item = event.target.closest('[data-set-priority]');
@@ -849,6 +1008,7 @@
     const priority = item.dataset.setPriority;
     if (state.menuTarget.kind === 'rule') setRulePriority(state.menuTarget.id, priority);
     else if (state.menuTarget.kind === 'challenge') setChallengePriority(state.menuTarget.id, priority);
+    else if (state.menuTarget.kind === 'achievement') setAchievementPriority(state.menuTarget.id, priority);
   });
 
   document.addEventListener('click', (event) => {
