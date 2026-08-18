@@ -59,7 +59,9 @@
     save: null,
     saveName: '',
     currentProfile: null,
-    menuTarget: null
+    menuTarget: null,
+    toastTimer: null,
+    toastHideTimer: null
   };
 
   const el = {
@@ -81,7 +83,8 @@
     importProfileBtn: document.getElementById('importProfileBtn'),
     exportProfileBtn: document.getElementById('exportProfileBtn'),
     profileImportInput: document.getElementById('profileImportInput'),
-    priorityMenu: document.getElementById('priorityMenu')
+    priorityMenu: document.getElementById('priorityMenu'),
+    toast: document.getElementById('toast')
   };
 
   function pairKey(characterId, bossId) {
@@ -100,6 +103,37 @@
   function safeStorageSet(key, value) {
     try { window.localStorage.setItem(key, value); return true; }
     catch (error) { console.warn('localStorage 写入失败：', error); return false; }
+  }
+
+  function showToast(message) {
+    if (!el.toast) return;
+    window.clearTimeout(state.toastTimer);
+    window.clearTimeout(state.toastHideTimer);
+    el.toast.textContent = message;
+    el.toast.hidden = false;
+    requestAnimationFrame(() => el.toast.classList.add('show'));
+    state.toastTimer = window.setTimeout(() => {
+      el.toast.classList.remove('show');
+      state.toastHideTimer = window.setTimeout(() => { el.toast.hidden = true; }, 180);
+    }, 1800);
+  }
+
+  async function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.top = '-1000px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    const copied = document.execCommand('copy');
+    textarea.remove();
+    if (!copied) throw new Error('复制失败');
   }
 
   function safeStorageRemove(key) {
@@ -820,6 +854,21 @@
   document.addEventListener('click', (event) => {
     if (!el.priorityMenu.hidden && !el.priorityMenu.contains(event.target) && !event.target.closest('.row-menu-button')) closePriorityMenu();
   });
+
+  document.querySelectorAll('[data-copy-path]').forEach((node) => {
+    const handleCopy = async () => {
+      try {
+        await copyText(node.dataset.copyPath || node.textContent || '');
+        showToast('路径已复制到剪贴板');
+      } catch (error) {
+        console.warn('路径复制失败：', error);
+        showToast('复制失败，请手动选择路径');
+      }
+    };
+
+    node.addEventListener('click', handleCopy);
+  });
+
   window.addEventListener('resize', closePriorityMenu);
   window.addEventListener('scroll', closePriorityMenu, true);
 

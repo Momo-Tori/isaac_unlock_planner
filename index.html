@@ -35,8 +35,8 @@
         </div>
         <div class="save-hint">
           <strong>找不到存档？</strong> 通常可在
-          <code>%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance</code>
-          或 <code>%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance+\save_backups</code>
+          <code class="copy-path" role="button" tabindex="0" data-copy-path="%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance" title="点击复制">%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance</code>
+          或 <code class="copy-path" role="button" tabindex="0" data-copy-path="%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance+\save_backups" title="点击复制">%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance+\save_backups</code>
           中寻找时间最近的 <code>...persistentgamedata*.dat</code>（其中星号 <code>*</code> 的数字表示第几个存档）。
           成功读取后会将该存档内容保存在当前浏览器中，下次打开自动恢复；游戏进度变化后请重新读取最新存档。
         </div>
@@ -104,6 +104,7 @@
     </main>
 
     <div class="priority-menu" id="priorityMenu" hidden role="menu" aria-label="修改优先级"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
     <footer>
       <p><strong>推荐数据来源与致谢</strong></p>

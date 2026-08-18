@@ -70,6 +70,18 @@ h2 { margin: 4px 0 0; font-size: 23px; }
 .save-hint { grid-column: 1 / -1; padding-top: 10px; border-top: 1px solid rgba(99,89,82,.4); color: var(--muted); font-size: 10px; line-height: 1.65; }
 .save-hint strong { color: #d9d0c8; }
 .save-hint code { word-break: break-all; }
+.copy-path {
+  cursor: pointer;
+  border: 1px solid rgba(219,201,159,.16);
+  transition: border-color .12s, background .12s, color .12s;
+}
+.copy-path:hover,
+.copy-path:focus-visible {
+  background: rgba(231,196,123,.13);
+  border-color: rgba(231,196,123,.48);
+  color: #fff0c4;
+  outline: none;
+}
 .page-tabs { margin-top: 30px; display: flex; gap: 8px; align-items: center; border-bottom: 1px solid var(--line); }
 .page-tab { border: 0; border-bottom: 2px solid transparent; background: transparent; padding: 13px 18px 12px; color: var(--muted); cursor: pointer; font-weight: 800; }
 .page-tab:hover { color: var(--ink); }
@@ -270,6 +282,28 @@ code { background: rgba(255,255,255,.05); padding: 2px 5px; border-radius: 5px; 
 .priority-menu-dot.recommended { background: var(--recommended-border); }
 .priority-menu-dot.normal { background: var(--normal-border); }
 .priority-menu-check { text-align: right; color: var(--accent); font-weight: 900; }
+.toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 6000;
+  max-width: min(320px, calc(100vw - 32px));
+  border: 1px solid #6d6258;
+  border-radius: 8px;
+  background: #201c19;
+  color: #f5eadb;
+  box-shadow: 0 14px 34px rgba(0,0,0,.42);
+  padding: 11px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .18s, transform .18s;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 @media (max-width: 900px) {
   .recommendation-toolbar { align-items: flex-start; flex-direction: column; }
