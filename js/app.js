@@ -33,7 +33,8 @@
   const PROFILE_VERSION = 1;
   const STORAGE_KEYS = {
     profile: 'isaac_unlock_planner.current_profile.v1',
-    save: 'isaac_unlock_planner.cached_save.v1'
+    save: 'isaac_unlock_planner.cached_save.v1',
+    uiPreferences: 'isaac_unlock_planner.ui_preferences.v1'
   };
 
   const byId = (items) => new Map(items.map((x) => [x.id, x]));
@@ -104,6 +105,28 @@
   function safeStorageRemove(key) {
     try { window.localStorage.removeItem(key); }
     catch (error) { console.warn('localStorage 删除失败：', error); }
+  }
+
+  function persistUiPreferences() {
+    safeStorageSet(STORAGE_KEYS.uiPreferences, JSON.stringify({
+      version: 1,
+      sort: state.sort,
+      showUnlocked: state.showUnlocked
+    }));
+  }
+
+  function restoreUiPreferences() {
+    const stored = safeStorageGet(STORAGE_KEYS.uiPreferences);
+    if (!stored) return;
+    try {
+      const payload = JSON.parse(stored);
+      if (Number(payload.version) !== 1) throw new Error('偏好格式不受支持');
+      if (payload.sort === 'default' || payload.sort === 'priority') state.sort = payload.sort;
+      if (typeof payload.showUnlocked === 'boolean') state.showUnlocked = payload.showUnlocked;
+    } catch (error) {
+      console.warn('本地页面偏好损坏，已清除。', error);
+      safeStorageRemove(STORAGE_KEYS.uiPreferences);
+    }
   }
 
   function esc(value) {
@@ -757,12 +780,13 @@
   document.querySelectorAll('.segment').forEach((button) => {
     button.addEventListener('click', () => {
       state.sort = button.dataset.sort;
+      persistUiPreferences();
       renderRows();
       document.querySelectorAll('.segment').forEach((b) => b.classList.toggle('active', b.dataset.sort === state.sort));
     });
   });
 
-  el.showUnlocked.addEventListener('change', () => { state.showUnlocked = el.showUnlocked.checked; renderRows(); });
+  el.showUnlocked.addEventListener('change', () => { state.showUnlocked = el.showUnlocked.checked; persistUiPreferences(); renderRows(); });
   el.loadSaveBtn.addEventListener('click', () => el.saveInput.click());
   el.clearSaveBtn.addEventListener('click', clearPersistedSave);
   el.saveInput.addEventListener('change', () => loadSave(el.saveInput.files?.[0]));
@@ -809,6 +833,7 @@
   }));
   el.dropZone.addEventListener('drop', (event) => loadSave(event.dataTransfer?.files?.[0]));
 
+  restoreUiPreferences();
   initializeRecommendationProfile();
   restorePersistedSave();
   render();
