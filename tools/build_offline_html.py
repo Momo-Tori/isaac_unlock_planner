@@ -96,6 +96,7 @@ def patch_app_js_for_offline(js: str, assets: dict[str, str]) -> str:
 
 
 LINK_RE = re.compile(r"<link\b(?=[^>]*\brel=[\"']stylesheet[\"'])(?=[^>]*\bhref=[\"']([^\"']+)[\"'])[^>]*>", re.I)
+ICON_RE = re.compile(r"<link\b(?=[^>]*\brel=[\"'](?:shortcut\s+icon|icon)[\"'])(?=[^>]*\bhref=[\"']([^\"']+)[\"'])[^>]*>", re.I)
 SCRIPT_RE = re.compile(r"<script\b(?=[^>]*\bsrc=[\"']([^\"']+)[\"'])[^>]*>\s*</script>", re.I)
 
 
@@ -111,6 +112,13 @@ def build(input_path: Path, output_path: Path) -> None:
         css = inline_css_assets(path.read_text(encoding="utf-8"), path)
         return f'<style data-offline-src="{href}">\n{css}\n</style>'
 
+    def replace_icon(match: re.Match[str]) -> str:
+        href = match.group(1)
+        path = local_path(href, input_path.parent)
+        if path is None or not path.exists():
+            raise SystemExit(f"Icon not found: {href}")
+        return f'<link rel="icon" type="image/png" href="{data_uri(path)}" data-offline-src="{href}" />'
+
     def replace_script(match: re.Match[str]) -> str:
         src = match.group(1)
         path = local_path(src, input_path.parent)
@@ -122,6 +130,7 @@ def build(input_path: Path, output_path: Path) -> None:
         return f'<script data-offline-src="{src}">\n{js}\n</script>'
 
     html = LINK_RE.sub(replace_link, html)
+    html = ICON_RE.sub(replace_icon, html)
     html = SCRIPT_RE.sub(replace_script, html)
     output_path.write_text(html, encoding="utf-8")
     print(f"Offline HTML -> {output_path.relative_to(ROOT)}")
