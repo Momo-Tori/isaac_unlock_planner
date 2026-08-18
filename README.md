@@ -12,7 +12,7 @@
 4. 页面默认按 **重要度顺序** 排列；也可以切换回 **默认顺序**。
 5. 载入存档后关闭 **显示已解锁**，即可只看还需要完成的目标。
 
-存档解析全部发生在浏览器本地，不会上传。解析结构参考灰机 Wiki 的 `Persistentgamedata.js`，项目中重新实现为只读取 Achievement block 的最小解析器。
+存档解析全部发生在当前页面内，不会上传到本工具服务器。B站 Toy 环境会优先使用 Toy JS SDK 的 CloudStorage 保存用户缓存；普通浏览器或离线版会回退到浏览器本地缓存。解析结构参考灰机 Wiki 的 `Persistentgamedata.js`，项目中重新实现为只读取 Achievement block 的最小解析器。
 
 ## 数据链
 
@@ -262,14 +262,15 @@ window.ISAAC_OVERRIDES = {
 
 ## 推荐方案、自定义与本地保存
 
-- 首次打开时，如果浏览器没有用户推荐配置，会将 `data/recommendation_profiles.js` 中的默认方案复制到 `localStorage`。
+- 首次打开时，如果没有用户推荐配置，会将 `data/recommendation_profiles.js` 中的默认方案复制到当前缓存。
 - 切换内置推荐方案时，会把选中的方案复制为新的当前用户配置。
 - 每条人物/Boss 成就最右侧都有 `⋮` 菜单，可即时改成 `strong / recommended / normal`；捆绑多个 Boss 的同一成就会同步修改全部对应 pair。
 - 挑战页也有相同的 `⋮` 菜单，按 `challengeId` 保存修改。
 - 其他成就页的主线、次数 / 累计型、完成类和角色解锁类同样有最右侧优先级菜单，按 achievement ID 保存修改。
 - 当前配置可导出为 JSON，也可以重新导入。导入成功后会成为当前本地配置。
-- 当前推荐配置只保存在当前站点 origin 的 `localStorage`；GitHub Pages 与另一个 FTP 域名之间不会共享浏览器数据。
-- 成功读取的 `persistentgamedata` 原始内容也会保存在 `localStorage`，下次进入自动重新解析。浏览器不能在下次访问时静默读取原来的文件系统路径，因此游戏进度更新后仍需重新选择最新 `.dat`。页面提供“清除本地缓存”按钮。
+- 在 B站 Toy 环境中，推荐配置、页面偏好和存档缓存会优先写入 Toy CloudStorage，按“登录用户 + Toy”隔离并支持跨设备恢复；如果 Toy SDK 不可用或云端写入失败，则回退到当前站点 origin 的 `localStorage`。
+- 成功读取的 `persistentgamedata` 原始内容会进入缓存，下次进入自动重新解析。浏览器不能在下次访问时静默读取原来的文件系统路径，因此游戏进度更新后仍需重新选择最新 `.dat`。页面提供“清除缓存”按钮。
+- CloudStorage 单 value 上限为 1024 字节，运行时会把缓存内容按 UTF-8 字节分片存储；缓存过大时会只保留浏览器本地缓存。
 
 内置多方案由 `tools/recommendation_profiles.json` 管理。以后添加新方案时，可以为它指定独立的角色/Boss JSON、挑战 JSON 与成就优先级数据，然后重新运行 `build_recommendation_profiles.py`。
 

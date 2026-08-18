@@ -9,8 +9,9 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>以撒开荒解锁规划器</title>
-  <link rel="icon" type="image/png" href="./assets/icon.png?v=20260819021416" />
-  <link rel="stylesheet" href="./styles.css?v=20260819021416" />
+  <script src="//s1.hdslb.com/bfs/seed/toy/app/sdk/toy-sdk.js"></script>
+  <link rel="icon" type="image/png" href="./assets/icon.png?v=20260819023622" />
+  <link rel="stylesheet" href="./styles.css?v=20260819023622" />
 </head>
 <body>
   <div class="app-shell">
@@ -25,13 +26,13 @@
         <input id="saveInput" type="file" accept=".dat,application/octet-stream" hidden />
         <div class="save-actions">
           <button class="primary-button" id="loadSaveBtn" type="button">读取 persistentgamedata</button>
-          <button class="secondary-button save-clear-button" id="clearSaveBtn" type="button" hidden>清除本地缓存</button>
+          <button class="secondary-button save-clear-button" id="clearSaveBtn" type="button" hidden>清除缓存</button>
         </div>
         <div class="save-status" id="saveStatus">
           <span class="status-dot idle"></span>
           <div>
             <strong>尚未读取存档</strong>
-            <small>文件只在浏览器本地解析，不会上传。</small>
+            <small>文件只在当前页面解析，不会上传到本工具服务器。</small>
           </div>
         </div>
         <div class="save-hint">
@@ -39,7 +40,7 @@
           <code class="copy-path" role="button" tabindex="0" data-copy-path="%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance" title="点击复制">%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance</code>
           或 <code class="copy-path" role="button" tabindex="0" data-copy-path="%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance+\save_backups" title="点击复制">%USERPROFILE%\Documents\My Games\Binding of Isaac Repentance+\save_backups</code>
           中寻找时间最近的 <code>...persistentgamedata*.dat</code>（其中星号 <code>*</code> 的数字表示第几个存档）。
-          成功读取后会将该存档内容保存在当前浏览器中，下次打开自动恢复；游戏进度变化后请重新读取最新存档。
+          成功读取后会缓存该存档内容，下次打开自动恢复；游戏进度变化后请重新读取最新存档。
         </div>
       </div>
     </header>
@@ -128,14 +129,14 @@
     </footer>
   </div>
 
-  <!-- CACHE_VERSION: 20260819021416。发布新版本前运行 python tools/bump_cache_version.py -->
-  <script src="./data/unlocks.js?v=20260819021416"></script>
-  <script src="./data/challenges.js?v=20260819021416"></script>
-  <script src="./data/achievements.js?v=20260819021416"></script>
-  <script src="./data/effects.js?v=20260819021416"></script>
-  <script src="./data/overrides.js?v=20260819021416"></script>
-  <script src="./data/recommendation_profiles.js?v=20260819021416"></script>
-  <script src="./js/save-parser.js?v=20260819021416"></script>
-  <script src="./js/app.js?v=20260819021416"></script>
+  <!-- CACHE_VERSION: 20260819023622。发布新版本前运行 python tools/bump_cache_version.py -->
+  <script src="./data/unlocks.js?v=20260819023622"></script>
+  <script src="./data/challenges.js?v=20260819023622"></script>
+  <script src="./data/achievements.js?v=20260819023622"></script>
+  <script src="./data/effects.js?v=20260819023622"></script>
+  <script src="./data/overrides.js?v=20260819023622"></script>
+  <script src="./data/recommendation_profiles.js?v=20260819023622"></script>
+  <script src="./js/save-parser.js?v=20260819023622"></script>
+  <script src="./js/app.js?v=20260819023622"></script>
 </body>
 </html>

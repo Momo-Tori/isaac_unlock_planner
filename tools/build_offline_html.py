@@ -122,7 +122,9 @@ def build(input_path: Path, output_path: Path) -> None:
     def replace_script(match: re.Match[str]) -> str:
         src = match.group(1)
         path = local_path(src, input_path.parent)
-        if path is None or not path.exists():
+        if path is None:
+            return "<!-- External Toy SDK omitted in offline build. -->"
+        if not path.exists():
             raise SystemExit(f"Script not found: {src}")
         js = path.read_text(encoding="utf-8")
         if path.relative_to(ROOT).as_posix() == "js/app.js":

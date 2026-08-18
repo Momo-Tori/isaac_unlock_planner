@@ -37,6 +37,15 @@
     save: 'isaac_unlock_planner.cached_save.v1',
     uiPreferences: 'isaac_unlock_planner.ui_preferences.v1'
   };
+  const CLOUD_STORAGE_KEYS = {
+    profile: 'isaac-unlock-planner-current-profile-v1',
+    save: 'isaac-unlock-planner-cached-save-v1',
+    uiPreferences: 'isaac-unlock-planner-ui-preferences-v1'
+  };
+  const CLOUD_CHUNK_SIZE = 900;
+  const storageCache = new Map();
+  const cloudMeta = new Map();
+  let cloudStorageAvailable = false;
 
   const byId = (items) => new Map(items.map((x) => [x.id, x]));
   const characters = byId(DATA.characters);
@@ -107,14 +116,111 @@
     return Object.prototype.hasOwnProperty.call(PRIORITY_SCORE, value) ? value : 'normal';
   }
 
-  function safeStorageGet(key) {
+  function storageBaseKey(key) {
+    const entry = Object.entries(STORAGE_KEYS).find(([, value]) => value === key);
+    return entry ? CLOUD_STORAGE_KEYS[entry[0]] : key.replace(/[^A-Za-z0-9_-]/g, '-');
+  }
+
+  function chunkKey(base, index) {
+    return `${base}-${index}`;
+  }
+
+  function splitCloudChunks(value) {
+    const encoder = new TextEncoder();
+    const chunks = [];
+    let current = '';
+    let currentBytes = 0;
+    for (const char of String(value)) {
+      const charBytes = encoder.encode(char).length;
+      if (current && currentBytes + charBytes > CLOUD_CHUNK_SIZE) {
+        chunks.push(current);
+        current = '';
+        currentBytes = 0;
+      }
+      current += char;
+      currentBytes += charBytes;
+    }
+    chunks.push(current);
+    return chunks;
+  }
+
+  function assembleCloudValue(base, raw) {
+    const metaText = raw[base];
+    if (!metaText) return null;
+    const meta = JSON.parse(metaText);
+    if (Number(meta.version) !== 1 || !Number.isInteger(meta.chunks) || meta.chunks < 0) throw new Error(`云缓存 ${base} 格式不受支持`);
+    let value = '';
+    for (let i = 0; i < meta.chunks; i++) {
+      const part = raw[chunkKey(base, i)];
+      if (typeof part !== 'string') throw new Error(`云缓存 ${base} 分片缺失`);
+      value += part;
+    }
+    cloudMeta.set(base, meta);
+    return value;
+  }
+
+  async function initStorage() {
+    const toy = window.toy;
+    const canUseCloud = Boolean(toy?.getCloudStorage && toy?.setCloudStorage && toy?.removeCloudStorage);
+    if (canUseCloud) {
+      try {
+        const supported = toy.isSupport
+          ? await Promise.all(['getCloudStorage', 'setCloudStorage', 'removeCloudStorage'].map((ability) => toy.isSupport(ability)))
+          : [true, true, true];
+        cloudStorageAvailable = supported.every(Boolean);
+      } catch (error) {
+        console.warn('Toy CloudStorage 支持检测失败，将使用浏览器本地缓存。', error);
+        cloudStorageAvailable = false;
+      }
+    }
+
+    if (cloudStorageAvailable) {
+      try {
+        const raw = await toy.getCloudStorage();
+        for (const key of Object.values(STORAGE_KEYS)) {
+          const base = storageBaseKey(key);
+          const value = assembleCloudValue(base, raw);
+          if (value !== null) storageCache.set(key, value);
+        }
+      } catch (error) {
+        console.warn('Toy CloudStorage 读取失败，将使用浏览器本地缓存。', error);
+        cloudStorageAvailable = false;
+      }
+    }
+
+    for (const key of Object.values(STORAGE_KEYS)) {
+      if (storageCache.has(key)) continue;
+      const localValue = localStorageGet(key);
+      if (localValue !== null) {
+        storageCache.set(key, localValue);
+        if (cloudStorageAvailable) persistStorageValue(key, localValue);
+      }
+    }
+  }
+
+  function localStorageGet(key) {
     try { return window.localStorage.getItem(key); }
     catch (error) { console.warn('localStorage 读取失败：', error); return null; }
   }
 
-  function safeStorageSet(key, value) {
+  function localStorageSet(key, value) {
     try { window.localStorage.setItem(key, value); return true; }
     catch (error) { console.warn('localStorage 写入失败：', error); return false; }
+  }
+
+  function localStorageRemove(key) {
+    try { window.localStorage.removeItem(key); }
+    catch (error) { console.warn('localStorage 删除失败：', error); }
+  }
+
+  function safeStorageGet(key) {
+    return storageCache.has(key) ? storageCache.get(key) : null;
+  }
+
+  function safeStorageSet(key, value) {
+    storageCache.set(key, value);
+    persistStorageValue(key, value);
+    return true;
   }
 
   function showToast(message) {
@@ -149,8 +255,53 @@
   }
 
   function safeStorageRemove(key) {
-    try { window.localStorage.removeItem(key); }
-    catch (error) { console.warn('localStorage 删除失败：', error); }
+    storageCache.delete(key);
+    removeStorageValue(key);
+  }
+
+  async function persistStorageValue(key, value) {
+    localStorageSet(key, value);
+    if (!cloudStorageAvailable) return;
+    const base = storageBaseKey(key);
+    const chunks = splitCloudChunks(value);
+    if (chunks.length > 120) {
+      console.warn(`缓存 ${base} 超出 Toy CloudStorage 建议分片数量，已保留浏览器本地缓存。`);
+      showToast('缓存过大，已暂存到本地');
+      return;
+    }
+    const items = {
+      [base]: JSON.stringify({ version: 1, chunks: chunks.length, updatedAt: new Date().toISOString() })
+    };
+    chunks.forEach((part, index) => { items[chunkKey(base, index)] = part; });
+    try {
+      await window.toy.setCloudStorage(items);
+      const previous = cloudMeta.get(base);
+      if (previous?.chunks > chunks.length) {
+        const staleKeys = [];
+        for (let i = chunks.length; i < previous.chunks; i++) staleKeys.push(chunkKey(base, i));
+        await window.toy.removeCloudStorage(staleKeys);
+      }
+      cloudMeta.set(base, { version: 1, chunks: chunks.length });
+    } catch (error) {
+      console.warn('Toy CloudStorage 写入失败，已保留浏览器本地缓存。', error);
+      showToast('云端缓存写入失败，已暂存到本地');
+    }
+  }
+
+  async function removeStorageValue(key) {
+    localStorageRemove(key);
+    if (!cloudStorageAvailable) return;
+    const base = storageBaseKey(key);
+    const previous = cloudMeta.get(base);
+    const keys = [base];
+    for (let i = 0; i < (previous?.chunks || 0); i++) keys.push(chunkKey(base, i));
+    try {
+      await window.toy.removeCloudStorage(keys);
+      cloudMeta.delete(base);
+    } catch (error) {
+      console.warn('Toy CloudStorage 删除失败。', error);
+      showToast('云端缓存删除失败');
+    }
   }
 
   function persistUiPreferences() {
@@ -400,8 +551,7 @@
     if (!state.currentProfile) return;
     const payload = currentProfilePayload();
     state.currentProfile.updatedAt = payload.updatedAt;
-    const ok = safeStorageSet(STORAGE_KEYS.profile, JSON.stringify(payload));
-    if (!ok) el.profileStatus.textContent = '浏览器未允许保存配置';
+    safeStorageSet(STORAGE_KEYS.profile, JSON.stringify(payload));
   }
 
   function applyProfileSnapshot(raw, { persist = true } = {}) {
@@ -494,7 +644,7 @@
     }
     el.profileSelect.innerHTML = options.join('');
     el.profileSelect.value = isExactBuiltin ? current.baseProfileId : '__current__';
-    el.profileStatus.textContent = current.customized ? '修改已保存在此浏览器' : '当前方案已保存在此浏览器';
+    el.profileStatus.textContent = current.customized ? '修改已保存' : '当前方案已保存';
   }
 
   function switchBuiltinProfile(profileId) {
@@ -579,7 +729,7 @@
         data: arrayBufferToBase64(buffer)
       }));
     }
-    const prefix = restored ? '已从浏览器本地缓存恢复 · ' : '';
+    const prefix = restored ? '已从缓存恢复 · ' : '';
     setSaveStatus('ready', state.saveName, `${prefix}已解锁 ${parsed.unlockedCount} 个成就 · 成就块 ${parsed.achievementCount} 项`);
   }
 
@@ -602,11 +752,11 @@
       if (Number(payload.version) !== 1 || !payload.data) throw new Error('缓存格式不受支持');
       applySaveBuffer(base64ToArrayBuffer(payload.data), payload.name, { restored: true, persist: false, lastModified: payload.lastModified });
     } catch (error) {
-      console.warn('本地存档缓存损坏，已清除。', error);
+      console.warn('存档缓存损坏，已清除。', error);
       safeStorageRemove(STORAGE_KEYS.save);
       state.save = null;
       state.saveName = '';
-      setSaveStatus('error', '本地存档缓存已失效', '请重新读取最新 persistentgamedata。');
+      setSaveStatus('error', '存档缓存已失效', '请重新读取最新 persistentgamedata。');
     }
   }
 
@@ -615,7 +765,7 @@
     state.save = null;
     state.saveName = '';
     el.saveInput.value = '';
-    setSaveStatus('idle', '尚未读取存档', '文件只在浏览器本地解析，不会上传。');
+    setSaveStatus('idle', '尚未读取存档', '文件只在当前页面解析，不会上传到本工具服务器。');
     render();
   }
 
@@ -1042,8 +1192,19 @@
   }));
   el.dropZone.addEventListener('drop', (event) => loadSave(event.dataTransfer?.files?.[0]));
 
-  restoreUiPreferences();
-  initializeRecommendationProfile();
-  restorePersistedSave();
-  render();
+  async function initApp() {
+    await initStorage();
+    restoreUiPreferences();
+    initializeRecommendationProfile();
+    restorePersistedSave();
+    render();
+  }
+
+  initApp().catch((error) => {
+    console.error('初始化失败：', error);
+    restoreUiPreferences();
+    initializeRecommendationProfile();
+    restorePersistedSave();
+    render();
+  });
 })();
