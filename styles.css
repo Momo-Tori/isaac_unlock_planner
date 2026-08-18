@@ -90,11 +90,11 @@ h2 { margin: 4px 0 0; font-size: 23px; }
 .section-heading { display: flex; justify-content: space-between; gap: 18px; align-items: end; }
 .results-heading { display: flex; justify-content: flex-end; gap: 18px; align-items: center; }
 .selection-summary { color: var(--muted); font-size: 13px; }
-.entity-groups { display: grid; gap: 12px; margin-top: 16px; }
-.entity-group { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 12px; align-items: center; }
+.entity-groups { display: grid; gap: 12px; margin-top: 16px; max-width: 100%; }
+.entity-group { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 12px; align-items: center; max-width: 100%; min-width: 0; }
 .entity-group:only-child { grid-template-columns: 1fr; }
 .entity-group-label { color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-align: right; white-space: nowrap; }
-.entity-icon-row { display: flex; align-items: center; gap: 7px; flex-wrap: nowrap; min-width: 0; }
+.entity-icon-row { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; min-width: 0; max-width: 100%; }
 .entity-icon-card {
   width: 52px; height: 52px; flex: 0 0 52px;
   border: 1px solid var(--line); border-radius: 11px;
@@ -182,7 +182,8 @@ code { background: rgba(255,255,255,.05); padding: 2px 5px; border-radius: 5px; 
   .section-heading { align-items: flex-start; flex-direction: column; }
   .results-heading { justify-content: flex-start; }
   .controls { width: 100%; justify-content: space-between; }
-  .entity-icon-row { overflow-x: auto; padding-bottom: 5px; scrollbar-width: thin; }
+  .entity-icon-row { overflow-x: visible; padding-bottom: 0; }
+  .entity-group { align-items: flex-start; }
   .entity-group { grid-template-columns: 48px minmax(0,1fr); }
   .entity-icon-card { width: 48px; height: 48px; flex-basis: 48px; }
   .selector-thumb { width: 34px; height: 34px; }
