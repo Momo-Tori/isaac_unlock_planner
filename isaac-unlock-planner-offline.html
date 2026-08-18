@@ -361,6 +361,60 @@ code { background: rgba(255,255,255,.05); padding: 2px 5px; border-radius: 5px; 
   opacity: 1;
   transform: translateY(0);
 }
+.manual-copy-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 6500;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(12,10,9,.64);
+}
+.manual-copy-backdrop[hidden] { display: none; }
+.manual-copy-dialog {
+  width: min(560px, 100%);
+  border: 1px solid #6d6258;
+  border-radius: 8px;
+  background: #201c19;
+  color: #f5eadb;
+  box-shadow: 0 18px 44px rgba(0,0,0,.5);
+  padding: 16px;
+}
+.manual-copy-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.manual-copy-heading strong { font-size: 14px; }
+.manual-copy-close {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(130,116,104,.8);
+  border-radius: 6px;
+  background: #2b2521;
+  color: #f5eadb;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+.manual-copy-dialog p { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
+.manual-copy-input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #7a6c60;
+  border-radius: 6px;
+  background: #141210;
+  color: #fff5e6;
+  padding: 11px 12px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+}
+.manual-copy-input:focus {
+  outline: 2px solid rgba(231,196,123,.5);
+  outline-offset: 2px;
+}
 
 @media (max-width: 900px) {
   .recommendation-toolbar { align-items: flex-start; flex-direction: column; }
@@ -13813,22 +13867,74 @@ window.ISAAC_OFFLINE_ASSETS={"./assets/character/c00-isaac.png":"data:image/png;
     }, 1800);
   }
 
-  async function copyText(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(text);
-      return;
+  async function copyTextCompat(text) {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (error) {
+      console.warn('Async Clipboard unavailable:', error);
     }
 
     const textarea = document.createElement('textarea');
     textarea.value = text;
     textarea.setAttribute('readonly', '');
     textarea.style.position = 'fixed';
-    textarea.style.top = '-1000px';
+    textarea.style.opacity = '0';
+    textarea.style.pointerEvents = 'none';
+    textarea.style.top = '0';
+    textarea.style.left = '0';
     document.body.appendChild(textarea);
+
+    textarea.focus();
     textarea.select();
-    const copied = document.execCommand('copy');
+    textarea.setSelectionRange(0, text.length);
+
+    let success = false;
+    try {
+      success = document.execCommand('copy');
+    } catch (error) {
+      console.warn('Fallback copy unavailable:', error);
+    }
+
     textarea.remove();
-    if (!copied) throw new Error('复制失败');
+    return success;
+  }
+
+  function showManualCopyDialog(text) {
+    let dialog = document.getElementById('manualCopyDialog');
+    if (!dialog) {
+      dialog = document.createElement('div');
+      dialog.id = 'manualCopyDialog';
+      dialog.className = 'manual-copy-backdrop';
+      dialog.innerHTML = `
+        <div class="manual-copy-dialog" role="dialog" aria-modal="true" aria-labelledby="manualCopyTitle">
+          <div class="manual-copy-heading">
+            <strong id="manualCopyTitle">当前平台限制了自动复制</strong>
+            <button type="button" class="manual-copy-close" aria-label="关闭">×</button>
+          </div>
+          <p>请手动复制下面的路径，然后按 Ctrl+C。</p>
+          <input class="manual-copy-input" type="text" readonly />
+        </div>
+      `;
+      document.body.appendChild(dialog);
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog || event.target.closest('.manual-copy-close')) dialog.hidden = true;
+      });
+      dialog.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') dialog.hidden = true;
+      });
+    }
+
+    const input = dialog.querySelector('.manual-copy-input');
+    input.value = text;
+    dialog.hidden = false;
+    requestAnimationFrame(() => {
+      input.focus();
+      input.select();
+      input.setSelectionRange(0, text.length);
+    });
   }
 
   function safeStorageRemove(key) {
@@ -14746,16 +14852,22 @@ window.ISAAC_OFFLINE_ASSETS={"./assets/character/c00-isaac.png":"data:image/png;
 
   document.querySelectorAll('[data-copy-path]').forEach((node) => {
     const handleCopy = async () => {
-      try {
-        await copyText(node.dataset.copyPath || node.textContent || '');
+      const text = node.dataset.copyPath || node.textContent || '';
+      const success = await copyTextCompat(text);
+      if (success) {
         showToast('路径已复制到剪贴板');
-      } catch (error) {
-        console.warn('路径复制失败：', error);
-        showToast('复制失败，请手动选择路径');
+        return;
       }
+      showManualCopyDialog(text);
+      showToast('请手动复制路径');
     };
 
     node.addEventListener('click', handleCopy);
+    node.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      handleCopy();
+    });
   });
 
   window.addEventListener('resize', closePriorityMenu);

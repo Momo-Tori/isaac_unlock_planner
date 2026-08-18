@@ -236,22 +236,74 @@
     }, 1800);
   }
 
-  async function copyText(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(text);
-      return;
+  async function copyTextCompat(text) {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (error) {
+      console.warn('Async Clipboard unavailable:', error);
     }
 
     const textarea = document.createElement('textarea');
     textarea.value = text;
     textarea.setAttribute('readonly', '');
     textarea.style.position = 'fixed';
-    textarea.style.top = '-1000px';
+    textarea.style.opacity = '0';
+    textarea.style.pointerEvents = 'none';
+    textarea.style.top = '0';
+    textarea.style.left = '0';
     document.body.appendChild(textarea);
+
+    textarea.focus();
     textarea.select();
-    const copied = document.execCommand('copy');
+    textarea.setSelectionRange(0, text.length);
+
+    let success = false;
+    try {
+      success = document.execCommand('copy');
+    } catch (error) {
+      console.warn('Fallback copy unavailable:', error);
+    }
+
     textarea.remove();
-    if (!copied) throw new Error('复制失败');
+    return success;
+  }
+
+  function showManualCopyDialog(text) {
+    let dialog = document.getElementById('manualCopyDialog');
+    if (!dialog) {
+      dialog = document.createElement('div');
+      dialog.id = 'manualCopyDialog';
+      dialog.className = 'manual-copy-backdrop';
+      dialog.innerHTML = `
+        <div class="manual-copy-dialog" role="dialog" aria-modal="true" aria-labelledby="manualCopyTitle">
+          <div class="manual-copy-heading">
+            <strong id="manualCopyTitle">当前平台限制了自动复制</strong>
+            <button type="button" class="manual-copy-close" aria-label="关闭">×</button>
+          </div>
+          <p>请手动复制下面的路径，然后按 Ctrl+C。</p>
+          <input class="manual-copy-input" type="text" readonly />
+        </div>
+      `;
+      document.body.appendChild(dialog);
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog || event.target.closest('.manual-copy-close')) dialog.hidden = true;
+      });
+      dialog.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') dialog.hidden = true;
+      });
+    }
+
+    const input = dialog.querySelector('.manual-copy-input');
+    input.value = text;
+    dialog.hidden = false;
+    requestAnimationFrame(() => {
+      input.focus();
+      input.select();
+      input.setSelectionRange(0, text.length);
+    });
   }
 
   function safeStorageRemove(key) {
@@ -1167,16 +1219,22 @@
 
   document.querySelectorAll('[data-copy-path]').forEach((node) => {
     const handleCopy = async () => {
-      try {
-        await copyText(node.dataset.copyPath || node.textContent || '');
+      const text = node.dataset.copyPath || node.textContent || '';
+      const success = await copyTextCompat(text);
+      if (success) {
         showToast('路径已复制到剪贴板');
-      } catch (error) {
-        console.warn('路径复制失败：', error);
-        showToast('复制失败，请手动选择路径');
+        return;
       }
+      showManualCopyDialog(text);
+      showToast('请手动复制路径');
     };
 
     node.addEventListener('click', handleCopy);
+    node.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      handleCopy();
+    });
   });
 
   window.addEventListener('resize', closePriorityMenu);
