@@ -13,7 +13,7 @@ UNLOCKS=ROOT/'data'/'unlocks.js'
 CHALLENGES=ROOT/'data'/'challenges.js'
 RECOMMEND=ROOT/'tools'/'recommendation_seed.json'
 CHALLENGE_PRIORITY=ROOT/'tools'/'challenge_priority.json'
-ALLOWED={'normal','recommended','strong'}
+ALLOWED={'normal','recommended','strong','discouraged'}
 
 
 def load_js(path:Path,var:str):
@@ -67,19 +67,22 @@ def main():
 
     def rule_priority(rule):
         vals=[pair_priority.get((rule['characterId'],b),'normal') for b in rule['bossIds']]
-        return max(vals, key=lambda x:{'normal':1,'recommended':2,'strong':3}[x])
+        return max(vals, key=lambda x:{'discouraged':0,'normal':1,'recommended':2,'strong':3}[x])
 
     rule_priorities=[rule_priority(r) for r in unlocks['unlockRules']]
     stats={
         'recommendationPairs':len(pair_priority),
         'pairStrong':sum(v=='strong' for v in pair_priority.values()),
         'pairRecommended':sum(v=='recommended' for v in pair_priority.values()),
+        'pairDiscouraged':sum(v=='discouraged' for v in pair_priority.values()),
         'ruleStrong':sum(v=='strong' for v in rule_priorities),
         'ruleRecommended':sum(v=='recommended' for v in rule_priorities),
         'ruleNormal':sum(v=='normal' for v in rule_priorities),
+        'ruleDiscouraged':sum(v=='discouraged' for v in rule_priorities),
         'challenges':len(seen),
         'challengeStrong':sum(x['priority']=='strong' for x in cp['entries']),
         'challengeRecommended':sum(x['priority']=='recommended' for x in cp['entries']),
+        'challengeDiscouraged':sum(x['priority']=='discouraged' for x in cp['entries']),
     }
     print(json.dumps(stats,ensure_ascii=False))
 

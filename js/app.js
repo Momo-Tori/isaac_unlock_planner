@@ -28,8 +28,9 @@
     throw new Error('页面数据、推荐方案或存档解析器未加载。');
   }
 
-  const PRIORITY_SCORE = { strong: 3, recommended: 2, normal: 1 };
-  const PRIORITY_LABEL = { strong: '强烈推荐', recommended: '推荐', normal: '普通' };
+  const PRIORITY_ORDER = ['strong', 'recommended', 'normal', 'discouraged'];
+  const PRIORITY_SCORE = { strong: 3, recommended: 2, normal: 1, discouraged: 0 };
+  const PRIORITY_LABEL = { strong: '强烈推荐', recommended: '推荐', normal: '普通', discouraged: '不推荐提前解锁' };
   const PROFILE_FORMAT = 'isaac-unlock-planner-profile';
   const PROFILE_VERSION = 1;
   const STORAGE_KEYS = {
@@ -434,12 +435,12 @@
   }
 
   function rulePriority(rule) {
-    let best = 'normal';
+    let best = null;
     for (const bossId of rule.bossIds) {
       const priority = runtimePriority.recommendationByPair.get(pairKey(rule.characterId, bossId)) || 'normal';
-      if (PRIORITY_SCORE[priority] > PRIORITY_SCORE[best]) best = priority;
+      if (best == null || PRIORITY_SCORE[priority] > PRIORITY_SCORE[best]) best = priority;
     }
-    return best;
+    return best || 'normal';
   }
 
   function challengePriority(challengeId) {
@@ -1142,7 +1143,7 @@
     const id = button.dataset.priorityId;
     const current = normalizePriority(button.dataset.currentPriority);
     state.menuTarget = { kind, id };
-    el.priorityMenu.innerHTML = ['strong', 'recommended', 'normal'].map((priority) => (
+    el.priorityMenu.innerHTML = PRIORITY_ORDER.map((priority) => (
       `<button type="button" class="priority-menu-item${priority === current ? ' active' : ''}" data-set-priority="${priority}" role="menuitem"><span class="priority-menu-dot ${priority}"></span><span>${PRIORITY_LABEL[priority]}</span>${priority === current ? '<span class="priority-menu-check">✓</span>' : ''}</button>`
     )).join('');
     el.priorityMenu.hidden = false;

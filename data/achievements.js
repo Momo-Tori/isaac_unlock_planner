@@ -2162,6 +2162,24 @@ window.ISAAC_ACHIEVEMENT_DATA = {
       "sequenceGroup": null
     },
     {
+      "achievementId": 156,
+      "name": "神性",
+      "condition": "用游魂获得所有困难模式通关标记。",
+      "rewardName": "神性",
+      "rewardEffect": "↑ 伤害+0.5\n↓ 射速-0.3\n↓ 弹速-0.3\n追踪泪弹\n泪弹具有光环, 每秒造成60点伤害",
+      "rewardEntities": [
+        {
+          "prefix": "C",
+          "entityType": "collectible",
+          "entityId": 331
+        }
+      ],
+      "collectibleIds": [
+        331
+      ],
+      "sequenceGroup": null
+    },
+    {
       "achievementId": 178,
       "name": "苍蝇领主！",
       "condition": "在一局游戏中，拾取3个标签“苍蝇”的道具。",
@@ -2182,10 +2200,158 @@ window.ISAAC_ACHIEVEMENT_DATA = {
       "sequenceGroup": null
     },
     {
+      "achievementId": 252,
+      "name": "虫巢宝宝",
+      "condition": "用???获得所有困难通关标记",
+      "rewardName": "虫巢宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 253,
+      "name": "无头宝宝",
+      "condition": "用以撒获得所有困难通关标记",
+      "rewardName": "无头宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 254,
+      "name": "彩色宝宝",
+      "condition": "用抹大拉获得所有困难通关标记",
+      "rewardName": "彩色宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 255,
+      "name": "淫妇宝宝",
+      "condition": "用夏娃获得所有困难通关标记",
+      "rewardName": "淫妇宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 256,
+      "name": "碎裂宝宝",
+      "condition": "用伊甸获得所有困难通关标记",
+      "rewardName": "碎裂宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 257,
+      "name": "滴血宝宝",
+      "condition": "用拉撒路获得所有困难通关标记",
+      "rewardName": "滴血宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
       "achievementId": 258,
       "name": "亮瞎宝宝",
       "condition": "使用 空白卡牌触发 XIX-太阳。",
       "rewardName": "亮瞎宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 259,
+      "name": "魅魔宝宝",
+      "condition": "用阿撒泻勒获得所有困难通关标记",
+      "rewardName": "魅魔宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 260,
+      "name": "黑暗宝宝",
+      "condition": "用莉莉丝获得所有困难通关标记",
+      "rewardName": "黑暗宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 261,
+      "name": "衣架宝宝",
+      "condition": "用该隐获得所有困难通关标记",
+      "rewardName": "衣架宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 262,
+      "name": "复仇宝宝",
+      "condition": "用参孙获得所有困难通关标记",
+      "rewardName": "复仇宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 263,
+      "name": "彼列宝宝",
+      "condition": "用犹大获得所有困难通关标记",
+      "rewardName": "彼列宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 264,
+      "name": "折扣宝宝",
+      "condition": "用店主获得所有困难通关标记",
+      "rewardName": "折扣宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 276,
+      "name": "超级喷射！",
+      "condition": "用所有非堕化人物获得超级撒但通关标记。",
+      "rewardName": "超级喷射",
+      "rewardEffect": "发射超级撒但血激光柱15秒\n激光在房间和层之间持续存在",
+      "rewardEntities": [
+        {
+          "prefix": "C",
+          "entityType": "collectible",
+          "entityId": 441
+        }
+      ],
+      "collectibleIds": [
+        441
+      ],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 319,
+      "name": "亚玻伦宝宝",
+      "condition": "用亚玻伦获得所有困难通关标记。",
+      "rewardName": "亚玻伦宝宝",
       "rewardEffect": "",
       "rewardEntities": [],
       "collectibleIds": [],
@@ -2294,6 +2460,16 @@ window.ISAAC_ACHIEVEMENT_DATA = {
       "name": "1000000%",
       "condition": "",
       "rewardName": "",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 347,
+      "name": "邪恶的怪物正在接近+！",
+      "condition": "用非堕化人物获得6个???通关标记。",
+      "rewardName": "骨堆畸胎",
       "rewardEffect": "",
       "rewardEntities": [],
       "collectibleIds": [],
@@ -2668,6 +2844,16 @@ window.ISAAC_ACHIEVEMENT_DATA = {
       "sequenceGroup": null
     },
     {
+      "achievementId": 402,
+      "name": "骨头宝宝",
+      "condition": "用遗骸在困难模式下获得所有通关标记。",
+      "rewardName": "骨头宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
       "achievementId": 406,
       "name": "星象房",
       "condition": "在一局游戏中，拾取3个标签“星星”的道具。",
@@ -2775,6 +2961,26 @@ window.ISAAC_ACHIEVEMENT_DATA = {
       "sequenceGroup": null
     },
     {
+      "achievementId": 426,
+      "name": "希望宝宝",
+      "condition": "用伯大尼获得所有困难通关标记。",
+      "rewardName": "希望宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 438,
+      "name": "所罗门宝宝",
+      "condition": "用雅各和以扫获得所有困难通关标记。",
+      "rewardName": "所罗门宝宝",
+      "rewardEffect": "",
+      "rewardEntities": [],
+      "collectibleIds": [],
+      "sequenceGroup": null
+    },
+    {
       "achievementId": 546,
       "name": "硫磺火炸弹",
       "condition": "在岩角恶魔逃跑前消灭它。",
@@ -2789,6 +2995,24 @@ window.ISAAC_ACHIEVEMENT_DATA = {
       ],
       "collectibleIds": [
         646
+      ],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 547,
+      "name": "超级蘑菇",
+      "condition": "用所有非堕化人物获得所有困难通关标记。",
+      "rewardName": "超级蘑菇",
+      "rewardEffect": "角色巨化并获得:\n↑ 伤害修正x4\n↑ 射程+2\n↓ 射速-1.9\n无敌\n能踩碎障碍物和敌人\n持续30秒, 能在房间之间和层之间持续",
+      "rewardEntities": [
+        {
+          "prefix": "C",
+          "entityType": "collectible",
+          "entityId": 625
+        }
+      ],
+      "collectibleIds": [
+        625
       ],
       "sequenceGroup": null
     },
@@ -2825,6 +3049,24 @@ window.ISAAC_ACHIEVEMENT_DATA = {
       ],
       "collectibleIds": [
         555
+      ],
+      "sequenceGroup": null
+    },
+    {
+      "achievementId": 636,
+      "name": "死亡证明",
+      "condition": "用所有人物获得所有困难通关标记。",
+      "rewardName": "死亡证明",
+      "rewardEffect": "将角色传送至含有所有游戏道具的一层\n拾起1个道具后回到之前的房间",
+      "rewardEntities": [
+        {
+          "prefix": "C",
+          "entityType": "collectible",
+          "entityId": 628
+        }
+      ],
+      "collectibleIds": [
+        628
       ],
       "sequenceGroup": null
     },

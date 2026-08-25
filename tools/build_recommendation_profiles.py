@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / "tools"
 MANIFEST = TOOLS / "recommendation_profiles.json"
 OUT = ROOT / "data" / "recommendation_profiles.js"
-ALLOWED = {"normal", "recommended", "strong"}
+ALLOWED = {"normal", "recommended", "strong", "discouraged"}
 
 
 def read_json(path: Path):

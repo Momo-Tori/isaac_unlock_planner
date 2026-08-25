@@ -392,6 +392,11 @@ window.ISAAC_RECOMMENDATION_PROFILES = {
         },
         {
           "characterId": "c12-keeper",
+          "bossId": "boss-rush",
+          "priority": "discouraged"
+        },
+        {
+          "characterId": "c12-keeper",
           "bossId": "hush",
           "priority": "recommended"
         },
@@ -877,6 +882,11 @@ window.ISAAC_RECOMMENDATION_PROFILES = {
         },
         {
           "characterId": "c26-tainted-eden",
+          "bossId": "beast",
+          "priority": "discouraged"
+        },
+        {
+          "characterId": "c26-tainted-eden",
           "bossId": "greedier",
           "priority": "strong"
         },
@@ -889,6 +899,11 @@ window.ISAAC_RECOMMENDATION_PROFILES = {
           "characterId": "c27-tainted-lost",
           "bossId": "hush",
           "priority": "recommended"
+        },
+        {
+          "characterId": "c27-tainted-lost",
+          "bossId": "mega-satan",
+          "priority": "discouraged"
         },
         {
           "characterId": "c27-tainted-lost",
@@ -972,6 +987,11 @@ window.ISAAC_RECOMMENDATION_PROFILES = {
         },
         {
           "characterId": "c29-tainted-keeper",
+          "bossId": "beast",
+          "priority": "recommended"
+        },
+        {
+          "characterId": "c29-tainted-keeper",
           "bossId": "greedier",
           "priority": "recommended"
         },
@@ -1027,7 +1047,7 @@ window.ISAAC_RECOMMENDATION_PROFILES = {
         },
         {
           "characterId": "c32-tainted-bethany",
-          "bossId": "mother",
+          "bossId": "delirium",
           "priority": "recommended"
         },
         {

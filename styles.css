@@ -13,6 +13,8 @@
   --recommended-border: #bea14b;
   --normal: rgba(83, 78, 74, .47);
   --normal-border: #716a64;
+  --discouraged: rgba(48, 25, 52, .62);
+  --discouraged-border: #301934;
   --green: #62c58d;
   --red: #e67878;
   --radius: 16px;
@@ -129,6 +131,7 @@ h2 { margin: 4px 0 0; font-size: 23px; }
 .legend-swatch.strong { background: var(--strong); border-color: var(--strong-border); }
 .legend-swatch.recommended { background: var(--recommended); border-color: var(--recommended-border); }
 .legend-swatch.normal { background: var(--normal); border-color: var(--normal-border); }
+.legend-swatch.discouraged { background: var(--discouraged); border-color: var(--discouraged-border); }
 .table-wrap { border: 1px solid var(--line); border-radius: var(--radius); overflow: auto; background: rgba(24,21,19,.87); box-shadow: 0 14px 40px rgba(0,0,0,.16); }
 .unlock-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 880px; }
 .unlock-table th { position: sticky; top: 0; z-index: 1; background: #201c19; color: #c9c0b8; font-size: 11px; text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); }
@@ -139,6 +142,7 @@ h2 { margin: 4px 0 0; font-size: 23px; }
 .unlock-row.priority-strong td { background: var(--strong); }
 .unlock-row.priority-recommended td { background: var(--recommended); }
 .unlock-row.priority-normal td { background: var(--normal); }
+.unlock-row.priority-discouraged td { background: var(--discouraged); }
 .target-cell, .reward-cell { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .boss-stack { display: flex; gap: 5px; flex-wrap: wrap; }
 .boss-unit { display: inline-flex; align-items: center; gap: 7px; padding: 5px 7px; background: rgba(0,0,0,.18); border-radius: 8px; white-space: nowrap; }
@@ -147,7 +151,7 @@ h2 { margin: 4px 0 0; font-size: 23px; }
 
 .achievement-sprite {
   width: 64px; height: 64px; flex: 0 0 64px; display: inline-block;
-  background-image: url("./assets/achievement/Achievement_sprite.jpg?v=20260819031923");
+  background-image: url("./assets/achievement/Achievement_sprite.jpg?v=20260826020632");
   background-repeat: no-repeat;
   background-size: 1280px 2112px;
   background-position: var(--ach-x) var(--ach-y);
@@ -324,6 +328,7 @@ code { background: rgba(255,255,255,.05); padding: 2px 5px; border-radius: 5px; 
 .priority-menu-dot.strong { background: var(--strong-border); }
 .priority-menu-dot.recommended { background: var(--recommended-border); }
 .priority-menu-dot.normal { background: var(--normal-border); }
+.priority-menu-dot.discouraged { background: var(--discouraged-border); }
 .priority-menu-check { text-align: right; color: var(--accent); font-weight: 900; }
 .toast {
   position: fixed;
