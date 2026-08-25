@@ -60,6 +60,7 @@
     challengeById: new Map(),
     achievementById: new Map()
   };
+  let confirmDialog = null;
 
   const state = {
     view: 'character',
@@ -198,6 +199,62 @@
       input.focus();
       input.select();
       input.setSelectionRange(0, text.length);
+    });
+  }
+
+  function showAppConfirm(message, { title = '确认操作', confirmText = '继续', cancelText = '取消' } = {}) {
+    if (!confirmDialog) {
+      const dialog = document.createElement('div');
+      dialog.className = 'app-confirm-backdrop';
+      dialog.hidden = true;
+      dialog.innerHTML = `
+        <div class="app-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="appConfirmTitle">
+          <strong class="app-confirm-title" id="appConfirmTitle"></strong>
+          <p class="app-confirm-message"></p>
+          <div class="app-confirm-actions">
+            <button type="button" class="secondary-button app-confirm-cancel"></button>
+            <button type="button" class="primary-button app-confirm-ok"></button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(dialog);
+      confirmDialog = dialog;
+    }
+
+    const dialog = confirmDialog;
+    const titleNode = dialog.querySelector('.app-confirm-title');
+    const messageNode = dialog.querySelector('.app-confirm-message');
+    const okButton = dialog.querySelector('.app-confirm-ok');
+    const cancelButton = dialog.querySelector('.app-confirm-cancel');
+
+    titleNode.textContent = title;
+    messageNode.textContent = message;
+    okButton.textContent = confirmText;
+    cancelButton.textContent = cancelText;
+    dialog.hidden = false;
+
+    return new Promise((resolve) => {
+      let settled = false;
+
+      const finish = (value) => {
+        if (settled) return;
+        settled = true;
+        dialog.hidden = true;
+        dialog.removeEventListener('click', onClick);
+        dialog.removeEventListener('keydown', onKeydown);
+        resolve(value);
+      };
+      const onClick = (event) => {
+        if (event.target === dialog || event.target.closest('.app-confirm-cancel')) finish(false);
+        else if (event.target.closest('.app-confirm-ok')) finish(true);
+      };
+      const onKeydown = (event) => {
+        if (event.key === 'Escape') finish(false);
+      };
+
+      dialog.addEventListener('click', onClick);
+      dialog.addEventListener('keydown', onKeydown);
+      requestAnimationFrame(() => cancelButton.focus());
     });
   }
 
@@ -567,11 +624,15 @@
     el.profileStatus.textContent = current.customized ? '修改已保存在此浏览器' : '当前方案已保存在此浏览器';
   }
 
-  function switchBuiltinProfile(profileId) {
+  async function switchBuiltinProfile(profileId) {
     const profile = builtinProfiles.get(profileId);
     if (!profile) return;
     if (state.currentProfile?.customized) {
-      const ok = window.confirm('切换推荐方案会覆盖当前自定义修改。建议先导出配置。是否继续？');
+      const ok = await showAppConfirm('切换推荐方案会覆盖当前自定义修改。建议先导出配置。是否继续？', {
+        title: '切换推荐方案',
+        confirmText: '继续切换',
+        cancelText: '取消'
+      });
       if (!ok) { renderProfileControls(); return; }
     }
     applyProfileSnapshot(snapshotFromBuiltin(profile), { persist: true });
@@ -1051,8 +1112,8 @@
   el.clearSaveBtn.addEventListener('click', clearPersistedSave);
   el.saveInput.addEventListener('change', () => loadSave(el.saveInput.files?.[0]));
 
-  el.profileSelect.addEventListener('change', () => {
-    if (el.profileSelect.value !== '__current__') switchBuiltinProfile(el.profileSelect.value);
+  el.profileSelect.addEventListener('change', async () => {
+    if (el.profileSelect.value !== '__current__') await switchBuiltinProfile(el.profileSelect.value);
   });
   el.importProfileBtn.addEventListener('click', () => el.profileImportInput.click());
   el.exportProfileBtn.addEventListener('click', exportCurrentProfile);
