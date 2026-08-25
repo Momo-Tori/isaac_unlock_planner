@@ -981,6 +981,11 @@
     },
     {
       "characterId": "c29-tainted-keeper",
+      "bossId": "beast",
+      "priority": "recommended"
+    },
+    {
+      "characterId": "c29-tainted-keeper",
       "bossId": "greedier",
       "priority": "recommended"
     },
@@ -1036,7 +1041,7 @@
     },
     {
       "characterId": "c32-tainted-bethany",
-      "bossId": "mother",
+      "bossId": "delirium",
       "priority": "recommended"
     },
     {

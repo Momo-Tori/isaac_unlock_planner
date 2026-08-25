@@ -987,6 +987,11 @@ window.ISAAC_RECOMMENDATION_PROFILES = {
         },
         {
           "characterId": "c29-tainted-keeper",
+          "bossId": "beast",
+          "priority": "recommended"
+        },
+        {
+          "characterId": "c29-tainted-keeper",
           "bossId": "greedier",
           "priority": "recommended"
         },
@@ -1042,7 +1047,7 @@ window.ISAAC_RECOMMENDATION_PROFILES = {
         },
         {
           "characterId": "c32-tainted-bethany",
-          "bossId": "mother",
+          "bossId": "delirium",
           "priority": "recommended"
         },
         {
