@@ -14526,11 +14526,28 @@ window.ISAAC_OFFLINE_ASSETS={"./assets/character/c00-isaac.png":"data:image/png;
     if (persist) persistCurrentProfile();
   }
 
+  function freshBuiltinForStoredProfile(raw) {
+    const defaultProfile = builtinProfiles.get(PROFILE_BUNDLE.defaultProfileId) || PROFILE_BUNDLE.profiles?.[0];
+    if (!defaultProfile || raw?.customized !== false) return null;
+
+    const baseProfile = builtinProfiles.get(raw?.baseProfileId);
+    if (baseProfile) return baseProfile;
+
+    if (String(raw?.name || '') === defaultProfile.name) return defaultProfile;
+    return null;
+  }
+
   function initializeRecommendationProfile() {
     const stored = safeStorageGet(STORAGE_KEYS.profile);
     if (stored) {
       try {
-        applyProfileSnapshot(JSON.parse(stored), { persist: false });
+        const raw = JSON.parse(stored);
+        const freshBuiltin = freshBuiltinForStoredProfile(raw);
+        if (freshBuiltin) {
+          applyProfileSnapshot(snapshotFromBuiltin(freshBuiltin), { persist: true });
+        } else {
+          applyProfileSnapshot(raw, { persist: false });
+        }
         return;
       } catch (error) {
         console.warn('已保存的推荐配置无效，将恢复默认方案。', error);
