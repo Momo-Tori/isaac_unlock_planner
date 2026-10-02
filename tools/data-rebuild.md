@@ -1,131 +1,148 @@
 # 数据重建与发布维护
 
-本文档记录本项目的生成数据链路、推荐配置、效果抓取和发布前构建流程。
+本文说明如何从灰机 Wiki 保存页与 EID 数据重建项目数据、维护推荐配置，以及生成发布文件。所有命令均在项目根目录执行。
 
-## 数据链
+## 1. 准备环境与输入
 
-```text
-Huiji Completion Mark 表 ───────> data/unlocks.js
-                                   │
-Huiji 挑战成就表 + challenge_rewards.json
-                             ───> data/challenges.js
-                                   │
-Huiji 全成就页 + achievement_index.json
-                             ───> data/achievements.js
-                                   │
-EID 中英文效果（构建阶段） ─────> data/effects.js
-                                   │
-非 EID 中文末级兜底 ───────────> tools/non_eid_fallback_zh.json
-                                   │
-本地人工修正 ───────────────────> data/overrides.js
-                                   │
-                                   ▼
-                            js/app.js
-                              ▲       ▲
-                              │       │
-tools/recommendation_seed.json       tools/challenge_priority.json
-  （角色-Boss-priority，开发源）        （挑战-priority，开发源）
-                              │       │
-                              └── build_recommendation_profiles.py ──> data/recommendation_profiles.js
-                                                                  │
-                                                                  └── 即时排序/着色
-                                   ▲
-                                   │
-                        js/save-parser.js
-                                   ▲
-                                   │
-                       persistentgamedata.dat
-```
-
-`unlocks.js` / `challenges.js` 不保存 priority。推荐源由 `tools/recommendation_seed.json` 和 `tools/challenge_priority.json` 人工维护，发布时编译进独立的 `data/recommendation_profiles.js`；游戏数据与推荐数据保持解耦。网页不会运行时请求 JSON。
-
-## 当前数据规模
-
-- 34 个角色（17 表 + 17 堕化）
-- 13 个 Completion Mark / Boss 目标
-- 45 个挑战解锁目标
-- 201 条剩余成就列表：8 条主线、33 条角色解锁、83 条次数 / 累计型、77 条完成类
-- 340 条规范化解锁规则，其中 34 条是多 Boss 捆绑规则
-- 角色/Boss 推荐配置按 **角色-Boss 对** 记录在 `tools/recommendation_seed.json`；未记录的组合运行时默认 `normal`
-- EID 与本地机制兜底目前能为 **307 / 340** 条规则生成效果数据；剩余 33 条均为 Baby / 外观类解锁
-- 挑战优先级：14 条 `strong`、13 条 `recommended`、18 条 `normal`
-- 其他成就页目前 108 条成就带有可解析的 EID 实体奖励，覆盖收藏品、饰品、卡牌和药丸
-
-## 0. 从零重建全部生成数据
-
-推荐优先使用统一入口。准备两份灰机 Wiki 保存页后，只需要运行本节这一条命令，就会按顺序执行完整重建流程；后面的第 1 到 7 节是同一流程的拆分说明，通常只在单独维护某一类数据时使用。
-
-需要准备的页面：
-
-- `Project:存档/成就` 保存页：用于生成角色/Boss 矩阵和挑战映射。`https://isaac.huijiwiki.com/wiki/Project:%E5%AD%98%E6%A1%A3/%E6%88%90%E5%B0%B1`
-- `成就` 全成就保存页：用于生成 `data/achievements.js`。`https://isaac.huijiwiki.com/wiki/%E6%88%90%E5%B0%B1`
-
-完整重建命令：
+需要 Python 3.10 或更新版本，以及矩阵解析使用的 BeautifulSoup：
 
 ```bash
-python tools/rebuild_data.py "你的Project存档成就页面.html" --achievements-html "你的全成就页面.html" --refresh-eid
+python -m pip install beautifulsoup4
 ```
 
-这条命令会删除并重建：
+准备两份完整的 HTML 保存页。下文用 `temp/completion.html` 和 `temp/achievements.html` 作为示例路径，执行时替换成实际文件名。
 
-- `data/unlocks.js`
-- `data/challenges.js`
-- `data/achievements.js`
-- `data/effects.js`
-- `data/effects-report.json`
-- `data/recommendation_profiles.js`
+| 输入 | 来源 | 用途 |
+|---|---|---|
+| `temp/completion.html` | [Project:存档/成就](https://isaac.huijiwiki.com/wiki/Project:%E5%AD%98%E6%A1%A3/%E6%88%90%E5%B0%B1) | 角色/Boss 通关标记矩阵、挑战与成就的对应关系 |
+| `temp/achievements.html` | [成就](https://isaac.huijiwiki.com/wiki/%E6%88%90%E5%B0%B1) | 奖励实体链接、成就名称、解锁条件 |
+| EID 中英文语言包 | 构建脚本内配置的 External Item Descriptions 地址 | 按实体类型和 ID 获取英文名、中文名及效果 |
 
-它还会运行 `validate_priorities.py` 检查优先级 JSON。优先级 JSON 本身是配置源，不会被 clean rebuild 改写。如果已经有最新 EID 构建缓存，可以省略 `--refresh-eid`。
+EID 语言包缓存在 `tools/cache/eid/`。默认复用缓存，缺失时下载；刷新参数会重新下载。最终网页只读取构建好的本地文件，不在运行时抓取 Wiki 或 EID。
 
-如果只传第一个 HTML，不传 `--achievements-html`，统一入口会跳过 `data/achievements.js` 并保留现有文件。这种模式不是完整重建，只适合不更新“其他成就页”数据的情况。
+## 2. 完整重建
 
-## 1. 重新从灰机 Wiki 保存页生成矩阵
-
-把 `https://isaac.huijiwiki.com/wiki/Project:%E5%AD%98%E6%A1%A3/%E6%88%90%E5%B0%B1` 即 `Project:存档/成就` 另存为 HTML 后运行：
+日常更新游戏数据时，优先使用统一入口：
 
 ```bash
-python tools/build_unlocks.py "你的成就页面.html"
+python tools/rebuild_data.py "temp/completion.html" --achievements-html "temp/achievements.html"
 ```
 
-脚本会展开 `rowspan`，并把堕化角色共享同一 achievement ID 的多个 Boss 合并成一条 `bossIds[]` 规则。当前默认 Boss 顺序将 **Boss Rush 放在妈妈的心之前**。`achievementCatalog` 的奖励名来自 `tools/achievement_rewards_en.json`，只保存 canonical English name；构建器不会读取旧的 `data/unlocks.js`。
+需要同时刷新 EID 时，在命令末尾加 `--refresh-eid`。
 
-> 注意：`tools/achievement_rewards_en.json` 保存的是实际解锁奖励的英文实体名，不是 Achievement 标题。两者在少数情况下不同，例如 Achievement #179 的标题是 `Fart Baby`，但实际收藏品是 `Farting Baby`。
+完整流程按以下顺序执行：
 
-## 2. 重新从灰机 Wiki 保存页刷新挑战成就映射
+1. 从两份 HTML 和 EID 英文包生成 `tools/achievement_rewards_en.json`。
+2. 英文奖励生成成功后，删除原有的六个下游生成文件。
+3. 重建角色/Boss 数据、挑战数据、中文效果及报告、其他成就数据。
+4. 校验推荐配置，生成浏览器使用的推荐方案数据。
 
-同一份 `Project:存档/成就` HTML 还包含挑战表。运行：
+下游生成文件是 `data/unlocks.js`、`data/challenges.js`、`data/effects.js`、`data/effects-report.json`、`data/achievements.js` 和 `data/recommendation_profiles.js`。推荐配置源不会被改写。构建中途失败时，修复输入或依赖后重新运行完整命令，再进行发布。
+
+**完整重建不包含缓存版本更新与离线版打包。** 成功后按第 5 节准备发布文件。
+
+### 仅提供矩阵 HTML 的兼容模式
 
 ```bash
-python tools/build_challenges.py "你的成就页面.html"
+python tools/rebuild_data.py "temp/completion.html"
 ```
 
-脚本会把灰机页解析出的 `prerequisiteAchievementId` / `rewardAchievementId` 与 `tools/challenge_rewards.json` 中的奖励元数据合并，从零生成 45 条挑战数据。`data/challenges.js` 不包含 priority。挑战页面通过前置成就 ID 判断挑战是否已经开放，通过奖励成就 ID 判断挑战是否已经完成。
+此模式复用已有 `tools/achievement_rewards_en.json`，保留已有 `data/achievements.js`，其余步骤照常执行。它不会重新解析全成就页，也不会纠正旧英文奖励映射。修复奖励映射或更新其他成就时，应使用上面的完整命令。
 
-## 3. 重新生成其他成就页数据
+## 3. 数据来源与生成关系
 
-把灰机 Wiki 的全成就页 `https://isaac.huijiwiki.com/wiki/%E6%88%90%E5%B0%B1` 另存为 HTML，并确认 `tools/achievement_index.json` 中维护了四类成就 ID 后运行：
+`tools/` 中既有人工维护的配置，也有生成文件；不能只凭目录判断是否可手工修改。
+
+| 输出 | 构建脚本 | 输入与依赖 |
+|---|---|---|
+| `tools/achievement_rewards_en.json` | `build_achievement_rewards_en.py` | 两份 HTML、EID 英文包 |
+| `data/unlocks.js` | `build_unlocks.py` | 矩阵 HTML、英文奖励映射 |
+| `data/challenges.js` | `build_challenges.py` | 矩阵 HTML、`tools/challenge_rewards.json` |
+| `data/effects.js`、`data/effects-report.json` | `crawl_effects.py` | `data/unlocks.js`、EID 中英文包、`tools/non_eid_fallback_zh.json`、脚本内特殊规则 |
+| `data/achievements.js` | `build_achievements.py` | 全成就 HTML、`tools/achievement_index.json`、EID 中文包 |
+| `data/recommendation_profiles.js` | `build_recommendation_profiles.py` | `tools/recommendation_profiles.json` 及其引用的推荐配置 |
+| `isaac-unlock-planner-offline.html` | `build_offline_html.py` | `index.html` 引用的样式、脚本、数据和图片 |
+
+以上输出应通过脚本重建。可编辑的源配置包括挑战奖励元数据、成就分类索引、推荐方案及优先级、非 EID 中文兜底标签；展示层临时修正见第 4.6 节。
+
+## 4. 按需维护与分步构建
+
+只更新某一类数据时，可单独运行对应脚本。若更改了上游输入，需继续执行依赖它的下游构建；英文奖励映射变动后，应依次重建矩阵和中文效果。
+
+### 4.1 英文奖励映射
 
 ```bash
-python tools/build_achievements.py "灰机的全成就页地址.html"
+python tools/build_achievement_rewards_en.py "temp/achievements.html" --completion-html "temp/completion.html"
 ```
 
-脚本会从全成就页读取成就名称、解锁条件、奖励和奖励链接，再按 `tools/achievement_index.json` 分为主线成就、角色解锁类、次数 / 累计型成就、完成类成就。
+生成器不读取旧映射或旧 `data/unlocks.js`，即使这些文件不存在，也能从输入构建。支持 `--output` 指定输出路径、`--refresh-eid` 刷新英文 EID 缓存。
 
-`tools/achievement_index.json` 中的 `cumulativeGroups` 用于保持相似累计链在列表中连续显示，`cumulativeSingles` 则保存不需要分组的累计型成就。
+生成规则：
 
-奖励链接里的 `C` / `T` / `K` / `P` 分别映射到 EID 的收藏品、饰品、卡牌、药丸。构建器会用 `entityType + entityId` 从 EID 中文数据中取奖励名称和效果；如果链接指向的实体无法在 EID 中解析，脚本会直接失败，避免生成缺效果的奖励数据。需要强制刷新 EID 缓存时加 `--refresh-eid`。
+1. 复用通关标记矩阵解析，确定需要的成就 ID 范围。
+2. 复用 `build_achievements.py` 的全成就行解析及奖励链接提取，从**奖励列**读取 `C/T/K/P` 链接，去重并保留顺序。
+3. 分别将链接解析为收藏品、饰品、卡牌、药丸的实体 ID，再查询 EID 英文名。语言包按 AB+、Repentance、Repentance+ 顺序合并；组合奖励用 ` / ` 连接。
+4. 没有实体链接的奖励才使用成就英文标题。成就 175 的标题仅为 `O`，显式保留 `-0- Baby`；191 保留初始硬币说明；236/237 在实体名之前加 `Keeper holds`，保留初始携带语义。
 
-角色解锁类会额外插入“以撒”默认行，图标使用 `assets/character/` 下的本地角色头像；主线成就顶部的 SVG 会按存档进度把未解锁节点显示为暗色。
+成就标题不覆盖实际奖励实体。例如成就 113 的 `C179` 生成 `Fate`，183 的 `C361` 生成 `Fate's Reward`；成就 179 的实体名生成 `Farting Baby`，而非标题 `Fart Baby`。
 
-## 4. 更新运行时优先级
+缺少成就行、奖励实体在 EID 中不存在，或非实体奖励没有唯一英文标题时，构建报错，不沿用旧映射。
 
-人物/Boss 推荐来源记录在：
+### 4.2 角色/Boss 矩阵与挑战
 
-```text
-tools/recommendation_seed.json
+```bash
+python tools/build_unlocks.py "temp/completion.html"
+python tools/build_challenges.py "temp/completion.html"
 ```
 
-每条只包含：
+矩阵构建器展开表格的跨行、跨列单元格，将同一角色共享成就 ID 的多个 Boss 合并为一条 `bossIds` 规则。奖励名取自英文奖励映射，默认 Boss 顺序以 Boss Rush 开头，其次为妈妈的心。
+
+挑战构建器将 HTML 中的前置成就、奖励成就 ID 与 `tools/challenge_rewards.json` 合并。页面用前置成就判断挑战是否开放，用奖励成就判断挑战是否完成。矩阵和挑战数据均不保存优先级。
+
+### 4.3 中文效果与匹配报告
+
+```bash
+python tools/crawl_effects.py
+```
+
+此脚本的刷新参数是 `--refresh`，与其他构建器的 `--refresh-eid` 不同。
+
+构建器先处理脚本内明确指定的实体、组合奖励和初始携带说明。普通奖励使用以下匹配顺序：
+
+1. 用 `data/unlocks.js` 的英文奖励名在 EID 英文包中定位实体。
+2. 用相同的实体类型和 ID 取得 EID 中文名称与效果。
+3. 英文匹配失败时，才尝试 `tools/non_eid_fallback_zh.json` 中的中文标签。
+4. 仍无法匹配的角色、机制等奖励使用本地说明或通用兜底；Baby / 外观类可能保留“效果说明待补充”。
+
+英文名称规范化只处理大小写、括号元数据和无关标点，不剥离罗马数字前缀；兼容别名用于处理旧名称或拼写差异。中文兜底不依赖推荐配置。
+
+成就 227、228、233、542 使用组合奖励规则，191、236、237 使用店主初始能力说明。可在 `data/effects-report.json` 中检查各成就的匹配路径、实体 ID 和未匹配记录。
+
+### 4.4 其他成就与描述修正
+
+```bash
+python tools/build_achievements.py "temp/achievements.html"
+```
+
+通过 `tools/achievement_index.json` 选择并组织主线、角色解锁、次数 / 累计、完成类成就。`cumulativeGroups` 保持相似累计链连续显示，`cumulativeSingles` 保存不分组的累计成就。
+
+奖励列使用与英文映射相同的链接解析方法，再按实体 ID 获取 EID 中文名称和效果；存在实体链接但 EID 无法解析时直接报错。可用 `--refresh-eid` 刷新中文包。
+
+成就 339 的保存页条件为空，构建器固定补充：
+
+> 解锁除本成就以外的其他任意402个成就。
+
+角色列表另插入默认角色“以撒”。其他成就的修正应放在输入配置或构建器中，避免下次重建覆盖手工编辑的输出。
+
+### 4.5 推荐方案与优先级
+
+| 配置 | 内容 |
+|---|---|
+| `tools/recommendation_profiles.json` | 方案列表、默认方案及引用文件 |
+| `tools/recommendation_seed.json` | 角色/Boss 对的优先级 |
+| `tools/challenge_priority.json` | 挑战 ID 的优先级 |
+
+角色/Boss 配置条目只包含以下字段：
 
 ```json
 {
@@ -135,76 +152,22 @@ tools/recommendation_seed.json
 }
 ```
 
-不保存 `rewardName`、achievement ID，也不会写进 `unlocks.js`。`build_recommendation_profiles.py` 会把它与挑战优先级、成就优先级一起打包成独立的 `data/recommendation_profiles.js`，网页再即时决定排序、标签与红/黄/灰背景。
+挑战条目只包含 `challengeId` 和 `priority`。支持的优先级为 `strong`、`recommended`、`normal`、`discouraged`；未单独配置的角色/Boss 对默认使用 `normal`。
 
-挑战优先级独立保存在：
-
-```text
-tools/challenge_priority.json
-```
-
-每条只保存 `challengeId + priority`。`data/challenges.js` 不保存优先级。
-
-其他成就页优先级也保存在运行时推荐配置中，字段为 `achievements`；当前没有内置推荐等级时全部按 `normal` 初始化，用户可在每行最右侧菜单中修改。
-
-修改这两个 JSON 后不需要重建游戏数据，只需发布前运行：
+修改推荐源后运行：
 
 ```bash
 python tools/validate_priorities.py
 python tools/build_recommendation_profiles.py
-python tools/bump_cache_version.py
 ```
 
-`validate_priorities.py` 会检查角色/Boss 对是否真实存在、捆绑解锁的多个 Boss 是否保持同一优先级，以及挑战 ID 是否完整覆盖。
+校验器检查角色/Boss 对、捆绑解锁优先级的一致性和挑战配置完整性。新增方案时，在方案清单中指定角色/Boss 与挑战配置文件，再重新编译。
 
-内置多方案由 `tools/recommendation_profiles.json` 管理。以后添加新方案时，可以为它指定独立的角色/Boss JSON、挑战 JSON 与成就优先级数据，然后重新运行 `build_recommendation_profiles.py`。
+浏览器读取生成的 JS，不运行时请求配置 JSON。用户可在页面内调整优先级并导入、导出自己的配置；其他成就未设置推荐等级时使用 `normal`。推荐变动完成后，同样执行发布准备。
 
-## 5. 更新效果数据
+### 4.6 展示层临时覆盖
 
-```bash
-python tools/crawl_effects.py --refresh
-```
-
-构建器会读取 External Item Descriptions，并严格按以下顺序处理：
-
-1. 使用 `unlocks.js` 中的 canonical English reward name 在 EID `en_us.lua` 中定位实体类型与 ID；
-2. 用同一个 `category + entityId` 回查 `zh_cn.lua`，取得最终中文名称与效果；
-3. 只有英文 EID 匹配失败时，才允许使用独立的 `tools/non_eid_fallback_zh.json` 中文名走一次旧中文匹配作为末级回退；
-4. 仍然无法落到 EID 实体的角色、初始能力、掉落物/机制和 Baby 类，再进入本地特殊说明或通用机制兜底。
-
-因此中文名称不会参与正常 EID 主匹配链路。
-
-例如旧版漏掉的 `Locust of Wrath` 会通过英文别名匹配到 EID 的 `Locust of War`（trinket ID 113），再得到中文“战争蝗虫”和对应说明。
-
-效果抓取器只在构建阶段联网；最终网页运行时不爬站点。
-
-## 6. 发布前生成缓存版本和离线单文件
-
-发布前推荐统一运行：
-
-```bash
-python tools/prepare_publish.py
-```
-
-该脚本会先调用 `tools/bump_cache_version.py` 更新 `index.html` 中 CSS、JS、数据脚本和图标的 cache-busting query string，再调用 `tools/build_offline_html.py` 生成 `isaac-unlock-planner-offline.html`。
-
-也可以手动指定版本：
-
-```bash
-python tools/prepare_publish.py 20260818-1
-```
-
-如果只想重建离线单文件：
-
-```bash
-python tools/build_offline_html.py
-```
-
-离线构建器会把 `index.html` 引用的 CSS、JS、数据文件、`assets/icon.png`、CSS 内图片，以及运行时动态引用的角色 / Boss 图片内嵌进单个 HTML 文件。最终的 `isaac-unlock-planner-offline.html` 可以脱离网络和相邻资源直接打开。
-
-## 7. 人工修正
-
-`data/overrides.js` 最后加载，用于展示层人工修正：
+`data/overrides.js` 用成就 ID 覆盖名称、效果或图片，例如：
 
 ```js
 window.ISAAC_OVERRIDES = {
@@ -214,35 +177,47 @@ window.ISAAC_OVERRIDES = {
 };
 ```
 
-可覆盖 `name`、`effect`、`image`。priority 不再允许从 overrides 覆盖，唯一来源是运行时 JSON。
+支持 `name`、`effect`、`image`，不支持覆盖优先级。奖励实体映射错误应修复生成流程；这类展示覆盖不会修正上游映射或匹配报告。
 
-## 存档解析
+## 5. 准备发布文件
 
-`js/save-parser.js` 只读取当前工具需要的 Achievement block：
+数据或推荐配置构建完成后运行：
 
-- 校验 16 字节魔数 `ISAACNGSAVE09R  `
-- 跳过 `0x10` 的 32-bit header word
-- 要求第一个 block type 为 `1`
-- 读取 `blockSize` / `achievementCount`
-- 用 `achievements[achievementId]` 判断是否解锁
+```bash
+python tools/prepare_publish.py
+```
 
-因此工具不会修改存档，也不需要 CRC 写回逻辑。
+该命令先更新 `index.html` 资源引用及 `styles.css` 精灵图引用中的缓存版本，再构建离线单文件。它只生成本地发布文件，不执行上传。
 
-## 当前展示约定
+需要固定版本号时：
 
-- 页面打开时默认按重要度排序。
-- 挑战页默认同样按重要度排序；切换“默认顺序”后按挑战 ID 从小到大排列。
-- 其他成就页默认按重要度排序；角色解锁类没有“奖励”列，其余成就列表保留奖励名称与效果。
-- 主线成就上方有横向 SVG 进度图；读取存档后，未解锁成就节点会显示为暗色。
-- Boss 默认顺序以 Boss Rush 开头，其次为妈妈的心。
-- 没有 EID 描述且不属于 Baby 的奖励，会显示统一说明：`解锁「XXX」这一非收藏道具 / 机制内容。`
-- Baby 类解锁暂保留“效果说明待补充”。
-- Achievement 图标来自本地 sprite，通过成就 ID 直接定位，不再依赖远程奖励图片。
+```bash
+python tools/prepare_publish.py 20261003-1
+```
 
-## EID 名称匹配
+只重新打包离线版、不更新缓存版本时：
 
-主链路只使用英文名称：先在 EID `en_us` 数据中解析出 `category + entity ID`，再用相同 ID 从 `zh_cn` 数据中取得中文名称和效果。只有主链路完全失败后，才允许使用 `tools/non_eid_fallback_zh.json` 的独立中文标签走 `norm_zh_name()` 末级回退；该回退与推荐优先级完全解耦，也不会读取 `achievementCatalog` 的中文名，因为 catalog 已经是纯英文。
+```bash
+python tools/build_offline_html.py
+```
 
-`norm_name()` 只保留英文匹配所需的最小规范化：转小写、移除方括号/圆括号元数据、移除空格与无关标点。不会再剥离罗马数字前缀，因此 `Cry Baby` 与 `Dry Baby` 分别规范化为 `crybaby` / `drybaby`。已知源数据中的英文拼写错误通过显式英文 alias 修正。
+离线版内嵌样式、脚本、数据、图标及动态角色/Boss 图片，可脱离相邻资源打开。发布前检查普通页面与离线版中的奖励名称、效果和成就条件是否一致。
 
-成就 `#227`、`#228`、`#233`、`#542` 属于一次解锁多个实体的特殊情况，构建器会生成 bundle 效果；店主的 `#191`、`#236`、`#237` 则使用人物初始携带物品的专门说明。
+## 6. 数据规模与运行时约定
+
+当前构建结果如下；更新输入后，以构建脚本输出和匹配报告为准。
+
+| 项目 | 数量 |
+|---|---:|
+| 角色 | 34（17 表角色、17 堕化角色） |
+| 通关标记 / Boss 目标 | 13 |
+| 角色/Boss 解锁规则 | 340，其中 34 条为多 Boss 捆绑规则 |
+| 挑战 | 45 |
+| 其他成就列表条目 | 222 |
+| 有效果或本地说明的通关奖励 | 308 / 340 |
+| 未匹配的 Baby / 外观类奖励 | 32 |
+| 其他成就中具有 EID 实体奖励的条目 | 112 |
+
+页面默认按重要度排序，挑战可切回 ID 顺序。角色解锁列表不显示奖励列；主线成就图按存档进度区分解锁状态。成就图标使用本地 `Achievement_sprite.jpg`，按成就 ID 定位；角色头像来自 `assets/character/`。
+
+存档解析独立于上述构建流程。`js/save-parser.js` 在浏览器本地校验 `ISAACNGSAVE09R  ` 魔数，读取 Achievement block，通过 `achievements[achievementId]` 判断解锁状态。工具不修改存档，也不进行 CRC 写回。

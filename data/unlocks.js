@@ -3508,7 +3508,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "20": {
-      "name": "A Cross",
+      "name": "The Relic",
       "condition": "Defeat Isaac as Magdalene",
       "image": null,
       "quality": null,
@@ -3550,7 +3550,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "46": {
-      "name": "bomb bag",
+      "name": "Bomb Bag",
       "condition": "Defeat Satan as Cain",
       "image": null,
       "quality": null,
@@ -3571,14 +3571,14 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "49": {
-      "name": "The D20",
+      "name": "D20",
       "condition": "Defeat ??? as Isaac",
       "image": null,
       "quality": null,
       "effect": ""
     },
     "50": {
-      "name": "Celctic Cross",
+      "name": "Celtic Cross",
       "condition": "Defeat ??? as Magdalene",
       "image": null,
       "quality": null,
@@ -3599,7 +3599,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "53": {
-      "name": "Sacraficial Dagger",
+      "name": "Sacrificial Dagger",
       "condition": "Defeat ??? as Eve",
       "image": null,
       "quality": null,
@@ -3613,7 +3613,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "55": {
-      "name": "Blood Penny",
+      "name": "Bloody Penny",
       "condition": "Defeat ??? as Samson",
       "image": null,
       "quality": null,
@@ -3739,7 +3739,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "113": {
-      "name": "Fate's Reward",
+      "name": "Fate",
       "condition": "Defeat ??? as ???",
       "image": null,
       "quality": null,
@@ -3753,7 +3753,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "115": {
-      "name": "Samson's Chain",
+      "name": "Samson's Chains",
       "condition": "Defeat Boss Rush as Samson",
       "image": null,
       "quality": null,
@@ -3837,7 +3837,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "128": {
-      "name": "Abbadon",
+      "name": "Abaddon",
       "condition": "Defeat ??? as Azazel",
       "image": null,
       "quality": null,
@@ -3872,7 +3872,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "133": {
-      "name": "The D100",
+      "name": "D100",
       "condition": "Defeat Boss Rush as The Lost",
       "image": null,
       "quality": null,
@@ -4054,7 +4054,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "192": {
-      "name": "Lil' Chest",
+      "name": "Lil Chest",
       "condition": "Defeat Greed Mode as Isaac",
       "image": null,
       "quality": null,
@@ -4390,7 +4390,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "292": {
-      "name": "Euthanesia",
+      "name": "Euthanasia",
       "condition": "Defeat Delirium as Lilith",
       "image": null,
       "quality": null,
@@ -4516,7 +4516,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "310": {
-      "name": "Locust of Wrath",
+      "name": "Locust of War",
       "condition": "Defeat Isaac as Apollyon",
       "image": null,
       "quality": null,
@@ -4796,7 +4796,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "437": {
-      "name": "Suplex",
+      "name": "Suplex!",
       "condition": "Defeat Delirium as Jacob and Esau",
       "image": null,
       "quality": null,
@@ -5370,7 +5370,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "560": {
-      "name": "Temporary Tatoo",
+      "name": "Temporary Tattoo",
       "condition": "Defeat Isaac / Satan / ??? / The Lamb as Tainted Samson",
       "image": null,
       "quality": null,
@@ -5839,7 +5839,7 @@ window.ISAAC_UNLOCK_DATA = {
       "effect": ""
     },
     "629": {
-      "name": "Soul of Lillith",
+      "name": "Soul of Lilith",
       "condition": "Defeat Boss Rush / Hush as Tainted Lilith",
       "image": null,
       "quality": null,

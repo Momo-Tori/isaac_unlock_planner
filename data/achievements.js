@@ -2458,7 +2458,7 @@ window.ISAAC_ACHIEVEMENT_DATA = {
     {
       "achievementId": 339,
       "name": "1000000%",
-      "condition": "",
+      "condition": "解锁除本成就以外的其他任意402个成就。",
       "rewardName": "",
       "rewardEffect": "",
       "rewardEntities": [],

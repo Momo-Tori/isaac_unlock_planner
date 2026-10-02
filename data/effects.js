@@ -277,10 +277,10 @@ window.ISAAC_EFFECTS = {
       "matchRoute": "english-eid"
     },
     "113": {
-      "name": "宿命的报答",
-      "effect": "发射泪弹, 效果和属性与角色一致\n射速是其他跟班的一半",
+      "name": "宿命",
+      "effect": "+1永恒之心\n飞行",
       "entityType": "collectible",
-      "entityId": 361,
+      "entityId": 179,
       "source": "eid-zh_cn",
       "matchRoute": "english-eid"
     },
