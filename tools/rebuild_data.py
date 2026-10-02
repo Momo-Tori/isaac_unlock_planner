@@ -19,10 +19,17 @@ def main():
     ap.add_argument(
         '--achievements-html',
         type=Path,
-        help='saved Huiji 成就 page HTML; when provided, rebuilds data/achievements.js',
+        help='saved Huiji 成就 page HTML; rebuilds English rewards and data/achievements.js',
     )
     ap.add_argument('--refresh-eid', action='store_true', help='redownload EID language packs')
     args=ap.parse_args()
+
+    # Generate the catalog before consuming it or removing existing products.
+    if args.achievements_html:
+        reward_args=[TOOLS/'build_achievement_rewards_en.py', args.achievements_html,
+                     '--completion-html', args.html]
+        if args.refresh_eid: reward_args.append('--refresh-eid')
+        run(*reward_args)
 
     # Generated products only. Runtime priority JSON and source seeds are never deleted.
     generated = ['data/unlocks.js','data/challenges.js','data/effects.js','data/effects-report.json','data/recommendation_profiles.js']
@@ -44,7 +51,7 @@ def main():
     run(TOOLS/'validate_priorities.py')
     run(TOOLS/'build_recommendation_profiles.py')
     if not args.achievements_html:
-        print('skipped data/achievements.js; pass --achievements-html with the saved Huiji 成就 page to rebuild it')
-    print('clean rebuild complete; tools/*.json remain the editable recommendation sources')
+        print('reused tools/achievement_rewards_en.json and skipped data/achievements.js; pass --achievements-html for a full rebuild')
+    print('rebuild complete; recommendation source JSON files remain unchanged')
 
 if __name__=='__main__': main()

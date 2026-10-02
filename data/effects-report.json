@@ -227,7 +227,7 @@
     },
     {
       "achievementId": 20,
-      "englishName": "A Cross",
+      "englishName": "The Relic",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 98,
@@ -275,7 +275,7 @@
     },
     {
       "achievementId": 46,
-      "englishName": "bomb bag",
+      "englishName": "Bomb Bag",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 131,
@@ -299,7 +299,7 @@
     },
     {
       "achievementId": 49,
-      "englishName": "The D20",
+      "englishName": "D20",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 166,
@@ -307,7 +307,7 @@
     },
     {
       "achievementId": 50,
-      "englishName": "Celctic Cross",
+      "englishName": "Celtic Cross",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 162,
@@ -331,7 +331,7 @@
     },
     {
       "achievementId": 53,
-      "englishName": "Sacraficial Dagger",
+      "englishName": "Sacrificial Dagger",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 172,
@@ -347,7 +347,7 @@
     },
     {
       "achievementId": 55,
-      "englishName": "Blood Penny",
+      "englishName": "Bloody Penny",
       "route": "english-eid",
       "entityType": "trinket",
       "entityId": 49,
@@ -491,11 +491,11 @@
     },
     {
       "achievementId": 113,
-      "englishName": "Fate's Reward",
+      "englishName": "Fate",
       "route": "english-eid",
       "entityType": "collectible",
-      "entityId": 361,
-      "zhName": "宿命的报答"
+      "entityId": 179,
+      "zhName": "宿命"
     },
     {
       "achievementId": 114,
@@ -507,7 +507,7 @@
     },
     {
       "achievementId": 115,
-      "englishName": "Samson's Chain",
+      "englishName": "Samson's Chains",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 321,
@@ -603,7 +603,7 @@
     },
     {
       "achievementId": 128,
-      "englishName": "Abbadon",
+      "englishName": "Abaddon",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 230,
@@ -643,7 +643,7 @@
     },
     {
       "achievementId": 133,
-      "englishName": "The D100",
+      "englishName": "D100",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 283,
@@ -826,7 +826,7 @@
     },
     {
       "achievementId": 192,
-      "englishName": "Lil' Chest",
+      "englishName": "Lil Chest",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 362,
@@ -1170,7 +1170,7 @@
     },
     {
       "achievementId": 292,
-      "englishName": "Euthanesia",
+      "englishName": "Euthanasia",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 496,
@@ -1314,7 +1314,7 @@
     },
     {
       "achievementId": 310,
-      "englishName": "Locust of Wrath",
+      "englishName": "Locust of War",
       "route": "english-eid",
       "entityType": "trinket",
       "entityId": 113,
@@ -1624,7 +1624,7 @@
     },
     {
       "achievementId": 437,
-      "englishName": "Suplex",
+      "englishName": "Suplex!",
       "route": "english-eid",
       "entityType": "collectible",
       "entityId": 709,
@@ -2279,7 +2279,7 @@
     },
     {
       "achievementId": 560,
-      "englishName": "Temporary Tatoo",
+      "englishName": "Temporary Tattoo",
       "route": "english-eid",
       "entityType": "trinket",
       "entityId": 177,
@@ -2785,7 +2785,7 @@
     },
     {
       "achievementId": 629,
-      "englishName": "Soul of Lillith",
+      "englishName": "Soul of Lilith",
       "route": "english-eid",
       "entityType": "card",
       "entityId": 92,

@@ -89,6 +89,19 @@ def condition_for(rule, characters_by_id, bosses_by_id):
     return f'Defeat {targets} as {char}'
 
 
+def load_completion_grid(path):
+    soup=BeautifulSoup(path.read_text('utf-8',errors='ignore'),'html.parser')
+    tables=soup.find_all('table')
+    if not tables: raise RuntimeError('achievement table not found')
+    return expand_table(tables[0])
+
+
+def completion_achievement_ids(path):
+    grid=load_completion_grid(path)
+    return sorted({aid for row,*_ in BOSS_ROWS for col in range(1,35)
+                   if (aid := achievement_id(grid[row][col])) is not None})
+
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('html', type=Path, help='saved Huiji Project:存档/成就 HTML')
@@ -97,10 +110,7 @@ def main():
     args=ap.parse_args()
 
     english_catalog=load_english_catalog(args.catalog)
-    soup=BeautifulSoup(args.html.read_text('utf-8',errors='ignore'),'html.parser')
-    tables=soup.find_all('table')
-    if not tables: raise RuntimeError('achievement table not found')
-    grid=expand_table(tables[0])
+    grid=load_completion_grid(args.html)
 
     characters=[]
     for idx,col in enumerate(range(1,35)):

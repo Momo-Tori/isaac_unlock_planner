@@ -107,6 +107,23 @@ def parse_rows(path: Path) -> dict[int, list[dict[str, object]]]:
     return parser.rows
 
 
+def reward_entities_from_cell(reward_cell):
+    """Resolve reward-column links, preserving order and removing duplicates."""
+    prefix_types = {"C": "collectible", "T": "trinket", "K": "card", "P": "pill"}
+    entities = []
+    seen = set()
+    for href in reward_cell["links"]:
+        match = re.search(r"/([CTKP])(\d+)(?:$|[?#])", str(href))
+        if not match:
+            continue
+        prefix, raw_id = match.groups()
+        key = (prefix_types[prefix], int(raw_id))
+        if key not in seen:
+            seen.add(key)
+            entities.append({"prefix": prefix, "entityType": key[0], "entityId": key[1]})
+    return entities
+
+
 def make_entry(
     achievement_id: int,
     rows: dict[int, list[dict[str, object]]],
@@ -117,20 +134,7 @@ def make_entry(
         raise RuntimeError(f"Wiki HTML is missing achievement #{achievement_id}")
     cells = rows[achievement_id]
     reward_cell = cells[5]
-    prefix_types = {"C": "collectible", "T": "trinket", "K": "card", "P": "pill"}
-    reward_entities: list[dict[str, object]] = []
-    seen_entities: set[tuple[str, int]] = set()
-    for href in reward_cell["links"]:
-        match = re.search(r"/([CTKP])(\d+)(?:$|[?#])", str(href))
-        if not match:
-            continue
-        prefix, raw_id = match.groups()
-        entity_id = int(raw_id)
-        key = (prefix_types[prefix], entity_id)
-        if key in seen_entities:
-            continue
-        seen_entities.add(key)
-        reward_entities.append({"prefix": prefix, "entityType": key[0], "entityId": entity_id})
+    reward_entities = reward_entities_from_cell(reward_cell)
 
     missing = [
         f'{entity["prefix"]}{entity["entityId"]}'
@@ -152,7 +156,8 @@ def make_entry(
     return {
         "achievementId": achievement_id,
         "name": first_line(cells[1]["text"]),
-        "condition": str(cells[4]["text"]).replace("\n", " "),
+        "condition": ("解锁除本成就以外的其他任意402个成就。" if achievement_id == 339
+                      else str(cells[4]["text"]).replace("\n", " ")),
         "rewardName": reward_name,
         "rewardEffect": reward_effect,
         "rewardEntities": reward_entities,
