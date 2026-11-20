@@ -5,7 +5,8 @@
 })(typeof window !== 'undefined' ? window : globalThis, function () {
   'use strict';
 
-  const MAGIC = 'ISAACNGSAVE09R  ';
+  const MAGIC = 'ISAACNGSAVE';
+  const MAGIC_END = 'R  '
 
   function asDataView(input) {
     if (input instanceof ArrayBuffer) return new DataView(input);
@@ -22,7 +23,7 @@
     let cursor = 0;
     let magic = '';
     for (let i = 0; i < 16; i += 1) magic += String.fromCharCode(dv.getUint8(cursor++));
-    if (magic !== MAGIC) {
+    if (!magic.startsWith(MAGIC) || !magic.endsWith(MAGIC_END)) {
       throw new Error(`存档格式不受支持：文件头为 ${JSON.stringify(magic)}`);
     }
 
