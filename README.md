@@ -11,7 +11,7 @@
 - 默认按重要度排序，也可以切换回默认顺序。
 - 支持隐藏已解锁目标，只保留还需要完成的内容。
 - 支持在页面内调整推荐优先级，并导出 / 导入本地推荐配置。
-- 提供离线单文件版本 `isaac-unlock-planner-offline.html`。
+- 提供离线单文件版本 `isaac-unlock-planner-offline.html`；保留 B站 Toy SDK 引用用于云缓存，SDK 不可用时仍可离线使用。
 
 ## 直接使用
 
@@ -20,7 +20,7 @@
 3. 在几个视图之间切换查看解锁目标。
 4. 载入存档后关闭 **显示已解锁**，即可只看未完成目标。
 
-存档解析全部发生在当前页面内，不会上传到本工具服务器。B站 Toy 环境会优先使用 Toy JS SDK 的 CloudStorage 保存用户缓存；普通浏览器或离线版会回退到浏览器本地缓存。解析结构参考灰机 Wiki 的 `Persistentgamedata.js`，项目中重新实现为只读取 Achievement block 的最小解析器。
+存档解析全部发生在当前页面内，不会上传到本工具服务器。支持云存储的 B站 Toy 环境会优先使用 Toy JS SDK 的 CloudStorage 保存用户缓存；云存储不可用时会回退到浏览器本地缓存。解析结构参考灰机 Wiki 的 `Persistentgamedata.js`，项目中重新实现为只读取 Achievement block 的最小解析器。
 
 ## 数据链
 

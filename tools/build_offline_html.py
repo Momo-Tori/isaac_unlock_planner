@@ -18,6 +18,7 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT = ROOT / "index.html"
 DEFAULT_OUTPUT = ROOT / "isaac-unlock-planner-offline.html"
+TOY_SDK_URL = "//s1.hdslb.com/bfs/seed/toy/app/sdk/toy-sdk.js"
 
 
 def local_path(url: str, base_dir: Path) -> Path | None:
@@ -121,9 +122,11 @@ def build(input_path: Path, output_path: Path) -> None:
 
     def replace_script(match: re.Match[str]) -> str:
         src = match.group(1)
+        if src == TOY_SDK_URL:
+            return match.group(0)
         path = local_path(src, input_path.parent)
         if path is None:
-            return "<!-- External Toy SDK omitted in offline build. -->"
+            return "<!-- External script omitted in offline build. -->"
         if not path.exists():
             raise SystemExit(f"Script not found: {src}")
         js = path.read_text(encoding="utf-8")
